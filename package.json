@@ -11,9 +11,14 @@
     "postinstall": "electron-builder install-app-deps"
   },
   "dependencies": {
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
+    "@mui/material": "^5.13.6",
+    "@tinymce/tinymce-react": "^4.3.0",
+    "clsx": "^1.2.1",
     "electron-serve": "^1.1.0",
     "electron-store": "^8.1.0",
-    "clsx": "^1.2.1",
+    "fs-extra": "^11.1.1",
     "next": "^13.4.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

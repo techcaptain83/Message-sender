@@ -1,35 +1,11 @@
-import * as React from 'react';
-
-import Layout from '@/components/layout/Layout';
-import ArrowLink from '@/components/links/ArrowLink';
-import ButtonLink from '@/components/links/ButtonLink';
-import UnderlineLink from '@/components/links/UnderlineLink';
-import UnstyledLink from '@/components/links/UnstyledLink';
-import Seo from '@/components/Seo';
-import { AiOutlineDown } from "react-icons/ai"
-import { BsCheckSquare } from "react-icons/bs"
-import { BiEditAlt } from "react-icons/bi"
-
-/**
- * SVGR Support
- * Caveat: No React Props Type.
- *
- * You can override the next-env if the type is important to you
- * @see https://stackoverflow.com/questions/68103844/how-to-override-next-js-svg-module-declaration
- */
-import Vercel from '~/svg/Vercel.svg';
 import Image from 'next/image';
-import ChatPart, { aChat } from '@/components/ChatPart';
-import Person from '@/components/Person';
-import ListsPart from '@/components/ListsPart';
-
-
-
-
-
-// !STARTERCONF -> Select !STARTERCONF and CMD + SHIFT + F
-// Before you begin editing, follow all comments with `STARTERCONF`,
-// to customize the default configuration.
+import React from 'react'
+import { AiOutlineDown } from 'react-icons/ai';
+import { BiEditAlt } from 'react-icons/bi';
+import ChatPart, { aChat } from '../components/ChatPart';
+import ListsPart from '../components/ListsPart';
+import Person from '../components/Person';
+import Seo from '../components/Seo';
 
 export default function HomePage() {
   const chats: aChat[] = [
@@ -37,10 +13,10 @@ export default function HomePage() {
       profile: {
         image: "/images/person.jpg",
         link: "/",
-        name:"Mugisha Yves"
+        name: "Mugisha Yves"
       },
       active: true,
-      lastMessage:"Nones bro ko tutavuganye kuri ya boro"
+      lastMessage: "Nones bro ko tutavuganye kuri ya boro"
     },
     {
       profile: {
@@ -53,7 +29,7 @@ export default function HomePage() {
     },
     {
       profile: {
-        text:"Y",
+        text: "Y",
         link: "/",
         name: "Mugisha Yves"
       },
@@ -78,11 +54,11 @@ export default function HomePage() {
       active: false,
       lastMessage: "Nones bro ko tutavuganye kuri ya boro"
     }
-  ] 
+  ]
   const users = [
     {
       image: "/images/person.jpg",
-      link:"/user/id"
+      link: "/user/id"
     },
     {
       image: "/images/person.jpg",
@@ -104,7 +80,7 @@ export default function HomePage() {
   return (
     <div className='h-full w-full'>
       {/* <Seo templateTitle='Home' /> */}
-      <Seo title='Chatmain | Main'/>
+      <Seo title='Chatmaid | Main' />
 
       <main className='h-full w-full'>
         <div className="w-full h-[100vh] overflow-hidden">
@@ -115,16 +91,16 @@ export default function HomePage() {
                 <Person link='/' text='T' />
                 <button className='font-bold md:text-base text-sm hover:bg-[#10131A] rounded-md p-2'>Add member</button>
                 <div className="flex flex-row gap-0 items-center">
-                  {users.map((user, index) => { 
+                  {users.map((user, index) => {
                     return (
                       <Person key={index} image={user.image} link={user.link} />
                     )
                   })}
                   <button className="w-7 h-7 md:w-10 md:h-10 rounded-full bg-gray-900 text-gray-400 font-bold">+42</button>
                 </div>
-                <button className="flex items-center font-bold gap-1 hover:bg-[#10131A] rounded-md p-2 md:text-base text-sm">
+                <button className="flex items-center font-bold gap-1 hover:bg-[#10131A] rounded-md p-2 lg:text-base text-sm">
                   <p>Recent Messages</p>
-                  <AiOutlineDown className='font-bold'/>
+                  <AiOutlineDown className='font-bold' />
                 </button>
                 <button className='hover:bg-[#10131A] rounded-md p-2 md:text-base text-sm'>
                   <BiEditAlt className='font-bold' />
@@ -133,10 +109,10 @@ export default function HomePage() {
             </div>
           </div>
           <div className="block md:flex flex-row h-full">
-            <div className='w-[100vw] h-full md:w-[80vw]'>
+            <div className='w-[100vw] h-full md:w-[75vw] lg:w-[80vw]'>
               <ListsPart />
             </div>
-            <div className='hidden md:block md:w-[20vw]'>
+            <div className='hidden md:block  md:w-[25vw] lg:w-[20vw]'>
               <ChatPart chats={chats} />
             </div>
           </div>

@@ -45,7 +45,7 @@ const ChatPart: React.FC<ChatPartProps> = ({ chats }) => {
                 <div className="flex flex-row gap-2 items-center my-2 hover:bg-[#10131A] rounded-md p-1 px-2">
                     <div className='relative'>
                         {profile.image ? <ChatProfile image={profile.image} /> : <ChatProfile text={profile.text} />}
-                        {active ? <div className='w-2 h-2 lg:w-4 lg:h-4 rounded-full absolute -right-1 -bottom-1 bg-green-500' /> : <div className='absolute -right-1 -bottom-1 bg-yellow-500 rounded-full w-2 h-2 lg:w-4 lg:h-4 ' />}
+                        {active ? <div className='w-2 h-2 lg:w-4 lg:h-4 rounded-full absolute -right-1 -bottom-1 bg-green-500'></div> : <div className='absolute -right-1 -bottom-1 bg-yellow-500 rounded-full w-2 h-2 lg:w-4 lg:h-4 '></div>}
                     </div>
                     <div>
                         <p className='font-bold text-sm lg:text-base'>{profile.name}</p>
