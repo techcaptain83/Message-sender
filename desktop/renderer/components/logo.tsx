@@ -9,7 +9,7 @@ export default function Logo(props) {
             fill="#2563EB"
           />
         </svg>
-        <div className="text-sm font-medium">
+        <div className="text-sm md:text-base  font-medium">
           <span>Chat</span>
           <span className="text-[#2563EB]">Maid</span>
         </div>

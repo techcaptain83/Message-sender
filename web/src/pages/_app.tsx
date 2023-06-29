@@ -25,13 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <RecoilRoot>
       <>
         <Toaster />
-        {(router.pathname.includes('/c') || router.pathname.includes('/a')) ? (
-          <DashboardLayout>
-            <Component {...pageProps} />
-          </DashboardLayout>
-        ) : (
           <Component {...pageProps} />
-        )}
       </>
     </RecoilRoot>
   )

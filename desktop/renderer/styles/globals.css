@@ -2,3 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer components{
+    .control{
+        @apply flex items-center flex-row text-blue-500 p-2 bg-white gap-2 rounded-md hover:bg-blue-500 hover:text-white transition-colors duration-200;
+    }
+    
+}

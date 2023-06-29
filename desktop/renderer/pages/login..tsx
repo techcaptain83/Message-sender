@@ -9,15 +9,6 @@ import Logo from '@/components/logo'
 import { AuthLayout } from '@/components/layouts/AuthLayout'
 import Loader from '@/components/Loader'
 
-const admin = {
-    email: 'voiptradmin@gmail.com',
-    password: '323232'
-}
-
-const normalUser = {
-    email: 'alexander1@gmail.com',
-    password: '323232'
-}
 export default function Login() {
     const [loading, setLoading] = useState(false);
 
@@ -32,7 +23,7 @@ export default function Login() {
         setLoading(true);
         setTimeout(() => {
             setLoading(false);
-            // router.push('/dashboard'
+            router.push('/')
         }, 2000)
     }
     return (
