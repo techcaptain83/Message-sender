@@ -38,6 +38,7 @@
     "eslint-config-next": "13.0.2",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.6",
+    "react-icons": "^4.10.1",
     "sharp": "^0.32.0",
     "stripe": "^12.10.0"
   }

@@ -16,19 +16,15 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setLoading(true);
-  }
 
-  const handleStripeCheckout = async () => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    console.log("called")
+    e.preventDefault();
     setLoading(true);
     try {
       const stripe = await stripePromise;
-
-
       const { data } = await axios.post('/api/create-stripe-checkout-session', {
-        amount: 12,
+        amount: 1225,
         currency: 'usd',
       });
       const { sessionId, url } = data;
@@ -56,7 +52,7 @@ export default function Register() {
 
         </div>
         <form
-          action="#"
+          onSubmit={handleSubmit}
           className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
         >
           <TextField
