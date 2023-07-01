@@ -13,10 +13,10 @@ const File = new mongoose.Schema({
         type: Buffer,
         required: true,
     },
-    uploadedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-    }
+    // uploadedBy: {
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: "User",
+    // }
 }, {
     timestamps: true
 });

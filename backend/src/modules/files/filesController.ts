@@ -7,7 +7,7 @@ export const uploadFile = async (req: any, res: any) => {
             filename: originalname,
             contentType: mimetype,
             data: buffer,
-            uploadedBy: req.user._id
+            // uploadedBy: req.user._id
         });
         await file.save();
         res.status(201).json({ message: "success", file: file });
@@ -19,7 +19,8 @@ export const uploadFile = async (req: any, res: any) => {
 
 export const getFiles = async (req: any, res: any) => {
     try {
-        const files = await File.find({ uploadedBy: req.user._id });
+        // const files = await File.find({ uploadedBy: req.user._id });
+        const files = await File.find();
         res.status(200).json({ files: files });
     } catch (error) {
         console.log(error);

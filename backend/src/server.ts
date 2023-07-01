@@ -6,7 +6,6 @@ import cookieParser = require("cookie-parser");
 import authRouter from "./modules/auth/authRouter";
 import filesRouter from "./modules/files/filesRouter";
 import { dbConnection } from "./utils/dbConnection";
-import isAuthenticated from "./middlewares/auth";
 const PORT = process.env.PORT || 8000;
 
 const app = express();
@@ -26,7 +25,7 @@ app.use(cookieParser());
 
 app.use((req, res, next) => {
 
-    const origin = req.headers.origin as string;
+    const origin = req.headers.origin || "localhost";
     res.setHeader("Access-Control-Allow-Origin", origin);
     res.setHeader("Access-Control-Allow-Credentials", "true");
     res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE");
@@ -42,7 +41,7 @@ app.use((req, res, next) => {
 
 // router middlewares
 app.use("/auth", authRouter);
-app.use("/files", isAuthenticated, filesRouter)
+app.use("/files", filesRouter)
 
 app.get("/", (req, res) => {
     res.send("hello chatmaid");
