@@ -69,7 +69,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
       <ul
         role="list"
         className={clsx(
-          'order-last mt-10 flex flex-col gap-y-3 text-sm',
+          'order-last mt-10 gap-4 flex-col gap-y-3 grid grid-cols-1 sm:grid-cols-2 text-sm',
           featured ? 'text-white' : 'text-slate-200'
         )}
       >
@@ -114,7 +114,7 @@ export function Pricing() {
             work well for you.
           </p>
         </div>
-        <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
+        {/* <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
           <Plan
             name="Starter"
             price="$9"
@@ -155,6 +155,24 @@ export function Pricing() {
               'Track up to 200 expenses per month',
               'Automated payroll support',
               'Export up to 25 reports, including TPS',
+            ]}
+          />
+        </div> */}
+        <div className='w-full flex items-center justify-center pt-4'>
+          <Plan
+            featured
+            name="For everyone"
+            price="$79.99"
+            description="One time payment for lifetime access."
+            href="/register"
+            features={[
+              'Send 25 quotes and invoices',
+              'Connect up to 5 bank accounts',
+              'Track up to 50 expenses per month',
+              'Automated payroll support',
+              'Export up to 12 reports',
+              'Bulk reconcile transactions',
+              'Track in multiple currencies',
             ]}
           />
         </div>

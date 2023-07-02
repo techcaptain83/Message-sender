@@ -9,6 +9,7 @@ import { FormEvent, useState } from 'react'
 import axios from "axios";
 import Loader from '@/components/Loader'
 import { useRouter } from 'next/router'
+import { countries } from '@/store/countries'
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
@@ -24,7 +25,7 @@ export default function Register() {
     try {
       const stripe = await stripePromise;
       const { data } = await axios.post('/api/create-stripe-checkout-session', {
-        amount: 1225,
+        amount: 7999,
         currency: 'usd',
       });
       const { sessionId, url } = data;
@@ -80,26 +81,27 @@ export default function Register() {
             autoComplete="email"
             required
           />
-          <TextField
-            className="col-span-full"
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="new-password"
-            required
-          />
           <SelectField
             className="col-span-full"
-            label="How did you hear about us?"
+            label="Country"
             id="referral_source"
             name="referral_source"
           >
-            <option>Discord</option>
-            <option>Our online commercials</option>
-            <option>From a friend</option>
-            <option>Other</option>
+            {
+              countries.map((country) => (
+                <option key={country} value={country}>{country}</option>
+              ))
+            }
           </SelectField>
+          <TextField
+            className="col-span-full"
+            label="Referred by (email)"
+            id="referred_by"
+            name="referred_by"
+            type="email"
+            autoComplete="email"
+            required
+          />
           <div className="col-span-full">
             <Button
               disabled={loading}
