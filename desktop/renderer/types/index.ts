@@ -13,8 +13,9 @@ export interface IUser {
 }
 
 export interface IFile {
-    id: string;
-    fileName: string;
-    updloadedAt: Date;
-    usersCount: number;
+    _id: string;
+    filename: string;
+    createdAt:string;
+    updatedAt:string;
+    // usersCount: number;
 }

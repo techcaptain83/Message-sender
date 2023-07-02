@@ -1,11 +1,13 @@
-import { IUser } from "@/types"
+import { IFile, IUser } from "@/types"
 import Pagination from "../pagination"
 
 const people: IUser[] = [
   { id: '234D', address: 'Tokyo - Japan', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
 ]
 
-export default function UsersTable() {
+
+export default function UsersTable({_id}:IFile) {
+  
   return (
     <div className="">
       <div className=" px-4 sm:px-6 lg:px-8 py-3 max-h-[75vh] overflow-y-auto">

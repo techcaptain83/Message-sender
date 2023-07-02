@@ -1,12 +1,23 @@
+import { selectedFileState } from '@/atoms';
 import { IFile } from '@/types'
 import { DocumentTextIcon } from '@heroicons/react/20/solid'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useRecoilState } from 'recoil';
 
-const files: IFile[] = [
-  { fileName: 'My Employees', id: '324423', updloadedAt: new Date(1688053273136), usersCount: 13 },
-]
 
-export const Sidebar = () => {
+interface IProps {
+  files: IFile[];
+}
+
+export const Sidebar = ({ files }: IProps) => {
+  const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
+
+  useEffect(() => {
+    if (!selectedFile && files.length > 0) {
+      setSelectedFile(files[0])
+    }
+  }, [selectedFile])
+
   return (
     <div className='h-full shadow w-[28vw] pt-4 px-4 '>
       <div className='p-2 space-y-4'>
@@ -15,12 +26,17 @@ export const Sidebar = () => {
         </h2>
         <div className='flex flex-col gap-5'>
           {
-            new Array(9).fill(files[0]).map((file, index) => (
-              <div key={index} className='flex gap-2 hover:bg-gray-100 cursor-pointer'>
-                <DocumentTextIcon width={40} className='text-gray-500' />
-                <div>
-                  <p className='text-base'>{file.fileName}</p>
-                  <p className='text-gray-500 text-sm'><span>{file.updloadedAt.toLocaleDateString()}</span><span className='px-1'>.</span> <span>{file.usersCount} people</span></p>
+            files.map((file, index) => (
+              <div
+                role='button'
+                onClick={() => setSelectedFile(file)}
+                key={index} className={`flex gap-2 hover:bg-gray-100 items-start ${selectedFile?._id === file._id && "bg-gray-100"}`}>
+                <DocumentTextIcon width={40} className='text-gray-500 shrink-0' />
+                <div className=''>
+                  <p className='text-base'>{file.filename}</p>
+                  <p className='text-gray-500 text-xs md:text-sm'><span>uploaded at : {new Date(file.createdAt).toLocaleString()}</span>
+                    {/* <span className='px-1'>.</span> <span>12 people</span> */}
+                  </p>
                 </div>
               </div>
             ))
