@@ -1,13 +1,16 @@
 import express = require("express");
+import multer = require("multer");
+const upload = multer({ dest: 'uploads/' });
+
 import {
     deleteFile, uploadFile, getFiles, getFile
 } from "./filesController";
 const router = express.Router();
 
 
-router.post("/upload", uploadFile);
-router.get("/get-files", getFiles);
-router.get("/get-file/:id", getFile);
-router.delete("/delete-file/:id", deleteFile);
+router.get("/", getFiles);
+router.post("/upload", upload.single('file'), uploadFile);
+router.get("/:id", getFile);
+router.delete("/:id", deleteFile);
 
 export default router;

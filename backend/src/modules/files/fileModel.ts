@@ -5,18 +5,6 @@ const File = new mongoose.Schema({
         type: String,
         required: true,
     },
-    contentType: {
-        type: String,
-        required: true,
-    },
-    data: {
-        type: Buffer,
-        required: true,
-    },
-    // uploadedBy: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "User",
-    // }
 }, {
     timestamps: true
 });
