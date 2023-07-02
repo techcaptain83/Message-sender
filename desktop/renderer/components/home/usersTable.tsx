@@ -3,25 +3,55 @@ import Pagination from "../pagination"
 import { selectedFileState } from "@/atoms";
 import { useRecoilValue } from "recoil";
 import useFiles from "@/hooks/useFiles";
-import { useEffect } from "react";
-
+import { useEffect, useState } from "react";
+import axios from "axios.config";
+import { getDecodedFileData, getUsersFromFileContent } from "@/utils/files";
+import UserCard from "./userCard";
 const people: IUser[] = [
-  { id: '234D', address: 'Tokyo - Japan', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
+  { id: '234D', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
 ]
 
 
 export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
-  const { getFileData, gettingFileData } = useFiles();
+  // const { getFileData, gettingFileData } = useFiles();
+  const [gettingFileData, setGettingFileData] = useState(false);
+  const [users, setUsers] = useState<IUser[]>([]);
+
+  const getFileData = async (fileId: string) => {
+    setGettingFileData(true);
+    try {
+      let fileContents: string = "";
+      const { data } = await axios.get(`/files/${fileId}`);
+      if (data.file) {
+        const decodedData = getDecodedFileData(data.file.data);
+        const fileReader = new FileReader();
+        fileReader.onload = async (event) => {
+          fileContents = event.target.result as string;
+          const users = await getUsersFromFileContent(fileContents);
+          setUsers(users);
+        };
+        fileReader.readAsText(decodedData);
+      }
+    } catch (error) {
+      console.log("error occured while fetching from backend : ")
+      console.log(error);
+    } finally {
+      setGettingFileData(false)
+    }
+  }
 
   useEffect(() => {
-    console.log("selected file has changed")
-    getFileData(selectedFile?._id);
+    const getFileContent = async () => {
+      const fileContent = await getFileData(selectedFile?._id);
+      console.log(fileContent)
+    }
+    getFileContent();
   }, [selectedFile]);
 
   return (
     <div className="">
-      <div className=" px-4 sm:px-6 lg:px-8 py-3 max-h-[75vh] overflow-y-auto">
+      <div className=" px-4 sm:px-6 lg:px-8 py-3 h-[64vh] overflow-y-auto">
         <div className="sm:flex sm:items-center">
           <div className="sm:flex-auto">
             <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
@@ -48,10 +78,10 @@ export default function UsersTable() {
                       ID
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      FirstName
+                      First Name
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      LastName
+                      Last Name
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       Display Name
@@ -65,22 +95,8 @@ export default function UsersTable() {
                   </tr>
                 </thead>
                 <tbody className="bg-white">
-                  {new Array(20).fill(people[0]).map((person: IUser, index) => (
-                    <tr key={index} className="even:bg-gray-50">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 flex items-center gap-4 ">
-                        <div className="flex items-center ">
-                          <input id="default-checkbox" type="checkbox" value="" className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                        </div>
-                        <span>
-                          #{person.id}
-                        </span>
-                      </td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.firstName}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.lastName}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.displayName}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium pl-6">{person.countryCode}</td>
-                      <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{person.phoneNumber}</td>
-                    </tr>
+                  {users.map((person: IUser) => (
+                    <UserCard key={person.id} {...person} />
                   ))}
                 </tbody>
               </table>

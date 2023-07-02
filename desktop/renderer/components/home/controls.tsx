@@ -1,4 +1,4 @@
-import { showDeleteFileState } from "@/atoms";
+import { showDeleteFileState, showUploadFileState } from "@/atoms";
 import axios from "../../../axios.config";
 import { ChangeEvent, useState } from 'react'
 import { AiFillDelete, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
@@ -10,30 +10,9 @@ import { useRecoilState } from "recoil";
 
 export default function Controls() {
     const [selectedFile, setSelectedFile] = useState(null);
-    const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
+    const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
+    const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
 
-    const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files[0];
-        setSelectedFile(file);
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        axios.post('/files/upload', formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-            .then(response => {
-                console.log('File uploaded successfully:', response.data);
-                // Perform any additional actions after successful file upload
-            })
-            .catch(error => {
-                console.error('Error uploading file:', error);
-                // Handle any error that occurred during file upload
-            });
-
-    };
 
     return (
         <div className="flex flex-row items-center py-2 lg:py-4 justify-between lg:text-sm text-[9px]">
@@ -57,19 +36,12 @@ export default function Controls() {
             </div>
             <div className="flex flex-row gap-4 items-center">
                 <label htmlFor="fileInput" className="relative w-full h-full">
-                    <button className="control">
+                    <button
+                        onClick={() => setShowUploadFile(true)}
+                        className="control">
                         <MdOutlineUploadFile className='text-green-500' />
                         <p className='font-bold'>Upload List</p>
                     </button>
-                    <input
-                        id="fileInput"
-                        type="file"
-                        // file formats
-                        name="file"
-                        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                        className="absolute cursor-pointer top-0 z-10 left-0 opacity-0 w-full h-full "
-                        onChange={handleFileUpload}
-                    />
                 </label>
             </div>
             <button
