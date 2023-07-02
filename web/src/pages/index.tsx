@@ -17,7 +17,7 @@ export default function Home() {
         <title>Chatmaid - Whatsapp automation made easy for everyone</title>
         <meta
           name="description"
-          content="Most Voip providers  are accurate, but hard to use. We make the opposite trade-off, and hope you don’t get lost."
+          content="Most whatsapp providers  are accurate, but hard to use. We make the opposite trade-off, and hope you don’t get lost."
         />
       </Head>
       <Header />

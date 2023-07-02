@@ -11,19 +11,22 @@ const testimonials = [
   [
     {
       content:
-        'Chatmaid is so easy to use I can’t help but wonder if it’s really doing the things the government expects me to do.',
+        `ChatMaid is a game-changer for event planners like me. 
+        It revolutionizes invitation sending by personalizing each message and creating engaging experiences. 
+        I recommend it to all my customers. Try it and elevate your events to new heights!`,
       author: {
         name: 'Sheryl Berge',
-        role: 'CEO at Lynch LLC',
+        role: 'Event Planner at Lynch LLC',
         image: avatarImage1,
       },
     },
     {
       content:
-        'I’m trying to get a hold of someone in support, I’m in a lot of trouble right now and they are saying it has something to do with my books. Please get back to me right away.',
+        `For me as a  product developer, ChatMaid has transformed product launches by personalizing whatsaap messages, incorporating multimedia, and gathering valuable insights. 
+        I highly recommend it to enhance your communication and drive successful launches!`,
       author: {
         name: 'Amy Hahn',
-        role: 'Director at Velocity Industries',
+        role: 'Product developer at Velocity Industries',
         image: avatarImage4,
       },
     },
@@ -31,19 +34,22 @@ const testimonials = [
   [
     {
       content:
-        'The best part about Chatmaid is every time I pay my employees, my bank balance doesn’t go down like it used to. Looking forward to spending this extra cash when I figure out why my card is being declined.',
+        `ChatMaid is a game-changer for chefs and friends alike. It transforms how I engage with food enthusiasts and communicate with loved ones. 
+        From sharing recipes to planning gatherings, it adds a personalized touch and fosters lasting connections in addition to saving time that allows me to concentrate more on the kitchen.!`,
       author: {
         name: 'Leland Kiehn',
-        role: 'Founder of Kiehn and Sons',
+        role: 'Chef at Kiehn LLC',
         image: avatarImage5,
       },
     },
     {
       content:
-        'There are so many things I had to do with my old software that I just don’t do at all with Chatmaid. Suspicious but I can’t say I don’t love it.',
+        `ChatMaid made my wedding planning a breeze! With one click, I invited all my family and friends, both locally and overseas, in a personalized way. 
+        It's a worthwhile tool, even for a single use, given its convenience and reach."
+        This is the last testimonial to put in the page`,
       author: {
         name: 'Erin Powlowski',
-        role: 'COO at Armstrong Inc',
+        role: 'Independent Wedding Planner',
         image: avatarImage2,
       },
     },
@@ -51,20 +57,20 @@ const testimonials = [
   [
     {
       content:
-        'I used to have to remit tax to the EU and with Chatmaid I somehow don’t have to do that anymore. Nervous to travel there now though.',
+        `ChatMaid has transformed my fundraising efforts. 
+        With personalized messages and interactive conversations, it engages donors and inspires support. 
+        The multimedia integration and streamlined donation process make it a must-have tool for fundraisers.
+        
+        Since incorporating ChatMaid into my fundraising strategy, I’ve witnessed increased donor engagement and overall success. 
+        Donors appreciate the personalized approach and the opportunity to be part of a meaningful conversation.
+        
+        I highly recommend the ChatMaid app to fundraisers looking to enhance their efforts. 
+        It enhances donor engagement, strengthens relationships, and drives positive change. 
+        Embrace ChatMaid and unlock the full potential of your fundraising initiatives!`,
       author: {
         name: 'Peter Renolds',
-        role: 'Founder of West Inc',
+        role: 'Fundrising at Velocity Industries',
         image: avatarImage3,
-      },
-    },
-    {
-      content:
-        'This is the fourth email I’ve sent to your support team. I am literally being held in jail for tax fraud. Please answer your damn emails, this is important.',
-      author: {
-        name: 'Amy Hahn',
-        role: 'Director at Velocity Industries',
-        image: avatarImage4,
       },
     },
   ],
