@@ -1,13 +1,24 @@
 import { IFile, IUser } from "@/types"
 import Pagination from "../pagination"
+import { selectedFileState } from "@/atoms";
+import { useRecoilValue } from "recoil";
+import useFiles from "@/hooks/useFiles";
+import { useEffect } from "react";
 
 const people: IUser[] = [
   { id: '234D', address: 'Tokyo - Japan', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
 ]
 
 
-export default function UsersTable({_id}:IFile) {
-  
+export default function UsersTable() {
+  const selectedFile = useRecoilValue(selectedFileState);
+  const { getFileData, gettingFileData } = useFiles();
+
+  useEffect(() => {
+    
+    selectedFile && getFileData(selectedFile?._id);
+  }, [selectedFile]);
+
   return (
     <div className="">
       <div className=" px-4 sm:px-6 lg:px-8 py-3 max-h-[75vh] overflow-y-auto">

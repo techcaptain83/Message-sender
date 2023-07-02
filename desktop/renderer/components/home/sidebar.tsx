@@ -24,7 +24,7 @@ export const Sidebar = ({ files }: IProps) => {
         <h2 className='text-lg text-gray-600'>
           Recently uploaded files
         </h2>
-        <div className='flex flex-col gap-5'>
+        {files.length > 0 ? <div className='flex flex-col gap-5'>
           {
             files.map((file, index) => (
               <div
@@ -41,7 +41,11 @@ export const Sidebar = ({ files }: IProps) => {
               </div>
             ))
           }
-        </div>
+        </div> :
+          <div className='text-center text-gray-500'>
+            you haven't updloaded any files yet
+          </div>
+        }
       </div>
     </div>
   )

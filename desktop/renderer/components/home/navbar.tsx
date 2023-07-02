@@ -16,7 +16,7 @@ export default function Navbar() {
         }, 2000);
     }
     return (
-        <div className='w-full py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8'>
+        <div className='w-full py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[9vh]'>
             <Logo className="h-10" />
             <div className='flex items-center gap-6 '>
                 <div className='flex gap-3 items-center '>

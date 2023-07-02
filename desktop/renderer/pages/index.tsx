@@ -10,18 +10,12 @@ import Head from 'next/head'
 import useSWR from 'swr'
 import { useEffect } from 'react'
 import { useRecoilValue } from 'recoil'
+import EmptyState from '@/components/EmptyState'
 
 
 export default function Index() {
   const { isFetching, files, error,getFileData } = useFiles();
   const selectedFile = useRecoilValue(selectedFileState);
-
-
-  useEffect(() => {
-    if (selectedFile) {
-      getFileData(selectedFile._id)
-    }
-  }, [selectedFile])
 
   return (
     <>
@@ -30,15 +24,17 @@ export default function Index() {
       </Head>
       <main className='w-full h-screen '>
         <Navbar />
-        <div className='w-full h-full flex justify-between'>
+        <div className='w-full h-[91vh] flex justify-between'>
           <div className='w-full h-full justify-between flex flex-col'>
-            {selectedFile ? <UsersTable {...selectedFile} /> :
-              <div></div>
+            {selectedFile ? <UsersTable /> :
+            <div className='w-full h-full flex items-center justify-center'>
+              <EmptyState title='no file selected' description='please select a file on left side or upload one.'/>
+              </div>
             }
-            <div className='w-full shadow-md  h-[24vh] px-6 bg-gray-50'>
+            {selectedFile && <div className='w-full shadow-md  h-[24vh] px-6 bg-gray-50'>
               <Controls />
               <MesssageInput />
-            </div>
+            </div>}
           </div>
           <Sidebar files={files || []} />
         </div>

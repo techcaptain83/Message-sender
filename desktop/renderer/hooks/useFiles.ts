@@ -1,8 +1,11 @@
+import { getDecodedFileData } from "@/utils/files";
 import axios from "axios.config";
+import { useState } from "react";
 import useSWR from "swr";
 
 
 export default function useFiles() {
+    const [gettingFileData, setGettingFileData] = useState(false);
 
     const { data, error, mutate } = useSWR("/files", async (url) => {
         try {
@@ -18,12 +21,24 @@ export default function useFiles() {
     });
 
     const getFileData = async (fileId: string) => {
+        setGettingFileData(true);
         try {
             const { data } = await axios.get(`/files/${fileId}`);
-            console.log(data);
+            if (data.file) {
+                const decodedData = getDecodedFileData(data.file.data);
+                const fileReader = new FileReader();
+                fileReader.onload = (event) => {
+                    const fileContents = event.target.result;
+                    
+                
+                };
+                fileReader.readAsText(decodedData);
+            }
         } catch (error) {
             console.log("error occured while fetching from backend : ")
             console.log(error);
+        } finally {
+            setGettingFileData(false)
         }
     }
 
@@ -31,7 +46,8 @@ export default function useFiles() {
         files: data,
         isFetching: !error && !data,
         error: error,
-        getFileData
+        getFileData,
+        gettingFileData
     };
 
 }
