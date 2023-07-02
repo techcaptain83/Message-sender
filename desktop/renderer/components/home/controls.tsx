@@ -7,11 +7,13 @@ import { FaFilter } from 'react-icons/fa'
 import { MdOutlineUploadFile } from 'react-icons/md'
 import { TfiLayoutColumn3Alt, TfiMenu } from 'react-icons/tfi'
 import { useRecoilState } from "recoil";
+import useFiles from "@/hooks/useFiles";
+import Loader from "../Loader";
 
 export default function Controls() {
-    const [selectedFile, setSelectedFile] = useState(null);
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+    const { downloadingFile, downloadFile } = useFiles();
 
 
     return (
@@ -29,9 +31,18 @@ export default function Controls() {
                     <TfiMenu />
                     <p className='font-bold'>Density</p>
                 </button>
-                <button className="control">
-                    <BiImport />
-                    <p className='font-bold'>Export</p>
+                <button
+                    onClick={() => downloadFile()}
+                    disabled={downloadingFile}
+                    className="control">
+                    {downloadingFile ?
+                        <Loader />
+                        : <>
+                            <BiImport />
+                            <p className='font-bold'>Export</p>
+                        </>
+
+                    }
                 </button>
             </div>
             <div className="flex flex-row gap-4 items-center">

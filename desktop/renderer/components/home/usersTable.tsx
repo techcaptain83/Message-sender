@@ -1,7 +1,7 @@
 import { IFile, IUser } from "@/types"
 import Pagination from "../pagination"
-import { selectedFileState } from "@/atoms";
-import { useRecoilValue } from "recoil";
+import { selectedFileState, showUploadFileState } from "@/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
 import useFiles from "@/hooks/useFiles";
 import { useEffect, useState } from "react";
 import axios from "axios.config";
@@ -14,8 +14,8 @@ const people: IUser[] = [
 
 export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
-  // const { getFileData, gettingFileData } = useFiles();
   const [gettingFileData, setGettingFileData] = useState(false);
+  const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
   const [users, setUsers] = useState<IUser[]>([]);
 
   const getFileData = async (fileId: string) => {
@@ -61,6 +61,7 @@ export default function UsersTable() {
           </div>
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
+              onClick={() => setShowUploadFile(true)}
               type="button"
               className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
             >

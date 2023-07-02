@@ -1,4 +1,4 @@
-import { showDeleteFileState, showUploadFileState } from "@/atoms";
+import { selectedFileState, showDeleteFileState, showUploadFileState } from "@/atoms";
 import { getDecodedFileData } from "@/utils/files";
 import axios from "axios.config";
 import { ChangeEvent, useState } from "react";
@@ -11,7 +11,8 @@ export default function useFiles() {
     const [gettingFileData, setGettingFileData] = useState(false);
     const [deletingFile, setDeletingFile] = useState(false);
     const [uploadingFile, setUploadingFile] = useState(false);
-    const [_seletedFile, setSelectedFile] = useRecoilState(showDeleteFileState)
+    const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
+    const [downloadingFile, setDownloadingFile] = useState(false);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState)
 
     const { data, error, mutate } = useSWR("/files", async (url) => {
@@ -36,7 +37,7 @@ export default function useFiles() {
                 const decodedData = getDecodedFileData(data.file.data);
                 const fileReader = new FileReader();
                 fileReader.onload = (event) => {
-                    fileContents = event.target.result as string; 
+                    fileContents = event.target.result as string;
                 };
                 fileReader.readAsText(decodedData);
             }
@@ -88,10 +89,42 @@ export default function useFiles() {
             .catch(error => {
                 console.error('Error uploading file:', error);
                 toast.error("Error occured while uploading file! try again later");
-            }).finally(()=>{
+            }).finally(() => {
                 setUploadingFile(false);
             })
     }
+
+    const downloadFile = async () => {
+        try {
+
+            const { data } = await axios.get(`/files/${selectedFile._id}`)
+            if (data.file) {
+                const base64Data = data.file.data;
+                const byteCharacters = atob(base64Data);
+                const byteArrays = [];
+
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteArrays.push(byteCharacters.charCodeAt(i));
+                }
+
+                const fileData = new Uint8Array(byteArrays);
+                const blob = new Blob([fileData], { type: 'text/csv' });
+
+                const anchor = document.createElement('a');
+                anchor.href = URL.createObjectURL(blob);
+                anchor.download = 'users.csv';
+                anchor.click();
+
+                URL.revokeObjectURL(anchor.href);
+                toast.success("File downloaded successfuly!")
+            }
+        } catch (error) {
+            toast.error("Error occured while downloading file! try again later");
+            console.log("error occured while downloading file");
+            console.log(error);
+        }
+    };
+
 
     return {
         files: data,
@@ -102,8 +135,9 @@ export default function useFiles() {
         deleteFile,
         deletingFile,
         uploadingFile,
-        uploadFile
-
+        uploadFile,
+        downloadFile,
+        downloadingFile
     };
 
 }
