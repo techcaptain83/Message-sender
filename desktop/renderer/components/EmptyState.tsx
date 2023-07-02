@@ -24,7 +24,7 @@ export default function EmptyState({ title, description }: IProps) {
                 />
             </svg>
             <h3 className="mt-2 font-semibold text-gray-900 capitalize">{title}</h3>
-            <p className="mt-1  text-gray-500">{description}</p>
+            <p className="mt-1  text-gray-500 capitalize">{description}</p>
             <div className="mt-6">
                 <button
                     type="button"

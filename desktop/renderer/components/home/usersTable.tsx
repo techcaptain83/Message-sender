@@ -15,8 +15,8 @@ export default function UsersTable() {
   const { getFileData, gettingFileData } = useFiles();
 
   useEffect(() => {
-    
-    selectedFile && getFileData(selectedFile?._id);
+    console.log("selected file has changed")
+    getFileData(selectedFile?._id);
   }, [selectedFile]);
 
   return (

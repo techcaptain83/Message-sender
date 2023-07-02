@@ -40,7 +40,7 @@ export default function Login() {
                         <h2 className="text-lg font-semibold text-gray-900">
                             Sign in to your account
                         </h2>
-                        {/* <p className="mt-2 text-sm text-gray-700">
+                        <p className="mt-2 text-sm text-gray-700">
                             Don’t have an account?{' '}
                             <Link
                                 href="/register"
@@ -49,7 +49,7 @@ export default function Login() {
                                 Sign up
                             </Link>{' '}
                             for a free trial.
-                        </p> */}
+                        </p>
                     </div>
                 </div>
                 <form onSubmit={(e) => handleSubmit(e)} className="mt-10 grid grid-cols-1 gap-y-8">
@@ -63,7 +63,7 @@ export default function Login() {
                         autoComplete="email"
                         required
                     />
-                    <TextField
+                    {/* <TextField
                         label="Serial number"
                         id="serialNumber"
                         name="serialNumber"
@@ -71,7 +71,7 @@ export default function Login() {
                         value={formData.serialNumber}
                         onChange={(e) => setFormData({ ...formData, serialNumber: e.target.value })}
                         required
-                    />
+                    /> */}
                     <TextField
                         label="Password"
                         id="password"

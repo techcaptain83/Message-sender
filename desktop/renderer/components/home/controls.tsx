@@ -1,3 +1,4 @@
+import { showDeleteFileState } from "@/atoms";
 import axios from "../../../axios.config";
 import { ChangeEvent, useState } from 'react'
 import { AiFillDelete, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
@@ -5,9 +6,11 @@ import { BiImport } from 'react-icons/bi'
 import { FaFilter } from 'react-icons/fa'
 import { MdOutlineUploadFile } from 'react-icons/md'
 import { TfiLayoutColumn3Alt, TfiMenu } from 'react-icons/tfi'
+import { useRecoilState } from "recoil";
 
 export default function Controls() {
     const [selectedFile, setSelectedFile] = useState(null);
+    const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
 
     const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files[0];
@@ -69,7 +72,9 @@ export default function Controls() {
                     />
                 </label>
             </div>
-            <button className="control hover:bg-red-500 text-red-500">
+            <button
+                onClick={() => setShowDeleteFile(true)}
+                className="control hover:bg-red-500 text-red-500">
                 <AiFillDelete />
                 <p className='font-bold'>Remove List</p>
             </button>
