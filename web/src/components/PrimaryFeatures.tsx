@@ -12,30 +12,32 @@ import screenshotVatReturns from '@/images/screenshots/vat-returns.png'
 
 const features = [
   {
-    title: 'Payroll',
+    title: 'Upload Contact List',
     description:
-      "Keep track of everyone's salaries and whether or not they've been paid. Direct deposit not supported.",
+      'Upload a list of contacts you want to send messages to and easily manage them within the app.',
     image: screenshotPayroll,
   },
   {
-    title: 'Claim expenses',
+    title: 'Send Messages',
     description:
-      "All of your receipts organized into one place, as long as you don't mind typing in the data by hand.",
+      'Effortlessly send messages to multiple recipients with just a few clicks, saving you time and effort.',
     image: screenshotExpenses,
   },
   {
-    title: 'VAT handling',
+    title: 'Lifetime Access',
     description:
-      "We only sell our software to companies who don't deal with VAT at all, so technically we do all the VAT stuff they need.",
+      'Get lifetime access to the app by paying a one-time fee of $79, ensuring you can use the app without any subscription or recurring charges.',
     image: screenshotVatReturns,
   },
   {
-    title: 'Reporting',
+    title: 'Easy-to-Use Interface',
     description:
-      'Easily export your data into an Excel spreadsheet where you can do whatever the hell you want with it.',
+      'Enjoy a user-friendly interface that simplifies the process of managing contacts and sending messages.',
     image: screenshotReporting,
   },
-]
+];
+
+
 
 export function PrimaryFeatures() {
   let [tabOrientation, setTabOrientation] = useState('horizontal')
@@ -72,30 +74,29 @@ export function PrimaryFeatures() {
       <Container className="relative">
         <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
           <h2 className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl">
-            Everything you need to run your books.
+            Everything you need to automate messaging.
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-            Well everything you need if you aren’t that picky about minor
-            details like tax compliance.
+            We help you send multiple whatsapp messages to your customers at once as easy as possible.
           </p>
         </div>
         <Tab.Group
           as="div"
-          className="mt-16 grid grid-cols-1 items-center gap-y-2 pt-10 sm:gap-y-6 md:mt-20 lg:grid-cols-12 lg:pt-0"
+          className="mt-16 grid grid-cols-1  items-center gap-y-2 pt-10 sm:gap-y-6 md:mt-20  lg:pt-0"
           vertical={tabOrientation === 'vertical'}
         >
           {({ selectedIndex }) => (
             <>
               <div className="-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5">
-                <Tab.List className="relative z-10 flex gap-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:gap-x-0 lg:gap-y-1 lg:whitespace-normal">
+                <Tab.List className="relative w-full grid md:grid-cols-2 grid-cols-1 z-10  gap-6 ">
                   {features.map((feature, featureIndex) => (
                     <div
                       key={feature.title}
                       className={clsx(
-                        'group relative rounded-full px-4 py-1 lg:rounded-l-xl lg:rounded-r-none lg:p-6',
+                        'group relative rounded-md px-4 py-1 lg:rounded-xl  lg:p-6',
                         selectedIndex === featureIndex
-                          ? 'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10'
-                          : 'hover:bg-white/10 lg:hover:bg-white/5'
+                          ? 'bg-white/10 ring-1 ring-inset ring-white/10'
+                          : 'hover:bg-white/5'
                       )}
                     >
                       <h3>
@@ -103,8 +104,8 @@ export function PrimaryFeatures() {
                           className={clsx(
                             'font-display text-lg [&:not(:focus-visible)]:focus:outline-none',
                             selectedIndex === featureIndex
-                              ? 'text-blue-600 lg:text-white'
-                              : 'text-blue-100 hover:text-white lg:text-white'
+                              ? 'text-white'
+                              : 'hover:text-white text-white'
                           )}
                         >
                           <span className="absolute inset-0 rounded-full lg:rounded-l-xl lg:rounded-r-none" />
@@ -113,7 +114,7 @@ export function PrimaryFeatures() {
                       </h3>
                       <p
                         className={clsx(
-                          'mt-2 hidden text-sm lg:block',
+                          'mt-2 text-sm block',
                           selectedIndex === featureIndex
                             ? 'text-white'
                             : 'text-blue-100 group-hover:text-white'
@@ -125,7 +126,7 @@ export function PrimaryFeatures() {
                   ))}
                 </Tab.List>
               </div>
-              <Tab.Panels className="lg:col-span-7">
+              {/* <Tab.Panels className="lg:col-span-7">
                 {features.map((feature) => (
                   <Tab.Panel key={feature.title} unmount={false}>
                     <div className="relative sm:px-6 lg:hidden">
@@ -145,7 +146,7 @@ export function PrimaryFeatures() {
                     </div>
                   </Tab.Panel>
                 ))}
-              </Tab.Panels>
+              </Tab.Panels> */}
             </>
           )}
         </Tab.Group>

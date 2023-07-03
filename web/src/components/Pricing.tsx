@@ -166,13 +166,13 @@ export function Pricing() {
             description="One time payment for lifetime access."
             href="/register"
             features={[
-              'Send 25 quotes and invoices',
-              'Connect up to 5 bank accounts',
-              'Track up to 50 expenses per month',
-              'Automated payroll support',
-              'Export up to 12 reports',
-              'Bulk reconcile transactions',
-              'Track in multiple currencies',
+              'Send messages to multiple recipients',
+              'Upload and manage contact lists',
+              'Lifetime access to the messaging app',
+              'Effortless message scheduling',
+              'Advanced message customization options',
+              'Real-time message delivery tracking',
+              'Intuitive user interface',
             ]}
           />
         </div>

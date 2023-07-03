@@ -7,8 +7,8 @@ import { Header } from '@/components/Header'
 import { Hero } from '@/components/Hero'
 import { Pricing } from '@/components/Pricing'
 import { PrimaryFeatures } from '@/components/PrimaryFeatures'
-import { SecondaryFeatures } from '@/components/SecondaryFeatures'
 import { Testimonials } from '@/components/Testimonials'
+import { TermsAndConditions } from '@/components/TermsAndConditions'
 
 export default function Home() {
   return (
@@ -24,11 +24,12 @@ export default function Home() {
       <main>
         <Hero />
         <PrimaryFeatures />
-        <SecondaryFeatures />
-        <CallToAction />
+        {/* <SecondaryFeatures /> */}
         <Testimonials />
+        <CallToAction />
+        {/* <Faqs /> */}
+        <TermsAndConditions />
         <Pricing />
-        <Faqs />
       </main>
       <Footer />
     </>
