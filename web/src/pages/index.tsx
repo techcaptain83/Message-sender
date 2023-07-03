@@ -27,8 +27,8 @@ export default function Home() {
         <Testimonials />
         <CallToAction />
         {/* <Faqs /> */}
-        <TermsAndConditions />
         <Pricing />
+        <TermsAndConditions />
       </main>
       <Footer />
     </>
