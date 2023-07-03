@@ -24,11 +24,10 @@ export function CallToAction() {
             Get started today
           </h2>
           <p className="mt-4 text-lg tracking-tight text-white">
-            It’s time to take automate messaging. Buy our software so you can
-            feel like you’re doing something productive.
+            Empower yourself with Chatmaid enabling you to feel productive while your personal messaging &quot;maid&quot; handles the chatting for you. Invest today and unlock a new level of efficiency and convenience in your communication.
           </p>
           <Button href="/register" color="white" className="mt-10">
-            Get 15 days free trial
+            Get 7 days free trial
           </Button>
         </div>
       </Container>

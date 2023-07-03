@@ -46,7 +46,7 @@ function CheckIcon({ className }) {
   )
 }
 
-function Plan({ name, price, description, href, features, featured = false }) {
+function Plan({ name, price, description, href, featured = false }) {
   return (
     <section
       className={clsx(
@@ -66,20 +66,6 @@ function Plan({ name, price, description, href, features, featured = false }) {
       <p className="order-first font-display text-5xl font-light tracking-tight text-white">
         {price}
       </p>
-      <ul
-        role="list"
-        className={clsx(
-          'order-last mt-10 gap-4 flex-col gap-y-3 grid grid-cols-1 sm:grid-cols-2 text-sm',
-          featured ? 'text-white' : 'text-slate-200'
-        )}
-      >
-        {features.map((feature) => (
-          <li key={feature} className="flex">
-            <CheckIcon className={featured ? 'text-white' : 'text-slate-400'} />
-            <span className="ml-4">{feature}</span>
-          </li>
-        ))}
-      </ul>
       <Button
         href={href}
         variant={featured ? 'solid' : 'outline'}
@@ -114,50 +100,6 @@ export function Pricing() {
             work well for you.
           </p>
         </div>
-        {/* <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
-          <Plan
-            name="Starter"
-            price="$9"
-            description="Good for anyone who is self-employed and just getting started."
-            href="/register"
-            features={[
-              'Send 10 quotes and invoices',
-              'Connect up to 2 bank accounts',
-              'Track up to 15 expenses per month',
-              'Manual payroll support',
-              'Export up to 3 reports',
-            ]}
-          />
-          <Plan
-            featured
-            name="Small business"
-            price="$15"
-            description="Perfect for small / medium sized businesses."
-            href="/register"
-            features={[
-              'Send 25 quotes and invoices',
-              'Connect up to 5 bank accounts',
-              'Track up to 50 expenses per month',
-              'Automated payroll support',
-              'Export up to 12 reports',
-              'Bulk reconcile transactions',
-              'Track in multiple currencies',
-            ]}
-          />
-          <Plan
-            name="Enterprise"
-            price="$39"
-            description="For even the biggest enterprise companies."
-            href="/register"
-            features={[
-              'Send unlimited quotes and invoices',
-              'Connect up to 15 bank accounts',
-              'Track up to 200 expenses per month',
-              'Automated payroll support',
-              'Export up to 25 reports, including TPS',
-            ]}
-          />
-        </div> */}
         <div className='w-full flex items-center justify-center pt-4'>
           <Plan
             featured
@@ -165,15 +107,6 @@ export function Pricing() {
             price="$79.99"
             description="One time payment for lifetime access."
             href="/register"
-            features={[
-              'Send messages to multiple recipients',
-              'Upload and manage contact lists',
-              'Lifetime access to the messaging app',
-              'Effortless message scheduling',
-              'Advanced message customization options',
-              'Real-time message delivery tracking',
-              'Intuitive user interface',
-            ]}
           />
         </div>
       </Container>

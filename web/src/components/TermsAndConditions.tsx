@@ -54,17 +54,13 @@ export function TermsAndConditions() {
                 <div className="mx-auto max-w-2xl lg:mx-0 ">
                     <h2
                         id="faq-title"
-                        className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl"
+                        className="font-display text-2xl tracking-tight text-slate-900 sm:text-3xl"
                     >
                         Terms and Conditions
                     </h2>
-                    <p className="mt-4 text-lg tracking-tight text-slate-700">
-                        If you can’t find what you’re looking for, email our support team
-                        and if you’re lucky someone will get back to you.
-                    </p>
                 </div>
 
-                <div className=" mt-8">
+                <div className=" mt-8 text-sm">
                     {termsAndConditionsContent.map((section, index) => (
                         <div key={index} className="mb-4 space-y-2">
                             <h2 className="font-bold">{section.title}</h2>

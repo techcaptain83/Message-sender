@@ -1,13 +1,11 @@
 import { showDeleteFileState, showUploadFileState } from "@/atoms";
-import axios from "../../../axios.config";
-import { ChangeEvent, useState } from 'react'
-import { AiFillDelete, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
-import { BiImport } from 'react-icons/bi'
-import { FaFilter } from 'react-icons/fa'
-import { MdOutlineUploadFile } from 'react-icons/md'
-import { TfiLayoutColumn3Alt, TfiMenu } from 'react-icons/tfi'
-import { useRecoilState } from "recoil";
 import useFiles from "@/hooks/useFiles";
+import { AiFillDelete } from 'react-icons/ai';
+import { BiImport } from 'react-icons/bi';
+import { FaFilter } from 'react-icons/fa';
+import { MdOutlineUploadFile } from 'react-icons/md';
+import { TfiLayoutColumn3Alt, TfiMenu } from 'react-icons/tfi';
+import { useRecoilState } from "recoil";
 import Loader from "../Loader";
 
 export default function Controls() {

@@ -34,8 +34,7 @@ const testimonials = [
   [
     {
       content:
-        `ChatMaid is a game-changer for chefs and friends alike. It transforms how I engage with food enthusiasts and communicate with loved ones. 
-        From sharing recipes to planning gatherings, it adds a personalized touch and fosters lasting connections in addition to saving time that allows me to concentrate more on the kitchen.!`,
+        `ChatMaid has been a must for chefs and friends alike. It improved how I engage with food enthusiasts and communicate with loved ones. From sharing recipes to planning gatherings, it adds a personalized touch and fosters lasting connections in addition to saving time that allows me to concentrate more on the kitchen.!`,
       author: {
         name: 'Leland Kiehn',
         role: 'Chef at Kiehn LLC',
@@ -44,9 +43,7 @@ const testimonials = [
     },
     {
       content:
-        `ChatMaid made my wedding planning a breeze! With one click, I invited all my family and friends, both locally and overseas, in a personalized way. 
-        It's a worthwhile tool, even for a single use, given its convenience and reach."
-        This is the last testimonial to put in the page`,
+        `ChatMaid made my wedding planning a breeze! With one click, I invited all my family and friends, both locally and overseas, in a personalized way. It's a worthwhile tool, even for a single use, given its convenience and reach.`,
       author: {
         name: 'Erin Powlowski',
         role: 'Independent Wedding Planner',
@@ -94,12 +91,10 @@ export function Testimonials() {
       <Container>
         <div className="mx-auto max-w-2xl md:text-center">
           <h2 className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
-            Loved by businesses worldwide.
+            Loved by people worldwide.
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
-            Our software is so simple that people can’t help but fall in love
-            with it. Simplicity is easy when you just skip tons of
-            mission-critical features.
+            Our software&apos;s simplicity is irresistible, captivating users with its intuitive design. By omitting non-essential features, we have streamlined the experience, making it effortless to navigate and love.
           </p>
         </div>
         <ul

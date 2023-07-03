@@ -77,7 +77,7 @@ export function PrimaryFeatures() {
             Everything you need to automate messaging.
           </h2>
           <p className="mt-6 text-lg tracking-tight text-blue-100">
-            We help you send multiple whatsapp messages to your customers at once as easy as possible.
+            Chatmaid is a powerful and user-friendly Whatsapp Messaging application that enables users to send personalized messages to their contact lists effortlessly. With its simple interface and robust features, Chatmaid offers a convenient solution for efficient and effective communication.
           </p>
         </div>
         <Tab.Group
