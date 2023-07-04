@@ -95,10 +95,10 @@ export function Pricing() {
             </span>{' '}
             for everyone.
           </h2>
-          <p className="mt-4 text-lg text-slate-400">
+          {/* <p className="mt-4 text-lg text-slate-400">
             It doesn&apos;t matter what size your business is, our software won&apos;t
             work well for you.
-          </p>
+          </p> */}
         </div>
         <div className='w-full flex items-center justify-center pt-4'>
           <Plan

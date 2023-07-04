@@ -12,6 +12,7 @@ export default function useFiles() {
     const [deletingFile, setDeletingFile] = useState(false);
     const [uploadingFile, setUploadingFile] = useState(false);
     const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
+    const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState)
     const [downloadingFile, setDownloadingFile] = useState(false);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState)
 
@@ -57,6 +58,7 @@ export default function useFiles() {
             if (data.success) {
                 toast.success("File deleted successfuly!");
                 setSelectedFile(null);
+                setShowDeleteFile(false);
                 mutate();
             }
         } catch (error) {
@@ -97,7 +99,7 @@ export default function useFiles() {
     const downloadFile = async () => {
         try {
 
-            const { data } = await axios.get(`/files/${selectedFile._id}`)
+            const { data } = await axios.get(`/files/${selectedFile?._id}`)
             if (data.file) {
                 const base64Data = data.file.data;
                 const byteCharacters = atob(base64Data);

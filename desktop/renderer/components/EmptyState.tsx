@@ -1,4 +1,6 @@
+import { showUploadFileState } from '@/atoms';
 import { PlusIcon } from '@heroicons/react/20/solid'
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 
 interface IProps {
@@ -6,6 +8,7 @@ interface IProps {
     description: string;
 }
 export default function EmptyState({ title, description }: IProps) {
+    const [showUploadFile,setShowUploadFile]=useRecoilState(showUploadFileState);
     return (
         <div className="text-center ">
             <svg
@@ -27,6 +30,7 @@ export default function EmptyState({ title, description }: IProps) {
             <p className="mt-1  text-gray-500 capitalize">{description}</p>
             <div className="mt-6">
                 <button
+                onClick={()=>setShowUploadFile(true)}
                     type="button"
                     className="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                 >

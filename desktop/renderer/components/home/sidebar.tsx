@@ -33,8 +33,8 @@ export const Sidebar = ({ files }: IProps) => {
                 key={index} className={`flex gap-2 hover:bg-gray-100 items-start ${selectedFile?._id === file._id && "bg-gray-100"}`}>
                 <DocumentTextIcon width={40} className='text-gray-500 shrink-0' />
                 <div className=''>
-                  <p className='text-base'>{file.filename}</p>
-                  <p className='text-gray-500 text-xs md:text-sm'><span>uploaded at : {new Date(file.createdAt).toLocaleString()}</span>
+                  <p className='text-base'>{file?.filename}</p>
+                  <p className='text-gray-500 text-xs md:text-sm'><span>uploaded at : {new Date(file?.createdAt).toLocaleString()}</span>
                     {/* <span className='px-1'>.</span> <span>12 people</span> */}
                   </p>
                 </div>

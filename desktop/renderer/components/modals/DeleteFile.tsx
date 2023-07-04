@@ -33,7 +33,7 @@ export default function DeleteFile() {
           </Dialog.Title>
           <div className="mt-2">
             <p className="text-sm text-gray-500">
-              Are you sure you want to delete file  {selectedFile.filename}? All of its data will be permanently removed
+              Are you sure you want to delete file  {selectedFile?.filename}? All of its data will be permanently removed
               from our servers forever. This action cannot be undone.
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function DeleteFile() {
           type="button"
           disabled={deletingFile}
           className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-          onClick={() => deleteFile(selectedFile._id)}
+          onClick={() => deleteFile(selectedFile?._id)}
         >
           {deletingFile ? (
             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" />) :
