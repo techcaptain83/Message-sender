@@ -27,7 +27,7 @@ const testimonials = [
       author: {
         name: 'Amy Hahn',
         role: 'Product developer at Velocity Industries',
-        image: avatarImage4,
+        image: avatarImage2,
       },
     },
   ],
@@ -38,7 +38,7 @@ const testimonials = [
       author: {
         name: 'Leland Kiehn',
         role: 'Chef at Kiehn LLC',
-        image: avatarImage5,
+        image: avatarImage3,
       },
     },
     {
@@ -47,7 +47,7 @@ const testimonials = [
       author: {
         name: 'Erin Powlowski',
         role: 'Independent Wedding Planner',
-        image: avatarImage2,
+        image: avatarImage4,
       },
     },
   ],
@@ -67,7 +67,7 @@ const testimonials = [
       author: {
         name: 'Peter Renolds',
         role: 'Fundrising at Velocity Industries',
-        image: avatarImage3,
+        image: avatarImage5,
       },
     },
   ],
@@ -114,14 +114,14 @@ export function Testimonials() {
                         </p>
                       </blockquote>
                       <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
-                        <div>
+                        {/* <div>
                           <div className="font-display text-base text-slate-900">
                             {testimonial.author.name}
                           </div>
                           <div className="mt-1 text-sm text-slate-500">
                             {testimonial.author.role}
                           </div>
-                        </div>
+                        </div> */}
                         <div className="overflow-hidden rounded-full bg-slate-50">
                           <Image
                             className="h-14 w-14 object-cover"
