@@ -10,7 +10,7 @@ import axios from '../../axios.config';
 interface IAuth {
     initialLoading: boolean
     user: IAuthUser | null
-    signIn: (email: string, serialNumber: string) => Promise<void>
+    signIn: (email: string, serialNumber: number) => Promise<void>
     logout: () => Promise<void>
     loading: boolean
     reloadProfile: () => Promise<void>
@@ -87,7 +87,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
     // login
-    const signIn = async (email: string, serialNumber: string) => {
+    const signIn = async (email: string, serialNumber: number) => {
         setLoading(true);
         await axios.post('/auth/login', {
             email, serialNumber
@@ -106,7 +106,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 default:
                     break;
             }
-        })
+        });
         setLoading(false);
     }
 

@@ -1,30 +1,26 @@
 import Head from 'next/head'
 import Link from 'next/link'
-
 import { Button } from '@/components/Button'
 import { TextField } from '@/components/Fields'
+import Loader from '@/components/Loader'
+import { AuthLayout } from '@/components/layouts/AuthLayout'
+import Logo from '@/components/logo'
+import useAuth from '@/hooks/useAuth'
 import { useRouter } from 'next/router'
 import { FormEvent, useState } from 'react'
-import Logo from '@/components/logo'
-import { AuthLayout } from '@/components/layouts/AuthLayout'
-import Loader from '@/components/Loader'
 
 export default function Login() {
-    const [loading, setLoading] = useState(false);
+    const { loading, signIn } = useAuth();
 
-    const router = useRouter();
     const [formData, setFormData] = useState({
         email: "",
-        serialNumber: ''
+        serialNumber: 0
     });
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
-        setTimeout(() => {
-            setLoading(false);
-            router.push('/')
-        }, 2000)
+        signIn(formData.email, formData.serialNumber)
     }
+    
     return (
         <>
             <Head>
@@ -68,9 +64,9 @@ export default function Login() {
                         label="Serial number"
                         id="serialNumber"
                         name="serialNumber"
-                        type="text"
+                        type="number"
                         value={formData.serialNumber}
-                        onChange={(e) => setFormData({ ...formData, serialNumber: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, serialNumber: parseInt(e.target.value) })}
                         required
                     />
                     <div>
