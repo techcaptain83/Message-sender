@@ -5,6 +5,8 @@ import '../styles/globals.css';
 import { Inter } from "next/font/google"
 import { RecoilRoot } from 'recoil';
 import { Toaster } from 'react-hot-toast';
+import { AuthProvider } from '@/hooks/useAuth';
+import MainLayout from '@/components/layouts/MainLayout';
 
 const inter = Inter({
   subsets: ["latin"]
@@ -12,10 +14,14 @@ const inter = Inter({
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>
-      <Toaster />
-      <div className={inter.className}>
-        <Component {...pageProps} />
-      </div>
+      <AuthProvider>
+        <MainLayout>
+          <Toaster />
+          <div className={inter.className}>
+            <Component {...pageProps} />
+          </div>
+        </MainLayout>
+      </AuthProvider>
     </RecoilRoot>
   )
 }

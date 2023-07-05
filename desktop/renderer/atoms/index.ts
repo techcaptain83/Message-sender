@@ -15,4 +15,4 @@ export const showUploadFileState=atom<boolean>({
 export const showDeleteFileState=atom<boolean>({
     key:"showDeleteFileState",
     default:false
-})
+});

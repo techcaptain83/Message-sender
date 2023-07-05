@@ -15,7 +15,6 @@ export default function Login() {
     const router = useRouter();
     const [formData, setFormData] = useState({
         email: "",
-        password: "",
         serialNumber: ''
     });
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -36,21 +35,23 @@ export default function Login() {
                     <Link href="/" aria-label="Home">
                         <Logo className="h-10 w-auto" />
                     </Link>
-                    {/* <div className="mt-20">
+                    <div className="mt-8">
                         <h2 className="text-lg font-semibold text-gray-900">
                             Sign in to your account
                         </h2>
                         <p className="mt-2 text-sm text-gray-700">
                             Don’t have an account?{' '}
                             <Link
-                                href="/register"
+                                rel='noreferrer'
+                                target='_blank'
+                                href="https://watsapp-messenger.vercel.app/register"
                                 className="font-medium text-blue-600 hover:underline"
                             >
                                 Sign up
                             </Link>{' '}
                             for a free trial.
                         </p>
-                    </div> */}
+                    </div>
                 </div>
                 <form onSubmit={(e) => handleSubmit(e)} className="mt-10 grid grid-cols-1 gap-y-8">
                     <TextField
@@ -70,16 +71,6 @@ export default function Login() {
                         type="text"
                         value={formData.serialNumber}
                         onChange={(e) => setFormData({ ...formData, serialNumber: e.target.value })}
-                        required
-                    />
-                    <TextField
-                        label="Password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                        type="password"
-                        autoComplete="current-password"
                         required
                     />
                     <div>
