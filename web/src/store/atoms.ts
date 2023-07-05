@@ -29,4 +29,14 @@ export const accountToDeleteAtom = atom({
 export const showClearHistoryAtom = atom({
     key: "showClearHistory",
     default: false
-})
+});
+
+export const showSuccessfulSignupAtom = atom({
+    key: "showSuccessfulSignup",
+    default: false
+});
+
+export const serialNumberAtom = atom({
+    key: "serialNumber",
+    default: ""
+});

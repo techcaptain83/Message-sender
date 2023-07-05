@@ -10,18 +10,28 @@ import axios from "axios";
 import Loader from '@/components/Loader'
 import { useRouter } from 'next/router'
 import { countries } from '@/store/countries'
+import axiosInstance from '@/axios.config'
+import { useRecoilState, useRecoilValue } from 'recoil'
+import { serialNumberAtom, showSuccessfulSignupAtom } from '@/store/atoms'
+import { toast } from 'react-hot-toast'
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [_, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
+  const [_sn, setSerialNumber] = useRecoilState(serialNumberAtom);
 
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    country: '',
+    referredBy: ''
+  })
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    console.log("called")
-    e.preventDefault();
-    setLoading(true);
+  const createStripePayment = async () => {
     try {
       const stripe = await stripePromise;
       const { data } = await axios.post('/api/create-stripe-checkout-session', {
@@ -35,7 +45,25 @@ export default function Register() {
     } catch (error) {
       // console.log(error);
     }
-    finally {
+  }
+
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { data } = await axiosInstance.post('/auth/signup', formData);
+      if (data.message === "success") {
+        setSerialNumber(data.user.serialNumber);
+        setShowSuccess(true);
+      } else {
+        toast.error(data.message);
+      }
+
+    } catch (error: any) {
+      toast.error(error.response.data.message || "Something went wrong");
+    } finally {
       setLoading(false);
     }
   };
@@ -61,6 +89,8 @@ export default function Register() {
             id="first_name"
             name="first_name"
             type="text"
+            value={formData.firstName}
+            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
             autoComplete="given-name"
             required
           />
@@ -69,8 +99,10 @@ export default function Register() {
             id="last_name"
             name="last_name"
             type="text"
+            value={formData.lastName}
             autoComplete="family-name"
             required
+            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
           />
           <TextField
             className="col-span-full"
@@ -78,12 +110,15 @@ export default function Register() {
             id="email"
             name="email"
             type="email"
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             autoComplete="email"
             required
           />
           <SelectField
             className="col-span-full"
             label="Country"
+            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
             id="referral_source"
             name="referral_source"
           >
@@ -112,7 +147,7 @@ export default function Register() {
             >
               {loading ? <Loader /> :
                 <span>
-                  Get Serial number <span aria-hidden="true">&rarr;</span>
+                  continue <span aria-hidden="true">&rarr;</span>
                 </span>}
             </Button>
           </div>

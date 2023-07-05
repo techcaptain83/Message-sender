@@ -1,13 +1,12 @@
-import DashboardLayout from '@/components/layouts/DashboardLayout'
-import '@/styles/tailwind.css'
+import MainLayout from '@/components/layouts/MainLayout'
 import '@/styles/nprogress.css'
+import '@/styles/tailwind.css'
 import 'focus-visible'
 import { AppProps } from 'next/app'
-import { useRouter } from 'next/router'
-import { Toaster } from 'react-hot-toast'
-import { RecoilRoot } from 'recoil'
 import Router from 'next/router'
 import NProgress from 'nprogress'
+import { Toaster } from 'react-hot-toast'
+import { RecoilRoot } from 'recoil'
 
 NProgress.configure({
   showSpinner: false,
@@ -19,14 +18,13 @@ Router.events.on('routeChangeComplete', () => NProgress.done());
 Router.events.on('routeChangeError', () => NProgress.done());
 
 export default function App({ Component, pageProps }: AppProps) {
-  const router = useRouter();
 
   return (
     <RecoilRoot>
-      <>
+      <MainLayout>
         <Toaster />
-          <Component {...pageProps} />
-      </>
+        <Component {...pageProps} />
+      </MainLayout>
     </RecoilRoot>
   )
 }
