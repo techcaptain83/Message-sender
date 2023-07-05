@@ -4,10 +4,12 @@ import { Button } from '../Button';
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid';
 import Loader from '../Loader';
 import { useRouter } from 'next/router';
+import useAuth from '@/hooks/useAuth';
 
 export default function Navbar() {
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const { user } = useAuth();
     const logout = () => {
         setLoading(true);
         setTimeout(() => {
@@ -21,11 +23,11 @@ export default function Navbar() {
             <div className='flex items-center gap-6 '>
                 <div className='flex gap-3 items-center '>
                     <div className='w-10 h-10 rounded-full flex items-center bg-blue-500 justify-center font-medium text-white text-sm '>
-                        MC
+                        {user?.firstName[0] + user?.lastName[0]}
                     </div>
                     <div className='text-sm'>
-                        <p>mutesacedric@gmail.com</p>
-                        <p className='uppercae text-gray-600'>ldfls33213Kew23</p>
+                        <p>{user?.email}</p>
+                        <p className='uppercae text-gray-600'>{user?.serialNumber}</p>
                     </div>
                 </div>
                 {<Button variant='solid' color='blue' className='rounded-md space-x-2'>

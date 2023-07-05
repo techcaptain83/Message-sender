@@ -41,17 +41,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [initialLoading, setInitialLoading] = useState(true);
 
     useEffect(() => {
-        // const token = localStorage.getItem(UIDHASH);
-        // if (!token) {
-        //     setUser(null);
-        //     setInitialLoading(false);
-        //     return;
-        // }
+        const user = localStorage.getItem(UIDHASH);
+        if (user) {
+            setUser(JSON.parse(user));
+            router.push("/");
+            setTimeout(() => {
+                setInitialLoading(false);
+            }, 200);
+            return;
+        }
         const checkUser = async () => {
             await axios.get('/auth/me').then((res) => {
                 switch (res.status) {
                     case 200:
                         setUser(res.data.user);
+                        localStorage.setItem(UIDHASH, JSON.stringify(res.data.user));
                         router.push("/");
                         break;
                     default:
@@ -94,7 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }).then(({ data }) => {
             if (data.user) {
                 toast.success("You've been logged in successfully!");
-                // localStorage.setItem(UIDHASH, data.user._id);
+                localStorage.setItem(UIDHASH, JSON.stringify(data.user));
                 setUser(data.user);
                 router.push("/");
             }

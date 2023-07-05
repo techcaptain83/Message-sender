@@ -5,6 +5,7 @@ import { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
+import useAuth from "./useAuth";
 
 
 export default function useFiles() {
@@ -14,9 +15,10 @@ export default function useFiles() {
     const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
     const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState)
     const [downloadingFile, setDownloadingFile] = useState(false);
-    const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState)
+    const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+    const { user } = useAuth();
 
-    const { data, error, mutate } = useSWR("/files", async (url) => {
+    const { data, error, mutate } = useSWR(`/files?user=${user._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);
             // return response.data;
@@ -77,7 +79,7 @@ export default function useFiles() {
         const formData = new FormData();
         formData.append('file', file);
 
-        axios.post('/files/upload', formData, {
+        axios.post(`/files/upload/user=${user._id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
