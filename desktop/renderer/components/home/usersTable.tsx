@@ -1,12 +1,12 @@
-import { IFile, IUser } from "@/types"
-import Pagination from "../pagination"
 import { selectedFileState, showUploadFileState } from "@/atoms";
-import { useRecoilState, useRecoilValue } from "recoil";
-import useFiles from "@/hooks/useFiles";
-import { useEffect, useState } from "react";
+import { IUser } from "@/types";
+import { getDecodedFileData, getUsersFromFileContent, removeDuplicates } from "@/utils/files";
 import axios from "axios.config";
-import { getDecodedFileData, getUsersFromFileContent } from "@/utils/files";
+import { useEffect, useState } from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+import Pagination from "../pagination";
 import UserCard from "./userCard";
+import { toast } from "react-hot-toast";
 const people: IUser[] = [
   { id: '234D', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
 ]
@@ -29,7 +29,11 @@ export default function UsersTable() {
         fileReader.onload = async (event) => {
           fileContents = event.target.result as string;
           const users = await getUsersFromFileContent(fileContents);
-          setUsers(users);
+          const filteredUsers = removeDuplicates(users);
+          if (filteredUsers.length < users.length) {
+            toast.success("Some users were removed because they were duplicates");
+          }
+          setUsers(filteredUsers);
         };
         fileReader.readAsText(decodedData);
       }

@@ -1,4 +1,4 @@
-import { IFile } from "@/types";
+import { IFile, IUser } from "@/types";
 import { atom } from "recoil";
 
 
@@ -7,12 +7,19 @@ export const selectedFileState = atom<IFile>({
     default: null
 });
 
-export const showUploadFileState=atom<boolean>({
-    key:"showUploadFileState",
-    default:false
+export const showUploadFileState = atom<boolean>({
+    key: "showUploadFileState",
+    default: false
 });
 
-export const showDeleteFileState=atom<boolean>({
-    key:"showDeleteFileState",
-    default:false
+export const showDeleteFileState = atom<boolean>({
+    key: "showDeleteFileState",
+    default: false
 });
+
+
+// ids of selected users
+export const selectedUsersState = atom<IUser[]>({
+    key: "selectedUsers",
+    default: []
+})

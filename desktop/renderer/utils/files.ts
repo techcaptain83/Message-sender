@@ -9,7 +9,7 @@ export const getDecodedFileData = (base64Data: string) => {
     }
     const byteArray = new Uint8Array(byteNumbers);
     return new Blob([byteArray]);
-}; 
+};
 
 
 export const getUsersFromFileContent = (fileContent: string): Promise<IUser[]> => {
@@ -45,3 +45,18 @@ export const getUsersFromFileContent = (fileContent: string): Promise<IUser[]> =
         parser.end();
     });
 };
+
+
+export const removeDuplicates = (users: IUser[]): IUser[] => {
+    const uniqueUsers: IUser[] = [];
+    const uniqueUserIds: string[] = [];
+
+    users.forEach((user) => {
+        if (!uniqueUserIds.includes(user.id)) {
+            uniqueUserIds.push(user.id);
+            uniqueUsers.push(user);
+        }
+    });
+
+    return uniqueUsers;
+}

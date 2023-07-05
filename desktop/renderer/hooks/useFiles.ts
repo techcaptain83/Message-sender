@@ -79,7 +79,7 @@ export default function useFiles() {
         const formData = new FormData();
         formData.append('file', file);
 
-        axios.post(`/files/upload/user=${user._id}`, formData, {
+        axios.post(`/files/upload?user=${user._id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
