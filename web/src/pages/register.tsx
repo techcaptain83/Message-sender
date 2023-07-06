@@ -65,14 +65,15 @@ export default function Register() {
         toast.error("Last name must be atleast 3 characters");
         return;
       }
+      console.log(formData);
 
-      const { data } = await axiosInstance.post('/auth/signup', formData);
-      if (data.message === "success") {
-        setSerialNumber(data.user.serialNumber);
-        setShowSuccess(true);
-      } else {
-        toast.error(data.message);
-      }
+      // const { data } = await axiosInstance.post('/auth/signup', formData);
+      // if (data.message === "success") {
+      //   setSerialNumber(data.user.serialNumber);
+      //   setShowSuccess(true);
+      // } else {
+      //   toast.error(data.message);
+      // }
 
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Something went wrong");

@@ -1,6 +1,9 @@
 
 import { Button } from '@/components/Button'
-import { Container } from '@/components/Container'
+import { Container } from '@/components/Container';
+import ApppleLogo from '@/images/logos/apple.png';
+import WindowsLogo from '@/images/logos/windows.svg';
+import Image from 'next/image'
 
 export function Hero() {
   return (
@@ -23,10 +26,15 @@ export function Hero() {
       <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
         The simple, friendly, and powerful solution for personalized Whatsapp messaging.
       </p>
-      <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">download for mac</Button>
-        <Button href="/register">download for windows</Button>
-
+      <div className="mt-10 flex justify-center items-end gap-x-6">
+        <div className='flex items-center flex-col gap-3'>
+          <Image src={ApppleLogo} alt="mac" width={50} height={50} />
+          <Button href="/register">download for mac</Button>
+        </div>
+        <div className='flex items-center flex-col gap-3'>
+          <Image src={WindowsLogo} alt="mac" width={50} height={50} />
+          <Button href="/register">download for windows</Button>
+        </div>
       </div>
     </Container>
   )

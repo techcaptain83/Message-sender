@@ -40,6 +40,7 @@ export default function SuccessfulSignup() {
                     <div className="mt-2">
                         <p className="text-sm text-gray-500">
                             your serial Number is: <span className="font-semibold">{serialNumber}</span>
+                             enjoy your 7 Days free trial.
                         </p>
                     </div>
                 </div>
