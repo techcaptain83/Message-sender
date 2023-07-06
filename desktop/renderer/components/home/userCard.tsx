@@ -17,6 +17,12 @@ const UserCard = ({ id, displayName, firstName, lastName, phoneNumber, countryCo
         }
     }, [checked]);
 
+    useEffect(()=>{
+        if(selectedUsers.find((user)=>user.id===id)){
+            setChecked(true);
+        }
+    },[selectedUsers])
+
     return (
         <tr className="even:bg-gray-50">
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-3 flex items-center gap-4 ">

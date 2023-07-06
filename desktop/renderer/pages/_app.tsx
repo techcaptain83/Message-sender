@@ -2,15 +2,16 @@ import { AppProps } from 'next/app';
 
 import '../styles/globals.css';
 
-import { Inter } from "next/font/google"
+import { Poppins } from "next/font/google"
 import { RecoilRoot } from 'recoil';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from '@/hooks/useAuth';
 import MainLayout from '@/components/layouts/MainLayout';
 
-const inter = Inter({
-  subsets: ["latin"]
-})
+const inter = Poppins({
+  subsets: ["latin"],
+  weight: ['300', '400', '500', '600', '700', '800']
+});
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <RecoilRoot>

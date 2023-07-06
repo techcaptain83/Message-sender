@@ -1,7 +1,7 @@
 import { selectedUsersState } from '@/atoms';
 import { sendMessage } from '@/utils/messaging';
 import { PaperAirplaneIcon } from '@heroicons/react/20/solid';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import 'react-quill/dist/quill.snow.css';
 import { useRecoilValue } from 'recoil';

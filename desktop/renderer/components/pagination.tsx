@@ -1,69 +1,34 @@
-import { ArrowLongLeftIcon, ArrowLongRightIcon } from '@heroicons/react/20/solid'
+import React from 'react'
+import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 
-export default function Pagination() {
+interface IProps {
+  handlePageChange: ({ selected }: {
+    selected: any;
+  }) => void;
+  currentPage: number;
+  totalPages: number;
+}
+const Pagination = ({ currentPage, totalPages, handlePageChange }: IProps) => {
   return (
-    <nav className="flex px-4 sm:px-6 lg:px-8 items-center justify-between px-4 sm:px-0 bg-gray-50">
-      <div className="-mt-px flex w-0 flex-1">
-        <a
-          href="#"
-          className="inline-flex items-center  text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          <ArrowLongLeftIcon className="mr-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-          Previous
-        </a>
+    <div className="w-full flex justify-between md:px-6 xl:px-8 px-4 pt-4 bg-gray-50">
+      <div>
+        <p className="text-sm text-gray-600 font-medium capitalize">Showing {currentPage + 1} out of {totalPages} pages</p>
       </div>
-      <div className="hidden md:-mt-px md:flex">
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          1
-        </a>
-        {/* Current: "border-indigo-500 text-indigo-600", Default: "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300" */}
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-indigo-500 px-4 pt-4 text-sm font-medium text-indigo-600"
-          aria-current="page"
-        >
-          2
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          3
-        </a>
-        <span className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500">
-          ...
-        </span>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          8
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          9
-        </a>
-        <a
-          href="#"
-          className="inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          10
-        </a>
+      <div className="flex space-x-2 text-white">
+        <button
+          disabled={currentPage === 0}
+          onClick={() => handlePageChange({ selected: currentPage - 1 })}
+          className={`bg-blue-500 py-1 px-2 rounded-md shadow ${currentPage === 0 && 'bg-blue-300/80 cursor-not-allowed'}`}>
+          <BsArrowLeft size={20} />
+        </button>
+        <button
+          onClick={() => handlePageChange({ selected: currentPage + 1 })}
+          className={`bg-blue-500 py-1 px-2 rounded-md shadow ${currentPage + 1 === totalPages && 'bg-blue-300/80 cursor-not-allowed'}`}>
+          <BsArrowRight size={20} />
+        </button>
       </div>
-      <div className="-mt-px flex w-0 flex-1 justify-end">
-        <a
-          href="#"
-          className="inline-flex items-center  text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-        >
-          Next
-          <ArrowLongRightIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
-        </a>
-      </div>
-    </nav>
+    </div>
   )
 }
+
+export default Pagination

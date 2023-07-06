@@ -23,3 +23,8 @@ export const selectedUsersState = atom<IUser[]>({
     key: "selectedUsers",
     default: []
 })
+
+export const activeUsersState = atom<IUser[]>({
+    key: "activeUsers",
+    default: []
+})

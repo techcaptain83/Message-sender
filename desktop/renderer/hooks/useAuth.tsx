@@ -119,11 +119,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
         setLoading(true);
         localStorage.removeItem(UIDHASH);
         setUser(null);
-
+        router.push("/login");
         setTimeout(() => {
-            router.push("/login");
             setLoading(false);
-        }, 100)
+        }, 100);
     }
 
 

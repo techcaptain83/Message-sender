@@ -1,12 +1,12 @@
-import { selectedFileState, showUploadFileState } from "@/atoms";
+import { activeUsersState, selectedFileState, showUploadFileState } from "@/atoms";
 import { IUser } from "@/types";
 import { getDecodedFileData, getUsersFromFileContent, removeDuplicates } from "@/utils/files";
 import axios from "axios.config";
 import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Pagination from "../pagination";
 import UserCard from "./userCard";
-import { toast } from "react-hot-toast";
 const people: IUser[] = [
   { id: '234D', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
 ]
@@ -16,7 +16,27 @@ export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+  const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
   const [users, setUsers] = useState<IUser[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [pageUsers, setPageUsers] = useState<IUser[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageStart = currentPage * 8;
+  const pageEnd = pageStart + 8;
+
+  const handlePageChange = ({ selected }) => {
+    if (selected === currentPage) return;
+    if (selected < 0 || selected >= totalPages) return;
+    setCurrentPage(selected);
+  };
+
+  useEffect(() => {
+    if (users.length > 0) {
+      const totalPages = Math.ceil(users.length / 8);
+      setTotalPages(totalPages);
+      setPageUsers(users.slice(pageStart, pageEnd));
+    }
+  }, [users, currentPage]);
 
   const getFileData = async (fileId: string) => {
     setGettingFileData(true);
@@ -34,6 +54,7 @@ export default function UsersTable() {
             toast.success("Some users were removed because they were duplicates");
           }
           setUsers(filteredUsers);
+          setActiveUsers(filteredUsers);
         };
         fileReader.readAsText(decodedData);
       }
@@ -99,8 +120,9 @@ export default function UsersTable() {
                     </th>
                   </tr>
                 </thead>
+
                 <tbody className="bg-white">
-                  {users.map((person: IUser) => (
+                  {pageUsers.map((person: IUser) => (
                     <UserCard key={person.id} {...person} />
                   ))}
                 </tbody>
@@ -109,7 +131,7 @@ export default function UsersTable() {
           </div>
         </div>
       </div>
-      <Pagination />
+      <Pagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} />
     </div>
   )
 }

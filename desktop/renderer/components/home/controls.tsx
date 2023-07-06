@@ -1,25 +1,34 @@
-import { showDeleteFileState, showUploadFileState } from "@/atoms";
+import { activeUsersState, selectedUsersState, showDeleteFileState, showUploadFileState } from "@/atoms";
 import useFiles from "@/hooks/useFiles";
+import { DocumentCheckIcon } from "@heroicons/react/20/solid";
 import { AiFillDelete } from 'react-icons/ai';
 import { BiImport } from 'react-icons/bi';
 import { FaFilter } from 'react-icons/fa';
 import { MdOutlineUploadFile } from 'react-icons/md';
-import { TfiLayoutColumn3Alt, TfiMenu } from 'react-icons/tfi';
-import { useRecoilState } from "recoil";
+import { TfiMenu } from 'react-icons/tfi';
+import { useRecoilState, useRecoilValue } from "recoil";
 import Loader from "../Loader";
+import { useEffect, useState } from "react";
 
 export default function Controls() {
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+    const [allSelected, setAllSelected] = useState(false);
     const { downloadingFile, downloadFile } = useFiles();
-
+    const activeUsers = useRecoilValue(activeUsersState);
+    const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
+    useEffect(() => {
+        if (activeUsers.length === selectedUsers.length) {
+            setAllSelected(true);
+        }
+    }, [activeUsers, selectedUsersState])
 
     return (
-        <div className="flex flex-row items-center py-2 lg:py-4 justify-between lg:text-sm text-[9px]">
+        <div className="flex items-center w-full py-2 lg:py-4 justify-between lg:text-sm text-[9px]">
             <div className="flex flex-row gap-3">
-                <button className="control">
-                    <TfiLayoutColumn3Alt />
-                    <p className='font-bold'>Column</p>
+                <button className="control" onClick={() => setSelectedUsers(activeUsers)} >
+                    <DocumentCheckIcon width={20} />
+                    <p className='font-bold'>Select All</p>
                 </button>
                 <button className="control">
                     <FaFilter />
@@ -39,7 +48,6 @@ export default function Controls() {
                             <BiImport />
                             <p className='font-bold'>Export</p>
                         </>
-
                     }
                 </button>
             </div>
@@ -52,20 +60,13 @@ export default function Controls() {
                         <p className='font-bold'>Upload List</p>
                     </button>
                 </label>
+                <button
+                    onClick={() => setShowDeleteFile(true)}
+                    className="control hover:bg-red-500 text-red-500 shrink-0">
+                    <AiFillDelete />
+                    <p className='font-bold'>Remove List</p>
+                </button>
             </div>
-            <button
-                onClick={() => setShowDeleteFile(true)}
-                className="control hover:bg-red-500 text-red-500">
-                <AiFillDelete />
-                <p className='font-bold'>Remove List</p>
-            </button>
-            <div className=''>
-
-            </div>
-            {/* <div className="flex items-center flex-row font-bold gap-2">
-                    <button><AiOutlineLeft /></button>
-                    <button><AiOutlineRight /></button>
-                d</div> */}
         </div>
     )
 }
