@@ -27,7 +27,7 @@ export default function Register() {
     firstName: '',
     lastName: '',
     email: '',
-    country: '',
+    country: 'United Kingdom',
     referredBy: ''
   })
 
@@ -124,6 +124,7 @@ export default function Register() {
             id="email"
             name="email"
             type="email"
+
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             autoComplete="email"
@@ -134,6 +135,7 @@ export default function Register() {
             label="Country"
             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
             id="country"
+            value={formData.country}
             name="country"
             required
           >
