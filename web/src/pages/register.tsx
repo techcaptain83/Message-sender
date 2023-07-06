@@ -53,6 +53,19 @@ export default function Register() {
     setLoading(true);
 
     try {
+      if (formData.email === formData.referredBy) {
+        toast.error("You cannot refer yourself");
+        return;
+      }
+      if (formData.firstName.length < 3) {
+        toast.error("First name must be atleast 3 characters");
+        return;
+      }
+      if (formData.lastName.length < 3) {
+        toast.error("Last name must be atleast 3 characters");
+        return;
+      }
+
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
         setSerialNumber(data.user.serialNumber);
@@ -62,11 +75,11 @@ export default function Register() {
       }
 
     } catch (error: any) {
-      toast.error(error.response.data.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
-  };
+  }
 
   return (
     <>
@@ -119,8 +132,9 @@ export default function Register() {
             className="col-span-full"
             label="Country"
             onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-            id="referral_source"
-            name="referral_source"
+            id="country"
+            name="country"
+            required
           >
             {
               countries.map((country) => (
@@ -134,8 +148,10 @@ export default function Register() {
             id="referred_by"
             name="referred_by"
             type="email"
-            autoComplete="email"
-            required
+            value={formData.referredBy}
+            onChange={(e) => setFormData({ ...formData, referredBy: e.target.value })}
+          // autoComplete="email"
+          // required
           />
           <div className="col-span-full">
             <Button
