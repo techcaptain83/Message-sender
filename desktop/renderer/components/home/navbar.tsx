@@ -5,9 +5,14 @@ import { Button } from '../Button';
 import Loader from '../Loader';
 import Logo from '../logo';
 import { FaCrown } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
+import { showUpgradeToPremiumState } from '@/atoms';
 
 export default function Navbar() {
     const { user, logout, loading } = useAuth();
+    const [showUpgradeModal, setShowUpgradeModal] = useRecoilState(showUpgradeToPremiumState);
+
+
 
     return (
         <div className='w-full py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[9vh]'>
@@ -30,15 +35,19 @@ export default function Navbar() {
                     </div>
                 </div>
                 {
-                    !user.isPro &&
-                    <Button variant='solid' color='green'
-                        className='rounded-md space-x-2'>
-                        {loading ? <Loader /> : <>
-                            <span>Upgrade to pro</span>
+                    !user.isPro ?
+                        <Button onClick={() => setShowUpgradeModal(true)} variant='solid' color='green'
+                            className='rounded-md space-x-2'>
+                            {<>
+                                <span>Upgrade to premium</span>
+                                <FaCrown width={20} />
+                            </>
+                            }
+                        </Button> :
+                        <div className='bg-blue-500 text-white text-sm p-2 rounded-md flex items-center gap-2' >
+                            <span>Pro</span>
                             <FaCrown width={20} />
-                        </>
-                        }
-                    </Button>
+                        </div>
                 }
                 <Button variant='solid' color='blue'
                     onClick={logout}

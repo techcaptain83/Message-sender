@@ -8,6 +8,7 @@ import { ArrowUpTrayIcon } from '@heroicons/react/20/solid'
 import Head from 'next/head'
 import Link from 'next/link'
 import { FormEvent, useState } from 'react'
+import { toast } from 'react-hot-toast'
 
 export default function Login() {
     const { loading, signIn } = useAuth();
@@ -16,6 +17,7 @@ export default function Login() {
         email: "",
         serialNumber: ""
     });
+    const [hasUploadedSerialNumber, setHasUploadedSerialNumber] = useState(false);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         signIn(formData.email, formData.serialNumber)
@@ -26,7 +28,9 @@ export default function Login() {
         reader.onload = async (e) => {
             const text = (e.target.result as string).trim();
             console.log(text);
-            setFormData({ ...formData, serialNumber: text });    
+            setFormData({ ...formData, serialNumber: text });
+            toast.success("Serial number added successfully");
+            setHasUploadedSerialNumber(true);
         }
         reader.readAsText(file);
     }
@@ -82,7 +86,7 @@ export default function Login() {
                             {/* <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" />) : */}
                             <div className='flex gap-2 items-center  '>
                                 <ArrowUpTrayIcon width={25} />
-                                <span>select file</span>
+                                {hasUploadedSerialNumber ? <span>select another</span> : <span>select file</span>}
                             </div>
                             {/* } */}
                             <input

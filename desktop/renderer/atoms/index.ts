@@ -17,6 +17,11 @@ export const showDeleteFileState = atom<boolean>({
     default: false
 });
 
+export const showUpgradeToPremiumState = atom<boolean>({
+    key: "showUpgradeToPremiumState",
+    default: false
+});
+
 
 // ids of selected users
 export const selectedUsersState = atom<IUser[]>({
