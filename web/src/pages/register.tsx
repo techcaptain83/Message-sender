@@ -1,21 +1,18 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { loadStripe } from "@stripe/stripe-js"
+import axiosInstance from '@/axios.config'
 import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
-import { Logo } from '@/components/Logo'
-import { FormEvent, useState } from 'react'
-import axios from "axios";
 import Loader from '@/components/Loader'
-import { useRouter } from 'next/router'
-import { countries } from '@/store/countries'
-import axiosInstance from '@/axios.config'
-import { useRecoilState, useRecoilValue } from 'recoil'
+import { Logo } from '@/components/Logo'
 import { serialNumberAtom, showSuccessfulSignupAtom } from '@/store/atoms'
+import { countries } from '@/store/countries'
+import Head from 'next/head'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+import { FormEvent, useState } from 'react'
 import { toast } from 'react-hot-toast'
+import { useRecoilState } from 'recoil'
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 export default function Register() {
   const [loading, setLoading] = useState(false);
@@ -31,21 +28,6 @@ export default function Register() {
     referredBy: ''
   })
 
-  const createStripePayment = async () => {
-    try {
-      const stripe = await stripePromise;
-      const { data } = await axios.post('/api/create-stripe-checkout-session', {
-        amount: 7999,
-        currency: 'usd',
-      });
-      const { sessionId, url } = data;
-      const result = await stripe?.redirectToCheckout({
-        sessionId,
-      });
-    } catch (error) {
-      // console.log(error);
-    }
-  }
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
