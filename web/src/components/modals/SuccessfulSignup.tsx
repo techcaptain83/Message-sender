@@ -1,7 +1,9 @@
 import { serialNumberAtom, showSuccessfulSignupAtom } from '@/store/atoms';
 import { Dialog } from '@headlessui/react';
-import { CheckIcon } from '@heroicons/react/20/solid';
+import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/react/20/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { Document, Page, Text, View, pdf } from '@react-pdf/renderer';
+import { saveAs } from 'file-saver';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -15,8 +17,22 @@ export default function SuccessfulSignup() {
     const copyToClipboard = () => {
         navigator.clipboard.writeText(serialNumber);
         toast.success('Serial Number copied to clipboard');
-    }
+    };
 
+    const downloadSerialNumber = () => {
+        try {
+            setLoading(true);
+
+            const textBlob = new Blob([serialNumber], { type: 'text/plain' });
+
+            saveAs(textBlob, 'serial_number.txt');
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to download Serial Number');
+        } finally {
+            setLoading(false);
+        }
+    };
     return (
         <ModalLayout open={showSuccessfulSignup} setOpen={() => setShowSuccessfulSignup(false)}>
             <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
@@ -39,8 +55,8 @@ export default function SuccessfulSignup() {
                     </Dialog.Title>
                     <div className="mt-2">
                         <p className="text-sm text-gray-500">
-                            your serial Number is: <span className="font-semibold">{serialNumber}</span>
-                             enjoy your 7 Days free trial.
+                            please donwload your serial number and store it somewhere safe. you will need it to login to your desktop app and
+                            enjoy your<span className='text-gray-800 font-semibold'> 7 Days free trial.</span>
                         </p>
                     </div>
                 </div>
@@ -49,13 +65,11 @@ export default function SuccessfulSignup() {
                 <button
                     type="button"
                     disabled={loading}
-                    className="inline-flex w-full justify-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 sm:ml-3 sm:w-auto"
-                    onClick={copyToClipboard}
+                    className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm  text-center  gap-2 hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                    onClick={downloadSerialNumber}
                 >
-                    {loading ? (
-                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" />) :
-                        <span>copy serial number</span>
-                    }
+                    <ArrowDownTrayIcon width={20} />
+                    <span>download serial number</span>
                 </button>
                 <button
                     type="button"

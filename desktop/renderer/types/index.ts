@@ -12,11 +12,12 @@ export interface IUser {
 }
 export interface IAuthUser {
     _id: string;
+    isPro: boolean;
     firstName: string;
     lastName: string;
     email: string;
     country: string;
-    serialNumber:string;
+    serialNumber: string;
     referredBy: string;
 }
 

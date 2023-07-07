@@ -1,12 +1,12 @@
-import Head from 'next/head'
-import Link from 'next/link'
 import { Button } from '@/components/Button'
 import { TextField } from '@/components/Fields'
 import Loader from '@/components/Loader'
 import { AuthLayout } from '@/components/layouts/AuthLayout'
 import Logo from '@/components/logo'
 import useAuth from '@/hooks/useAuth'
-import { useRouter } from 'next/router'
+import { ArrowUpTrayIcon } from '@heroicons/react/20/solid'
+import Head from 'next/head'
+import Link from 'next/link'
 import { FormEvent, useState } from 'react'
 
 export default function Login() {
@@ -14,13 +14,24 @@ export default function Login() {
 
     const [formData, setFormData] = useState({
         email: "",
-        serialNumber: 0
+        serialNumber: ""
     });
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         signIn(formData.email, formData.serialNumber)
     }
-    
+
+    const getSerialNumberFromFile = async (file: File) => {
+        const reader = new FileReader();
+        reader.onload = async (e) => {
+            const text = (e.target.result as string).trim();
+            console.log(text);
+            setFormData({ ...formData, serialNumber: text });    
+        }
+        reader.readAsText(file);
+    }
+
+
     return (
         <>
             <Head>
@@ -60,15 +71,32 @@ export default function Login() {
                         autoComplete="email"
                         required
                     />
-                    <TextField
-                        label="Serial number"
-                        id="serialNumber"
-                        name="serialNumber"
-                        type="number"
-                        value={formData.serialNumber}
-                        onChange={(e) => setFormData({ ...formData, serialNumber: parseInt(e.target.value) })}
-                        required
-                    />
+                    <div className="w-full flex flex-col gap-2">
+                        <p className='text-sm'>Serial Number</p>
+                        <button
+                            type="button"
+                            // disabled={uploadingFile}
+                            className="inline-flex relative w-full justify-center rounded-md bg-gray-200 px-3 py-2 text-sm font-semibold text-gray-700 shadow-sm hover:bg-gray-300 sm:w-auto"
+                        >
+                            {/* {uploadingFile ? ( */}
+                            {/* <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" />) : */}
+                            <div className='flex gap-2 items-center  '>
+                                <ArrowUpTrayIcon width={25} />
+                                <span>select file</span>
+                            </div>
+                            {/* } */}
+                            <input
+                                type="file"
+                                accept='.txt'
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    file && getSerialNumberFromFile(file);
+                                }}
+                            />
+                        </button>
+                    </div>
+
                     <div>
                         <Button
                             type="submit"

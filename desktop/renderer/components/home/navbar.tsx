@@ -1,10 +1,10 @@
 import useAuth from '@/hooks/useAuth';
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { Button } from '../Button';
 import Loader from '../Loader';
 import Logo from '../logo';
-import Link from 'next/link';
+import { FaCrown } from 'react-icons/fa';
 
 export default function Navbar() {
     const { user, logout, loading } = useAuth();
@@ -29,7 +29,18 @@ export default function Navbar() {
                         <p className='uppercae text-gray-600'>{user?.serialNumber}</p>
                     </div>
                 </div>
-                {<Button variant='solid' color='blue'
+                {
+                    !user.isPro &&
+                    <Button variant='solid' color='green'
+                        className='rounded-md space-x-2'>
+                        {loading ? <Loader /> : <>
+                            <span>Upgrade to pro</span>
+                            <FaCrown width={20} />
+                        </>
+                        }
+                    </Button>
+                }
+                <Button variant='solid' color='blue'
                     onClick={logout}
                     className='rounded-md space-x-2'>
                     {loading ? <Loader /> : <>
@@ -37,7 +48,7 @@ export default function Navbar() {
                         <ArrowRightOnRectangleIcon width={20} />
                     </>
                     }
-                </Button>}
+                </Button>
             </div>
         </div>
     )

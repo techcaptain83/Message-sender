@@ -10,7 +10,7 @@ import axios from '../../axios.config';
 interface IAuth {
     initialLoading: boolean
     user: IAuthUser | null
-    signIn: (email: string, serialNumber: number) => Promise<void>
+    signIn: (email: string, serialNumber: string) => Promise<void>
     logout: () => Promise<void>
     loading: boolean
     reloadProfile: () => Promise<void>
@@ -21,7 +21,6 @@ const AuthContext = createContext<IAuth>({
     user: null,
     signIn: async () => { },
     logout: async () => { },
-
     reloadProfile: async () => { },
     loading: false,
     initialLoading: true,
@@ -91,10 +90,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
     // login
-    const signIn = async (email: string, serialNumber: number) => {
+    const signIn = async (email: string, serialNumber: string) => {
         setLoading(true);
         await axios.post('/auth/login', {
-            email, serialNumber
+            email, serialNumber: parseInt(serialNumber)
         }).then(({ data }) => {
             if (data.user) {
                 toast.success("You've been logged in successfully!");
@@ -118,11 +117,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const logout = async () => {
         setLoading(true);
         localStorage.removeItem(UIDHASH);
-        setUser(null);
         router.push("/login");
         setTimeout(() => {
             setLoading(false);
         }, 100);
+        router.pathname === "/login" && setUser(null)
     }
 
 
