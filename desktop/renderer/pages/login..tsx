@@ -82,7 +82,7 @@ export default function Login() {
                                 {hasUploadedSerialNumber ? <span>{filename}</span> : <span>select file</span>}
                             </div>
                             {/* } */}
-                            <input
+                            {!filename && <input
                                 type="file"
                                 accept='.txt'
                                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
@@ -90,7 +90,7 @@ export default function Login() {
                                     const file = e.target.files[0];
                                     file && getSerialNumberFromFile(file);
                                 }}
-                            />
+                            />}
                         </button>
                     </div>
 
