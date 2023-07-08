@@ -17,6 +17,7 @@ export default function Login() {
         email: "",
         serialNumber: ""
     });
+    const [filename, setFilename] = useState<string | null>(null);
     const [hasUploadedSerialNumber, setHasUploadedSerialNumber] = useState(false);
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -26,15 +27,16 @@ export default function Login() {
     const getSerialNumberFromFile = async (file: File) => {
         const reader = new FileReader();
         reader.onload = async (e) => {
+
             const text = (e.target.result as string).trim();
-            console.log(text);
+
             setFormData({ ...formData, serialNumber: text });
             toast.success("Serial number added successfully");
             setHasUploadedSerialNumber(true);
+            setFilename(file.name);
         }
         reader.readAsText(file);
     }
-
 
     return (
         <>
@@ -51,16 +53,7 @@ export default function Login() {
                             Sign in to your account
                         </h2>
                         <p className="mt-2 text-sm text-gray-700">
-                            Don’t have an account?{' '}
-                            <Link
-                                rel='noreferrer'
-                                target='_blank'
-                                href="https://watsapp-messenger.vercel.app/register"
-                                className="font-medium text-blue-600 hover:underline"
-                            >
-                                Sign up
-                            </Link>{' '}
-                            for a free trial.
+                            you can sign up on the website
                         </p>
                     </div>
                 </div>
@@ -86,7 +79,7 @@ export default function Login() {
                             {/* <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" />) : */}
                             <div className='flex gap-2 items-center  '>
                                 <ArrowUpTrayIcon width={25} />
-                                {hasUploadedSerialNumber ? <span>select another</span> : <span>select file</span>}
+                                {hasUploadedSerialNumber ? <span>{filename}</span> : <span>select file</span>}
                             </div>
                             {/* } */}
                             <input

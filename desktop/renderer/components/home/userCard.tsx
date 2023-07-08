@@ -20,6 +20,8 @@ const UserCard = ({ id, displayName, firstName, lastName, phoneNumber, countryCo
     useEffect(()=>{
         if(selectedUsers.find((user)=>user.id===id)){
             setChecked(true);
+        }else{
+            setChecked(false);
         }
     },[selectedUsers])
 

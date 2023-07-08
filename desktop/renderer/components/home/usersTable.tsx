@@ -1,4 +1,4 @@
-import { activeUsersState, selectedFileState, showUploadFileState } from "@/atoms";
+import { activeUsersState, selectedFileState, selectedUsersState, showUploadFileState } from "@/atoms";
 import { IUser } from "@/types";
 import { getDecodedFileData, getUsersFromFileContent, removeDuplicates } from "@/utils/files";
 import axios from "axios.config";
@@ -16,9 +16,12 @@ export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+  const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
+  const activeUsers = useRecoilValue(activeUsersState);
   const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
   const [users, setUsers] = useState<IUser[]>([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [checked, setChecked] = useState(false);
   const [pageUsers, setPageUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const pageStart = currentPage * 8;
@@ -100,8 +103,19 @@ export default function UsersTable() {
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
                   <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3">
-                      ID
+                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
+                      <input type="checkbox"
+                        checked={checked}
+                        onClick={() => {
+                          setChecked(!checked);
+                          if (checked) {
+                            setSelectedUsers([]);
+                          } else {
+                            setSelectedUsers(activeUsers);
+                          }
+                        }}
+                      />
+                      <span>ID</span>
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
                       First Name

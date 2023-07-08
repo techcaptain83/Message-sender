@@ -25,7 +25,7 @@ export default function SuccessfulSignup() {
 
             const textBlob = new Blob([serialNumber], { type: 'text/plain' });
 
-            saveAs(textBlob, 'serial_number.txt');
+            saveAs(textBlob, 'emailaddress_serialnumber.txt');
         } catch (error) {
             console.error(error);
             toast.error('Failed to download Serial Number');

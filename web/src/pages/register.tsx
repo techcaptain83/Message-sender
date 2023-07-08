@@ -51,6 +51,7 @@ export default function Register() {
 
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
+        toast.success("successfully registered")
         setSerialNumber(data.user.serialNumber);
         setShowSuccess(true);
       } else {

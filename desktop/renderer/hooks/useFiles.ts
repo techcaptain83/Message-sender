@@ -18,7 +18,7 @@ export default function useFiles() {
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
     const { user } = useAuth();
 
-    const { data, error, mutate } = useSWR(`/files?user=${user._id}`, async (url) => {
+    const { data, error, mutate } = useSWR(`/files?user=${user?._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);
             // return response.data;
