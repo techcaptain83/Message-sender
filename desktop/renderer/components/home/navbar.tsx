@@ -37,21 +37,21 @@ export default function Navbar() {
                 {
                     !user.isPro ?
                         <Button onClick={() => setShowUpgradeModal(true)} variant='solid' color='green'
-                            className='rounded-md space-x-2'>
+                            className='rounded-md space-x-2 lg:text-base text-xs'>
                             {<>
                                 <span>Upgrade to premium</span>
                                 <FaCrown width={20} />
                             </>
                             }
                         </Button> :
-                        <div className='bg-blue-500 text-white text-sm p-2 rounded-md flex items-center gap-2' >
+                        <div className='bg-blue-500 text-white p-2 rounded-md flex items-center gap-2 lg:text-base text-xs' >
                             <span>Pro</span>
                             <FaCrown width={20} />
                         </div>
                 }
                 <Button variant='solid' color='blue'
                     onClick={logout}
-                    className='rounded-md space-x-2'>
+                    className='rounded-md space-x-2 lg:text-base text-xs'>
                     {loading ? <Loader /> : <>
                         <span>Logout</span>
                         <ArrowRightOnRectangleIcon width={20} />

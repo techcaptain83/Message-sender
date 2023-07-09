@@ -1,20 +1,62 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-export const sendMessage = async (message: string, phoneNumber: string) => {
-    let data = JSON.stringify({
+
+const generateUrl = (body: {
+    body?: string,
+    audio?: string,
+    image?: string,
+    video?: string
+}): string => {
+    let url = `https://api.ultramsg.com/instance53164/messages`;
+    if (body.body) {
+        url += "/chat";
+    } else if (body.audio) {
+        url += "/audio";
+    } else if (body.image) {
+        url += "/image";
+    } else if (body.video) {
+        url += "/video";
+    }
+    return url;
+}
+export const sendMessage = async (phoneNumber: string, content: {
+    body?: string,
+    audio?: string,
+    image?: string,
+    video?: string
+}) => {
+
+    let data: any = {
         "token": "9fn5lnoeg7fszr1i",
-        "to": phoneNumber,
-        "body": message
-    });
+        "to": phoneNumber
+    };
+
+    if (content.body) {
+        data.body = content.body;
+    }
+
+    if (content.audio) {
+        data.audio = content.audio;
+    }
+
+    if (content.image) {
+        data.image = content.image;
+    }
+
+    if (content.video) {
+        data.video = content.video;
+    }
+
+    let requestData = JSON.stringify(data);
 
     let config = {
         method: 'post',
-        url: 'https://api.ultramsg.com/instance53164/messages/chat',
+        url: generateUrl(content),
         headers: {
             'Content-Type': 'application/json'
         },
-        data: data
+        data: requestData
     };
 
     axios(config)

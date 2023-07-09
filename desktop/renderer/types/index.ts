@@ -28,3 +28,10 @@ export interface IFile {
     updatedAt: string;
     // usersCount: number;
 }
+
+export interface IFile {
+    _id: string;
+    filename: string;
+    fileUrl: string;
+    type:string;
+}

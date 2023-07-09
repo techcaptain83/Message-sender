@@ -1,4 +1,4 @@
-import { selectedFileState, showDeleteFileState, showUpgradeToPremiumState, showUploadFileState } from '@/atoms'
+import { selectedFileState, showDeleteFileState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms'
 import EmptyState from '@/components/EmptyState'
 import Controls from '@/components/home/controls'
 import MesssageInput from '@/components/home/messsageInput'
@@ -8,6 +8,7 @@ import UsersTable from '@/components/home/usersTable'
 import DeleteFile from '@/components/modals/DeleteFile'
 import UpgradeToPremium from '@/components/modals/UpgradeToPremium'
 import UploadFile from '@/components/modals/UploadFile'
+import UploadMedia from '@/components/modals/uploadMedia'
 import useFiles from '@/hooks/useFiles'
 import Head from 'next/head'
 import { useRecoilValue } from 'recoil'
@@ -19,6 +20,7 @@ export default function Index() {
   const showDeleteFile = useRecoilValue(showDeleteFileState);
   const showUploadFile = useRecoilValue(showUploadFileState);
   const showUpgrade = useRecoilValue(showUpgradeToPremiumState);
+  const showUploadMedia = useRecoilValue(showUploadMediaState);
 
   return (
     <>
@@ -29,6 +31,7 @@ export default function Index() {
         {showDeleteFile && <DeleteFile />}
         {showUploadFile && <UploadFile />}
         {showUpgrade && <UpgradeToPremium />}
+        {showUploadMedia && <UploadMedia />}
         <Navbar />
         <div className='w-full h-[91vh] flex justify-between'>
           <div className='w-full h-full justify-between flex flex-col'>

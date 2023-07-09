@@ -12,6 +12,11 @@ export const showUploadFileState = atom<boolean>({
     default: false
 });
 
+export const showUploadMediaState = atom<boolean>({
+    key: "showUploadMediaState",
+    default: false
+});
+
 export const showDeleteFileState = atom<boolean>({
     key: "showDeleteFileState",
     default: false
@@ -32,4 +37,10 @@ export const selectedUsersState = atom<IUser[]>({
 export const activeUsersState = atom<IUser[]>({
     key: "activeUsers",
     default: []
+})
+
+
+export const uploadedFileState = atom<IFile>({
+    key: "uploadedFileState",
+    default: null
 })
