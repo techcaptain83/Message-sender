@@ -1,12 +1,10 @@
-import { selectedFileState, showUpgradeToPremiumState } from '@/atoms';
-import useFiles from '@/hooks/useFiles';
+import { showUpgradeToPremiumState } from '@/atoms';
+import useAuth from '@/hooks/useAuth';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
-import useAuth from '@/hooks/useAuth';
-import Link from 'next/link';
 
 
 export default function UpgradeToPremium() {

@@ -1,4 +1,4 @@
-import { selectedUsersState, uploadedFileState } from '@/atoms';
+import { selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import { sendMessage } from '@/utils/messaging';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
@@ -7,13 +7,14 @@ import 'react-quill/dist/quill.snow.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Loader from '../Loader';
 import useMedia from '@/hooks/useMedia';
-
+ 
 export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
     const { uploadMedia, uploadingAudio, uploadingImage, uploadingVideo } = useMedia();
     const [value, setValue] = useState('');
     const [showUploadMedia, setShowUploadMedia] = useState(false);
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
+    const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
 
     const [loading, setLoading] = useState(false);
     const uploadMediaRef = useRef<HTMLDivElement>(null);
@@ -92,7 +93,6 @@ export default function MesssageInput() {
             submitAudio();
             return;
         }
-
     }
 
     useEffect(() => {

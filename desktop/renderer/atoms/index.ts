@@ -43,4 +43,9 @@ export const activeUsersState = atom<IUser[]>({
 export const uploadedFileState = atom<IFile>({
     key: "uploadedFileState",
     default: null
-})
+});
+
+export const showScanCodeState = atom<boolean>({
+    key: "showScanCodeState",
+    default: true
+});
