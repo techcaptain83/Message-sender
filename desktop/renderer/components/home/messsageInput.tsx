@@ -1,4 +1,4 @@
-import { selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
+import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import { sendMessage } from '@/utils/messaging';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
@@ -7,7 +7,7 @@ import 'react-quill/dist/quill.snow.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Loader from '../Loader';
 import useMedia from '@/hooks/useMedia';
- 
+
 export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
     const { uploadMedia, uploadingAudio, uploadingImage, uploadingVideo } = useMedia();
@@ -15,6 +15,7 @@ export default function MesssageInput() {
     const [showUploadMedia, setShowUploadMedia] = useState(false);
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
+    const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
 
     const [loading, setLoading] = useState(false);
     const uploadMediaRef = useRef<HTMLDivElement>(null);
@@ -75,23 +76,23 @@ export default function MesssageInput() {
     }
 
     const handleSubmit = () => {
-        if (selectedUsers.length === 0) {
-            toast.error('Please select at least one user to send a message to.');
-            return;
+        if (!phoneConnected) {
+            toast.error("you have to connect your phone first!");
+            setTimeout(() => {
+                setShowScanCode(true);
+            }, 1000);
         }
-
-        if (!uploadedFile) {
+        else if (selectedUsers.length === 0) {
+            toast.error('Please select at least one user to send a message to.');
+        }
+        else if (!uploadedFile) {
             submitText();
-            return;
         } else if (uploadedFile.type.includes('image')) {
             submitImage();
-            return;
         } else if (uploadedFile.type.includes('video')) {
             submitVideo();
-            return;
         } else if (uploadedFile.type.includes('audio')) {
             submitAudio();
-            return;
         }
     }
 

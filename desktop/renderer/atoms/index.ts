@@ -47,5 +47,10 @@ export const uploadedFileState = atom<IFile>({
 
 export const showScanCodeState = atom<boolean>({
     key: "showScanCodeState",
-    default: true
+    default: false
 });
+
+export const phoneConnectedState=atom<boolean>({
+    key:"phoneConnectedState",
+    default:false
+})

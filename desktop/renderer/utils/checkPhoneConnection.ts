@@ -4,22 +4,21 @@ var params = {
     "token": "9fn5lnoeg7fszr1i"
 };
 
-
-let config = {
+var config = {
     method: 'get',
-    url: 'https://api.ultramsg.com/instance53164/instance/qrCode',
+    url: 'https://api.ultramsg.com/instance53164/instance/me',
     headers: {
         'Content-Type': 'application/json'
     },
     params: params
 };
 
-export const getQRCode = async () => {
+export const checkPhoneConnection = async () => {
     try {
         const response = await axios(config);
-        // console.log(response)
+        console.log(response.data);
         return response.data;
-    } catch {
-        console.log("error getting qr code");
+    } catch (error) {
+        console.log(error);
     }
 }
