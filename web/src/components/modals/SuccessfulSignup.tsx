@@ -1,8 +1,7 @@
-import { serialNumberAtom, showSuccessfulSignupAtom } from '@/store/atoms';
+import { serialNumberEmailAtom, showSuccessfulSignupAtom } from '@/store/atoms';
 import { Dialog } from '@headlessui/react';
 import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/react/20/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { Document, Page, Text, View, pdf } from '@react-pdf/renderer';
 import { saveAs } from 'file-saver';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -12,19 +11,15 @@ import ModalLayout from '../layouts/ModalLayout';
 export default function SuccessfulSignup() {
     const [showSuccessfulSignup, setShowSuccessfulSignup] = useRecoilState(showSuccessfulSignupAtom);
 
-    const serialNumber = useRecoilValue(serialNumberAtom);
+    const serialNumberEmail = useRecoilValue(serialNumberEmailAtom);
     const [loading, setLoading] = useState(false);
-    const copyToClipboard = () => {
-        navigator.clipboard.writeText(serialNumber);
-        toast.success('Serial Number copied to clipboard');
-    };
 
     const downloadSerialNumber = () => {
         try {
             setLoading(true);
-
-            const textBlob = new Blob([serialNumber], { type: 'text/plain' });
-
+            const textBlob = new Blob([`${serialNumberEmail.email}
+${serialNumberEmail.serialNumber}
+            `], { type: 'text/plain' });
             saveAs(textBlob, 'emailaddress_serialnumber.txt');
         } catch (error) {
             console.error(error);

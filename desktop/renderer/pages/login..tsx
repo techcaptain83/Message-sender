@@ -53,7 +53,7 @@ export default function Login() {
                             Sign in to your account
                         </h2>
                         <p className="mt-2 text-sm text-gray-700">
-                            you can sign up on the website
+                            please sign up on the website
                         </p>
                     </div>
                 </div>

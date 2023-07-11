@@ -4,7 +4,7 @@ import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
 import Loader from '@/components/Loader'
 import { Logo } from '@/components/Logo'
-import { serialNumberAtom, showSuccessfulSignupAtom } from '@/store/atoms'
+import { serialNumberEmailAtom, showSuccessfulSignupAtom } from '@/store/atoms'
 import { countries } from '@/store/countries'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -18,7 +18,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [_, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
-  const [_sn, setSerialNumber] = useRecoilState(serialNumberAtom);
+  const [_sn, setSerialNumberEmail] = useRecoilState(serialNumberEmailAtom);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -52,7 +52,10 @@ export default function Register() {
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
         toast.success("successfully registered")
-        setSerialNumber(data.user.serialNumber);
+        setSerialNumberEmail({
+          serialNumber: data.user.serialNumber,
+          email: data.user.email
+        });
         setShowSuccess(true);
       } else {
         toast.error(data.message);

@@ -36,7 +36,13 @@ export const showSuccessfulSignupAtom = atom({
     default: false
 });
 
-export const serialNumberAtom = atom({
-    key: "serialNumber",
-    default: ""
+export const serialNumberEmailAtom = atom<{
+    serialNumber: string,
+    email: string,
+}>({
+    key: "serialNumberEmail",
+    default: {
+        serialNumber: "",
+        email: ""
+    }
 });
