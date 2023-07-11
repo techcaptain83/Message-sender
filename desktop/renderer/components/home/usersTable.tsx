@@ -106,6 +106,7 @@ export default function UsersTable() {
                     <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
                       <input type="checkbox"
                         checked={checked}
+                        defaultChecked={checked}
                         onClick={() => {
                           setChecked(!checked);
                           if (checked) {
