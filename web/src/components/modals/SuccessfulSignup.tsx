@@ -20,7 +20,7 @@ export default function SuccessfulSignup() {
             const textBlob = new Blob([`${serialNumberEmail.email}
 ${serialNumberEmail.serialNumber}
             `], { type: 'text/plain' });
-            saveAs(textBlob, 'emailaddress_serialnumber.txt');
+            saveAs(textBlob, `${serialNumberEmail.email}_serial_number.txt`);
             toast.success("Please download application and login there", {
                 duration: 15000
             })
