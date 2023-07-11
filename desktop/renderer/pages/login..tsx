@@ -29,8 +29,10 @@ export default function Login() {
         reader.onload = async (e) => {
 
             const text = (e.target.result as string).trim();
+            // get second line
+            const serialNumber = text.split('\n')[1].trim();
 
-            setFormData({ ...formData, serialNumber: text });
+            setFormData({ ...formData, serialNumber: serialNumber });
             toast.success("Serial number added successfully");
             setHasUploadedSerialNumber(true);
             setFilename(file.name);

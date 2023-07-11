@@ -36,7 +36,7 @@ export default function Navbar() {
                     </div>
                 </div>
                 {
-                    !user.isPro ?
+                    !user?.isPro ?
                         <Button onClick={() => setShowUpgradeModal(true)} variant='solid' color='green'
                             className='rounded-md space-x-2 lg:text-base text-xs'>
                             {<>
