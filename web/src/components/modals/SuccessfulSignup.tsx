@@ -21,6 +21,9 @@ export default function SuccessfulSignup() {
 ${serialNumberEmail.serialNumber}
             `], { type: 'text/plain' });
             saveAs(textBlob, 'emailaddress_serialnumber.txt');
+            toast.success("Please download application and login there", {
+                duration: 15000
+            })
         } catch (error) {
             console.error(error);
             toast.error('Failed to download Serial Number');
