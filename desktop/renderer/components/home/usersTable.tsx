@@ -7,15 +7,14 @@ import { toast } from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Pagination from "../pagination";
 import UserCard from "./userCard";
-const people: IUser[] = [
-  { id: '234D', firstName: "Lindsay", lastName: "Walton", phoneNumber: '+81 032 424 341', countryCode: "+81", displayName: "Lindsay Walton" },
-]
 
 
 export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
+
   const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
   const activeUsers = useRecoilValue(activeUsersState);
   const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
@@ -24,8 +23,8 @@ export default function UsersTable() {
   const [checked, setChecked] = useState(false);
   const [pageUsers, setPageUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const pageStart = currentPage * 8;
-  const pageEnd = pageStart + 8;
+  const pageStart = currentPage * rowsPerPage;
+  const pageEnd = pageStart + rowsPerPage;
 
   const handlePageChange = ({ selected }) => {
     if (selected === currentPage) return;
@@ -35,11 +34,11 @@ export default function UsersTable() {
 
   useEffect(() => {
     if (users.length > 0) {
-      const totalPages = Math.ceil(users.length / 8);
+      const totalPages = Math.ceil(users.length / rowsPerPage);
       setTotalPages(totalPages);
       setPageUsers(users.slice(pageStart, pageEnd));
     }
-  }, [users, currentPage]);
+  }, [users, currentPage,rowsPerPage]);
 
   const getFileData = async (fileId: string) => {
     setGettingFileData(true);
@@ -137,7 +136,7 @@ export default function UsersTable() {
                 </thead>
 
                 <tbody className="bg-white">
-                  {pageUsers.map((person: IUser) => (
+                  {pageUsers.length > 0 && pageUsers.map((person: IUser) => (
                     <UserCard key={person.id} {...person} />
                   ))}
                 </tbody>
@@ -146,7 +145,7 @@ export default function UsersTable() {
           </div>
         </div>
       </div>
-      <Pagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} />
+      <Pagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
     </div>
   )
 }
