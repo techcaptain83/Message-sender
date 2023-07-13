@@ -1,6 +1,6 @@
 import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import { sendMessage } from '@/utils/messaging';
-import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon } from '@heroicons/react/20/solid';
+import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import 'react-quill/dist/quill.snow.css';
@@ -12,6 +12,7 @@ export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
     const { uploadMedia, uploadingAudio, uploadingImage, uploadingVideo } = useMedia();
     const [value, setValue] = useState('');
+    const [caption, setCaption] = useState("");
     const [showUploadMedia, setShowUploadMedia] = useState(false);
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
@@ -40,7 +41,8 @@ export default function MesssageInput() {
         setLoading(true);
         selectedUsers.forEach(async user => {
             await sendMessage(`${user.countryCode}${user.phoneNumber}`.trim(), {
-                image: uploadedFile?.fileUrl
+                image: uploadedFile?.fileUrl,
+                caption: value
             }).finally(() => {
                 setLoading(false);
                 setValue('');
@@ -53,7 +55,8 @@ export default function MesssageInput() {
         setLoading(true);
         selectedUsers.forEach(async user => {
             await sendMessage(`${user.countryCode}${user.phoneNumber}`.trim(), {
-                video: uploadedFile?.fileUrl
+                video: uploadedFile?.fileUrl,
+                caption: value
             }).finally(() => {
                 setLoading(false);
                 setValue('');
@@ -165,7 +168,24 @@ export default function MesssageInput() {
                 }
             </div>
             {uploadedFile ?
-                <div className='w-full bg-white p-2 text-gray-600'>{uploadedFile.filename}</div> :
+                <div className='w-full bg-white p-2 text-gray-600 flex lg:items-center flex-col lg:flex-row  gap-3'>
+                    <div className='flex items-center'>
+                        <p>{uploadedFile.filename}</p>
+                        <button onClick={() => {
+                            setCaption('');
+                            setUploadedFile(null)
+                        }} className='ml-2 text-red-500 hover:text-white hover:bg-red-400 p-1 bg-gray-100 rounded-full '>
+                            <XMarkIcon width={20} />
+                        </button>
+                    </div>
+                    {(uploadedFile.filename.includes('image') || uploadedFile.filename.includes('video')) &&
+                        <textarea
+                            value={caption}
+                            onChange={(e) => setCaption(e.target.value)}
+                            placeholder='Add Caption'
+                            className=' w-full text-sm h-full bg-gray-50/75 rounded px-4 py-2 outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100'
+                        />}
+                </div> :
                 <textarea
                     value={value}
                     onChange={(e) => setValue(e.target.value)}

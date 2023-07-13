@@ -1,7 +1,3 @@
-export interface ILink {
-
-}
-
 export interface IUser {
     id: string;
     firstName: string;
@@ -16,6 +12,7 @@ export interface IAuthUser {
     firstName: string;
     lastName: string;
     email: string;
+    usersUploaded: number;
     country: string;
     serialNumber: string;
     referredBy: string;

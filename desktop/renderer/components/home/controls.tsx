@@ -1,19 +1,19 @@
-import { activeUsersState, selectedUsersState, showDeleteFileState, showUploadFileState } from "@/atoms";
+import { showDeleteFileState, showUploadFileState } from "@/atoms";
 import useFiles from "@/hooks/useFiles";
-import { DocumentCheckIcon } from "@heroicons/react/20/solid";
 import { AiFillDelete } from 'react-icons/ai';
 import { BiImport } from 'react-icons/bi';
 import { FaColumns, FaFilter } from 'react-icons/fa';
 import { MdOutlineUploadFile } from 'react-icons/md';
 import { TfiMenu } from 'react-icons/tfi';
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
 import Loader from "../Loader";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Controls() {
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
     const { downloadingFile, downloadFile } = useFiles();
+
 
     return (
         <div className="flex items-center w-full py-2 lg:py-4 justify-between lg:text-sm text-[9px]">
@@ -22,18 +22,22 @@ export default function Controls() {
                     <DocumentCheckIcon width={20} />
                     <p className='font-bold'>Select All</p>
                 </button> */}
-                <button className="control">
+                {/* <button className="control">
                     <FaColumns />
-                    <p className='font-bold'>Filter</p>
-                </button>
-                <button className="control">
+                    <p className='font-bold'>Column</p>
+                </button> */}
+                <button className="control"
+                    onClick={() => {
+                        document.getElementById('filterInput')?.focus();
+                    }}
+                >
                     <FaFilter />
                     <p className='font-bold'>Filter</p>
                 </button>
-                <button className="control">
+                {/* <button className="control">
                     <TfiMenu />
                     <p className='font-bold'>Density</p>
-                </button>
+                </button> */}
                 <button
                     onClick={() => downloadFile()}
                     disabled={downloadingFile}

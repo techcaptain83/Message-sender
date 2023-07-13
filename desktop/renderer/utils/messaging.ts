@@ -6,7 +6,8 @@ const generateUrl = (body: {
     body?: string,
     audio?: string,
     image?: string,
-    video?: string
+    video?: string,
+    caption?: string
 }): string => {
     let url = `https://api.ultramsg.com/instance53164/messages`;
     if (body.body) {
@@ -24,7 +25,8 @@ export const sendMessage = async (phoneNumber: string, content: {
     body?: string,
     audio?: string,
     image?: string,
-    video?: string
+    video?: string,
+    caption?: string
 }) => {
 
     let data: any = {
@@ -46,6 +48,9 @@ export const sendMessage = async (phoneNumber: string, content: {
 
     if (content.video) {
         data.video = content.video;
+    }
+    if (content.caption) {
+        data.caption = content.caption
     }
 
     let requestData = JSON.stringify(data);

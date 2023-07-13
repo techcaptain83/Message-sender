@@ -72,9 +72,33 @@ export default function useFiles() {
         }
     }
 
+    const checkIfLimitIsExceeded =(file: File): boolean => {
+        let limitExceeded = false;
+        const fileReader = new FileReader();
+        fileReader.onload = (event) => {
+            const fileContents = event.target.result as string;
+            const users = fileContents.split("\n");
+            const totalUsers = users.length;
+            if (user.usersUploaded + totalUsers > 20 && !user.isPro) {
+                toast.error("You can only upload 20 users per month! if you need more, please upgrade to primium");
+                limitExceeded = true;
+                return true;
+            }
+        };
+        fileReader.readAsText(file);
+        return limitExceeded;
+
+    }
+
     const uploadFile = async (event: ChangeEvent<HTMLInputElement>) => {
         setUploadingFile(true)
         const file = event.target.files[0];
+
+        if (checkIfLimitIsExceeded(file)) {
+            setUploadingFile(false);
+            event.target.files = null;
+            return;
+        }
 
         const formData = new FormData();
         formData.append('file', file);
@@ -95,7 +119,7 @@ export default function useFiles() {
                 toast.error("Error occured while uploading file! try again later");
             }).finally(() => {
                 setUploadingFile(false);
-            })
+            });
     }
 
     const downloadFile = async () => {

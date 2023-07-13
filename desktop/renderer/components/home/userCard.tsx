@@ -17,13 +17,13 @@ const UserCard = ({ id, displayName, firstName, lastName, phoneNumber, countryCo
         }
     }, [checked]);
 
-    useEffect(()=>{
-        if(selectedUsers.find((user)=>user.id===id)){
+    useEffect(() => {
+        if (selectedUsers.find((user) => user.id === id)) {
             setChecked(true);
-        }else{
+        } else {
             setChecked(false);
         }
-    },[selectedUsers])
+    }, [selectedUsers])
 
     return (
         <tr className="even:bg-gray-50">
@@ -40,8 +40,8 @@ const UserCard = ({ id, displayName, firstName, lastName, phoneNumber, countryCo
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{firstName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{lastName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{displayName}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium pl-6">+{countryCode}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{phoneNumber}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium pl-6">+{countryCode}</td>
         </tr>
     )
 }

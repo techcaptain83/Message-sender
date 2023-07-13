@@ -20,6 +20,8 @@ export default function UsersTable() {
   const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
   const [users, setUsers] = useState<IUser[]>([]);
   const [totalPages, setTotalPages] = useState(0);
+  const [filter, setFilter] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState<IUser[]>([])
   const [checked, setChecked] = useState(false);
   const [pageUsers, setPageUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -33,12 +35,14 @@ export default function UsersTable() {
   };
 
   useEffect(() => {
-    if (users.length > 0) {
+    if (filteredUsers.length > 0) {
       const totalPages = Math.ceil(users.length / rowsPerPage);
       setTotalPages(totalPages);
-      setPageUsers(users.slice(pageStart, pageEnd));
+      setPageUsers(filteredUsers.slice(pageStart, pageEnd));
+    } else {
+      setPageUsers([]);
     }
-  }, [users, currentPage,rowsPerPage]);
+  }, [filteredUsers, currentPage, rowsPerPage]);
 
   const getFileData = async (fileId: string) => {
     setGettingFileData(true);
@@ -71,21 +75,45 @@ export default function UsersTable() {
   useEffect(() => {
     const getFileContent = async () => {
       const fileContent = await getFileData(selectedFile?._id);
-      console.log(fileContent)
     }
     getFileContent();
   }, [selectedFile]);
 
+  useEffect(() => {
+    if (filter === '') return setFilteredUsers(users);
+    const filteredUsers = users.filter(user => {
+      const { firstName, lastName, displayName, phoneNumber, id } = user;
+      const searchTerm = filter.toLowerCase();
+
+      return (
+        firstName.toLowerCase().includes(searchTerm) ||
+        lastName.toLowerCase().includes(searchTerm) ||
+        displayName.toLowerCase().includes(searchTerm) ||
+        phoneNumber.includes(filter) ||
+        id.toLowerCase().includes(searchTerm)
+      );
+    });
+    setFilteredUsers(filteredUsers)
+
+  }, [filter])
+
   return (
-    <div className="">
+    <div className="pt-4">
       <div className=" px-4 sm:px-6 lg:px-8 py-3 h-[64vh] overflow-y-auto">
-        <div className="sm:flex sm:items-center">
-          <div className="sm:flex-auto">
+        <div className="sm:flex sm:items-center justify-between">
+          <div className="">
             <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
-            <p className="mt-2 text-sm text-gray-700">
+            {/* <p className="mt-2 text-sm text-gray-700">
               A list of all the users in a current file including their names, locations, and their phone numbers.
-            </p>
+            </p> */}
           </div>
+          <input
+            id="filterInput"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            placeholder="Filter by name, phone number,..."
+            className="border-2 py-1 px-5 w-2/4 focus:ring-1 ring-blue-600 focus:outline-none"
+          />
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
             <button
               onClick={() => setShowUploadFile(true)}
@@ -127,10 +155,10 @@ export default function UsersTable() {
                       Display Name
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Country Code
+                      Phone Number
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Phone Number
+                      Country Code
                     </th>
                   </tr>
                 </thead>
