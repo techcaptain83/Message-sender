@@ -46,7 +46,7 @@ export default function Controls() {
                         <Loader />
                         : <>
                             <BiImport />
-                            <p className='font-bold'>Export</p>
+                            <p className='font-bold'>Export File</p>
                         </>
                     }
                 </button>
