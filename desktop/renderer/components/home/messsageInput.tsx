@@ -181,7 +181,7 @@ export default function MesssageInput() {
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
                             placeholder='Add Caption'
-                            className=' w-full text-sm h-full bg-gray-50/75 rounded px-4 py-2 outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100'
+                            className=' w-full text-sm h-full bg-gray-50/75 border rounded px-4 py-2 outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100'
                         />}
                 </div> :
                 <textarea

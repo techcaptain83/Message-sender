@@ -5,11 +5,24 @@ import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
+import { PayPalButtons } from '@paypal/react-paypal-js';
+import axios from 'axios.config';
+import toast from 'react-hot-toast';
 
 
 export default function UpgradeToPremium() {
     const [showUpgrade, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
-    const { user } = useAuth();
+    const { user, reloadProfile } = useAuth();
+
+    const upgradeUserAccount = async () => {
+        const { data } = await axios.put(`/users/upgrade-to-pro/${user._id}`);
+        if (data.message === "success") {
+            toast.success("You account have been upgraded successfuly!");
+            reloadProfile();
+        }else{
+            toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
+        }
+    }
 
 
     return (
@@ -32,32 +45,34 @@ export default function UpgradeToPremium() {
                     <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
                         Upgrade your account
                     </Dialog.Title>
-                    <div className="mt-2">
-                        <p className="text-sm text-gray-500">
-                            your are going to be redirected to the payment portal where you can pay <span className='font-semibold text-gray-800'> $79 </span> and get a lifetime access.
-                        </p>
-                    </div>
                 </div>
             </div>
-            <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-                <a href={`https://watsapp-messenger.vercel.app/deposit?uid=${user._id}`} rel='noreferrer' target='_blank'>
-                    <button
-                        type="button"
-                        
-                        className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-
-                    >
-                        <span>Proceed</span>
-                    </button>
-                </a>
-                <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setShowUpgrade(false)}
-                >
-                    Cancel
-                </button>
+            <div className="mt-2">
+                <p className="py-4 text-gray-500">
+                    your are going to be redirected to the payment portal where you can pay <span className='font-semibold text-gray-800'> $79 </span> and get a lifetime access.
+                </p>
             </div>
+            <PayPalButtons
+
+                createOrder={(data, actions) => {
+                    return actions.order.create({
+                        purchase_units: [
+                            {
+                                amount: {
+                                    value: "79.99",
+                                },
+                            },
+                        ],
+                    });
+                }}
+                onApprove={(data, actions) => {
+                    return actions.order.capture().then((details) => {
+                        const name = details.payer.name.given_name;
+                        // alert(`Transaction completed by ${name}`);
+                        upgradeUserAccount()
+                    });
+                }}
+            />
         </ModalLayout>
     )
 }

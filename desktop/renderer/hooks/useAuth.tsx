@@ -77,6 +77,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             switch (res.status) {
                 case 200:
                     setUser(res.data.user);
+                    localStorage.setItem(UIDHASH, JSON.stringify(res.data.user));
                     break;
                 default:
                     setUser(null)
