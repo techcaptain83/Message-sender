@@ -41,6 +41,7 @@
     "autoprefixer": "^10.4.7",
     "electron": "^21.3.3",
     "electron-builder": "^23.6.0",
+    "file-saver": "^2.0.5",
     "next": "^13.4.8",
     "nextron": "^8.5.0",
     "nprogress": "^0.2.0",

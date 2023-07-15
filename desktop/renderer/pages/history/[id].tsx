@@ -1,6 +1,6 @@
-import LogsTable from '@/components/history/LogsTable'
-import { ILog } from '@/types'
-import React from 'react'
+import LogsTable from '@/components/history/LogsTable';
+import { ILog } from '@/types';
+import { saveAs } from 'file-saver';
 
 const log: ILog =
 {
@@ -24,8 +24,25 @@ export default function LogView() {
 
 
     const downloadLogs = () => {
+        const headers = ['First Name', 'Last Name', 'Phone Number', 'Status'];
 
+        const csvContent = [
+            headers.join(','),
+            ...log.contacts.map((contact) => {
+                return [
+                    contact.firstName,
+                    contact.lastName,
+                    contact.phoneNumber,
+                    contact.sent ? 'Sent' : 'Failed'
+                ].join(',');
+            })
+        ].join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+
+        saveAs(blob, `logs.csv`);
     }
+
     return (
         <div className='w-full h-[91vh px-8 py-4'>
             <div className='w-full flex items-center justify-between'>
@@ -40,7 +57,7 @@ export default function LogView() {
             </div>
             <p className='pt-3 text-gray-600 max-w-4xl'>
                 Logs for Messages sent to list <span className='text-gray-800 font-semibold'>{log.filename} </span>
-                sent on <span className='text-gray-800 font-semibold'>{new Date(log.createdAt).toLocaleString()}</span>
+                Due on <span className='text-gray-800 font-semibold'>{new Date(log.createdAt).toLocaleString()}</span>
             </p>
             <LogsTable {...log} />
         </div>
