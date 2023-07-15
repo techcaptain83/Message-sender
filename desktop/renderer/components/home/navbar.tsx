@@ -13,7 +13,7 @@ const links: {
     label: string, href: string
 }[] = [
         { label: "Dashboard", href: '/' },
-        { label: "Logs", href: '/logs' },
+        { label: "History", href: '/history' },
     ]
 
 export default function Navbar() {

@@ -43,7 +43,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         const user = localStorage.getItem(UIDHASH);
         if (user) {
             setUser(JSON.parse(user));
-            router.push("/");
+            router.pathname === "/login" && router.push("/");
             setTimeout(() => {
                 setInitialLoading(false);
             }, 200);
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                     case 200:
                         setUser(res.data.user);
                         localStorage.setItem(UIDHASH, JSON.stringify(res.data.user));
-                        router.push("/");
+                        router.pathname === "/login" && router.push("/");
                         break;
                     default:
                         setUser(null);

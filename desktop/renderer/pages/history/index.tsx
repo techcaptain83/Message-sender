@@ -1,7 +1,7 @@
 import LogsList from '@/components/logs/LogsList'
 import React from 'react'
 
-export default function Logs() {
+export default function History() {
   const downloadReport = () => {
 
   }

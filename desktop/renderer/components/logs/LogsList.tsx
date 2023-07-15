@@ -1,7 +1,6 @@
 import { logToDeleteState, showDeleteLogState } from '@/atoms';
-import useAuth from '@/hooks/useAuth'
-import { ILog } from '@/types'
-import Link from 'next/link'
+import { ILog } from '@/types';
+import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 
 const logs: ILog[] = [
@@ -11,6 +10,7 @@ const logs: ILog[] = [
         sentCount: 20,
         failedCount: 43,
         createdAt: "2023-07-15T15:52:00.506Z",
+        contacts: []
     }
 ]
 
@@ -38,16 +38,16 @@ export default function LogsList() {
                                 <p className='text-green-500'>{log.sentCount} sent</p>  <svg viewBox="0 0 2 2" className="h-0.5 w-0.5 fill-current">
                                     <circle cx={1} cy={1} r={1} />
                                 </svg> <p className='text-red-500'>{log.failedCount} failed</p>
-                            </div>
-                            {/* <p className="truncate">Created by {user.firstName} {user.lastName}</p> */}
+                         </div>
+
                         </div>
                     </div>
                     <div className="flex flex-none items-center gap-x-4">
                         <Link
                             href={`/logs/${log._id}`}
-                            className="hidden rounded-md bg-white px-2.5 py-1.5  font-semibold text-gray-900 shadow-sm ring-1 text-sm ring-inset ring-gray-300 hover:bg-gray-50 sm:block"
+                            className="hidden rounded-md bg-white px-2.5 py-1.5  font-semibold text-gray-900 shadow-sm ring-1 text-sm ring-inset ring-gray-300 hover:bg-gray-50 sm:block capitalize"
                         >
-                            View details<span className="sr-only">, {log.filename}</span>
+                            View logs<span className="sr-only">, {log.filename}</span>
                         </Link>
                         <button
                             onClick={() => {

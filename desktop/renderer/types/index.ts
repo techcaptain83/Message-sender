@@ -33,10 +33,17 @@ export interface IFile {
     type: string;
 }
 
+
+export interface ILogContact {
+    name: string,
+    phoneNumber: string,
+    sent?: boolean,
+}
 export interface ILog {
     _id: string;
     filename: string;
     sentCount: number;
     failedCount: number;
-    createdAt: string;    
+    createdAt: string;
+    contacts: ILogContact[]
 }

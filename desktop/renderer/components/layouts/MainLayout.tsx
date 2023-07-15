@@ -10,12 +10,14 @@ import UploadMedia from '../modals/uploadMedia';
 import ScanCode from '../modals/ScanCode';
 import Navbar from '../home/navbar';
 import DeleteLog from '../modals/DeleteLog';
+import { useRouter } from 'next/router';
 
 interface Props {
     children: React.ReactNode
 }
 function MainLayout({ children }: Props) {
     const { initialLoading } = useAuth();
+    const router = useRouter();
     const showDeleteFile = useRecoilValue(showDeleteFileState);
     const showUploadFile = useRecoilValue(showUploadFileState);
     const showUpgrade = useRecoilValue(showUpgradeToPremiumState);
@@ -36,7 +38,7 @@ function MainLayout({ children }: Props) {
                     {showUploadMedia && <UploadMedia />}
                     {showScanCode && <ScanCode />}
                     {showDeleteLog && <DeleteLog />}
-                    <Navbar />
+                    {(router.pathname === "/" || router.pathname === "/history") && <Navbar />}
                     {children}
                 </main>
             }
