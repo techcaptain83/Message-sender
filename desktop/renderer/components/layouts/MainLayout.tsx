@@ -9,6 +9,7 @@ import UpgradeToPremium from '../modals/UpgradeToPremium';
 import UploadMedia from '../modals/uploadMedia';
 import ScanCode from '../modals/ScanCode';
 import Navbar from '../home/navbar';
+import DeleteLog from '../modals/DeleteLog';
 
 interface Props {
     children: React.ReactNode
@@ -28,12 +29,13 @@ function MainLayout({ children }: Props) {
                 <div className='w-full h-full flex items-center justify-center'>
                     <PrePageLoader />
                 </div> :
-                <main className='w-full h-screen '>
+                <main className='w-full h-screen overflow-y-hidden '>
                     {showDeleteFile && <DeleteFile />}
                     {showUploadFile && <UploadFile />}
                     {showUpgrade && <UpgradeToPremium />}
                     {showUploadMedia && <UploadMedia />}
                     {showScanCode && <ScanCode />}
+                    {showDeleteLog && <DeleteLog />}
                     <Navbar />
                     {children}
                 </main>

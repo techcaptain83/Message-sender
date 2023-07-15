@@ -7,7 +7,7 @@ export default function Logs() {
   }
 
   return (
-    <div className='w-full h-[91vh] px-8 py-4'>
+    <div className='w-full h-[91vh px-8 py-4'>
       <div className='w-full flex items-center justify-between'>
         <h1 className="text-base font-medium leading-6 text-gray-900">Recent activities</h1>
         <button

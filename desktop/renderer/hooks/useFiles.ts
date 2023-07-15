@@ -167,5 +167,4 @@ export default function useFiles() {
         downloadFile,
         downloadingFile
     };
-
 }
