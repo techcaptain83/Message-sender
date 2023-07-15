@@ -35,7 +35,8 @@ export interface IFile {
 
 
 export interface ILogContact {
-    name: string,
+    firstName: string,
+    lastName: string,
     phoneNumber: string,
     sent?: boolean,
 }

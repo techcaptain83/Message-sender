@@ -1,20 +1,21 @@
-import useAuth from '@/hooks/useAuth'
-import React from 'react'
-import PrePageLoader from '../LargeLoader';
-import { useRecoilValue } from 'recoil';
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
-import DeleteFile from '../modals/DeleteFile';
-import UploadFile from '../modals/UploadFile';
-import UpgradeToPremium from '../modals/UpgradeToPremium';
-import UploadMedia from '../modals/uploadMedia';
-import ScanCode from '../modals/ScanCode';
-import Navbar from '../home/navbar';
-import DeleteLog from '../modals/DeleteLog';
+import useAuth from '@/hooks/useAuth';
 import { useRouter } from 'next/router';
+import React from 'react';
+import { useRecoilValue } from 'recoil';
+import PrePageLoader from '../LargeLoader';
+import Navbar from '../home/navbar';
+import DeleteFile from '../modals/DeleteFile';
+import DeleteLog from '../modals/DeleteLog';
+import ScanCode from '../modals/ScanCode';
+import UpgradeToPremium from '../modals/UpgradeToPremium';
+import UploadFile from '../modals/UploadFile';
+import UploadMedia from '../modals/uploadMedia';
 
 interface Props {
     children: React.ReactNode
 }
+
 function MainLayout({ children }: Props) {
     const { initialLoading } = useAuth();
     const router = useRouter();
@@ -24,6 +25,7 @@ function MainLayout({ children }: Props) {
     const showUploadMedia = useRecoilValue(showUploadMediaState);
     const showScanCode = useRecoilValue(showScanCodeState);
     const showDeleteLog = useRecoilValue(showDeleteLogState);
+    console.log(router.pathname);
 
     return (
         <div className='min-w-full min-h-screen'>
@@ -38,7 +40,7 @@ function MainLayout({ children }: Props) {
                     {showUploadMedia && <UploadMedia />}
                     {showScanCode && <ScanCode />}
                     {showDeleteLog && <DeleteLog />}
-                    {(router.pathname === "/" || router.pathname === "/history") && <Navbar />}
+                    {(router.pathname === "/" || router.pathname === "/history" || router.pathname === "/history/[id]") && <Navbar />}
                     {children}
                 </main>
             }
