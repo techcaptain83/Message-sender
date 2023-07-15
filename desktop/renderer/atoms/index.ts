@@ -1,4 +1,4 @@
-import { IFile, IUser } from "@/types";
+import { IFile, ILog, IUser } from "@/types";
 import { atom } from "recoil";
 
 
@@ -50,7 +50,17 @@ export const showScanCodeState = atom<boolean>({
     default: false
 });
 
-export const phoneConnectedState=atom<boolean>({
-    key:"phoneConnectedState",
-    default:false
-})
+export const phoneConnectedState = atom<boolean>({
+    key: "phoneConnectedState",
+    default: false
+});
+
+export const showDeleteLogState = atom<boolean>({
+    key: "showDeleteLogState",
+    default: false
+});
+
+export const logToDeleteState = atom<ILog>({
+    key: "logToDeleteState",
+    default: null
+});

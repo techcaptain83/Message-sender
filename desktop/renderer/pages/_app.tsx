@@ -14,9 +14,6 @@ const inter = Poppins({
   weight: ['300', '400', '500', '600', '700', '800']
 });
 function MyApp({ Component, pageProps }: AppProps) {
-  const options = {
-
-  }
 
   return (
     <PayPalScriptProvider options={{
@@ -29,7 +26,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <MainLayout>
             <Toaster />
-            <div className={inter.className}>
+            <div className={` ${inter.className}`}>
               <Component {...pageProps} />
             </div>
           </MainLayout>

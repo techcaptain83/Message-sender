@@ -30,5 +30,13 @@ export interface IFile {
     _id: string;
     filename: string;
     fileUrl: string;
-    type:string;
+    type: string;
+}
+
+export interface ILog {
+    _id: string;
+    filename: string;
+    sentCount: number;
+    failedCount: number;
+    createdAt: string;    
 }

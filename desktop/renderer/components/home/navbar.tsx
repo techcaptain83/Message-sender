@@ -1,16 +1,25 @@
+import { showUpgradeToPremiumState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { ArrowRightOnRectangleIcon, Bars4Icon } from '@heroicons/react/20/solid';
+import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { FaCrown } from 'react-icons/fa';
+import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
 import Loader from '../Loader';
 import Logo from '../logo';
-import { FaCrown } from 'react-icons/fa';
-import { useRecoilState } from 'recoil';
-import { showUpgradeToPremiumState } from '@/atoms';
+import { useRouter } from 'next/router';
+
+const links: {
+    label: string, href: string
+}[] = [
+        { label: "Dashboard", href: '/' },
+        { label: "Logs", href: '/logs' },
+    ]
 
 export default function Navbar() {
     const { user, logout, loading } = useAuth();
     const [showUpgradeModal, setShowUpgradeModal] = useRecoilState(showUpgradeToPremiumState);
+    const router = useRouter();
 
     return (
         <div className='w-full py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[9vh]'>
@@ -18,9 +27,12 @@ export default function Navbar() {
                 <Link href={'/'}>
                     <Logo className="h-10" />
                 </Link>
-                {/* <Link href={'/history'}>
-                    <button className='rounded-md text-gray-700 font-medium hover:text-blue-500  p-2 text-sm' >Message History</button>
-                </Link> */}
+
+                {links.map(link => (
+                    <Link key={link.href} href={link.href}>
+                        <button className={`rounded-md text-gray-700 font-medium hover:text-blue-500  p-2 text-sm ${router.pathname === link.href && "bg-blue-500 text-white hover:text-white"}`} >{link.label}</button>
+                    </Link>
+                ))}
             </div>
             {/* <div className='relative'>
                 <Bars4Icon width={20} className='hover:text-blue-500' />
@@ -59,7 +71,7 @@ export default function Navbar() {
                     </>
                     }
                 </Button>
-                </div>
+            </div>
         </div>
     )
 }

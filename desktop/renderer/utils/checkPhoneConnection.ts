@@ -16,7 +16,7 @@ var config = {
 export const checkPhoneConnection = async () => {
     try {
         const response = await axios(config);
-        console.log(response.data);
+        // console.log(response.data);
         return response.data;
     } catch (error) {
         console.log(error);
