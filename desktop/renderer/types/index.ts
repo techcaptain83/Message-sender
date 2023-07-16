@@ -38,7 +38,7 @@ export interface ILogContact {
     firstName: string,
     lastName: string,
     phoneNumber: string,
-    sent?: boolean,
+    sent: boolean,
 }
 export interface ILog {
     _id: string;

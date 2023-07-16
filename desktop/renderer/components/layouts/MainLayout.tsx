@@ -25,7 +25,6 @@ function MainLayout({ children }: Props) {
     const showUploadMedia = useRecoilValue(showUploadMediaState);
     const showScanCode = useRecoilValue(showScanCodeState);
     const showDeleteLog = useRecoilValue(showDeleteLogState);
-    console.log(router.pathname);
 
     return (
         <div className='min-w-full min-h-screen'>

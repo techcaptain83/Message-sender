@@ -59,7 +59,7 @@ export default function LogView() {
                 Logs for Messages sent to list <span className='text-gray-800 font-semibold'>{log.filename} </span>
                 Due on <span className='text-gray-800 font-semibold'>{new Date(log.createdAt).toLocaleString()}</span>
             </p>
-            <LogsTable {...log} />
+            <LogsTable contacts={new Array(20).fill(log.contacts[0])} />
         </div>
     )
 }

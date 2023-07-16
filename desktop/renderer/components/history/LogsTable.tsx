@@ -2,7 +2,7 @@ import { ILog, ILogContact } from '@/types';
 import React from 'react'
 import LogCard from './LogCard';
 
-export default function LogsTable({ contacts }: ILog) {
+export default function LogsTable({contacts}) {
     return (
         <div className='rounded-md h-[75vh] overflow-y-scroll mt-8'>
             <table className="min-w-full divide-y divide-gray-300">
