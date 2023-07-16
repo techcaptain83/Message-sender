@@ -1,11 +1,11 @@
+import { logToDeleteState, showDeleteLogState } from "@/atoms";
+import { ILog } from "@/types";
+import axios from "axios.config";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { useRecoilState } from "recoil";
 import useSWR from "swr";
 import useAuth from "./useAuth";
-import axios from "axios.config";
-import toast from "react-hot-toast";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { logToDeleteState, logToSaveState, showDeleteLogState } from "@/atoms";
-import { ILog } from "@/types";
 
 
 export default function useLogs() {
@@ -13,29 +13,25 @@ export default function useLogs() {
     const [_showDeleteLog, setShowdeleteLog] = useRecoilState(showDeleteLogState);
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
 
-    const logToSave = useRecoilValue(logToSaveState);
 
     const [deletingLog, setDeletingLog] = useState(false);
     const { data, error, mutate } = useSWR(`/logs?user=${user?._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);
-            // return response.data;
             return data.logs as ILog[];
 
         } catch (error) {
-            // return []
             console.log("error occured while fetching from backend : ")
             console.log(error);
-
             return [];
         }
     });
 
-    const createLog = async () => {
+    const createLog = async (log:ILog) => {
         try {
-            const { data } = await axios.post(`/logs?user=${user._id}`, logToSave);
+            const { data } = await axios.post(`/logs?user=${user._id}`, log);
             if (data.message === "success") {
-                toast.success("Log created successfuly!");
+                // toast.success("Log created successfuly!");
                 mutate();
             }
         } catch (error) {

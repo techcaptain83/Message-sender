@@ -17,20 +17,18 @@ export default function MesssageInput() {
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
     const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
-
-    const [loading, setLoading] = useState(false);
     const uploadMediaRef = useRef<HTMLDivElement>(null);
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
 
     const handleSubmit = () => {
-        if (!phoneConnected) {
+        if (selectedUsers.length === 0) {
+            toast.error('Please select at least one contact to send a message to.');
+        }
+        else if (!phoneConnected) {
             toast.error("you have to connect your phone first!");
             setTimeout(() => {
                 setShowScanCode(true);
             }, 1000);
-        }
-        else if (selectedUsers.length === 0) {
-            toast.error('Please select at least one user to send a message to.');
         }
         else if (!uploadedFile) {
             sendBulkMessages(selectedUsers, {
@@ -153,9 +151,9 @@ export default function MesssageInput() {
                     className=' w-full text-sm h-full bg-gray-50/75 rounded px-4 py-2 outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100'
                 />}
             <button
-                disabled={(value.trim() === '' || loading) && !uploadedFile}
+                disabled={(value.trim() === '' || sendingMessages) && !uploadedFile}
                 className=' h-full p-2 bg-gray-50/75'>
-                {loading ?
+                {sendingMessages ?
                     <Loader /> :
                     <PaperAirplaneIcon width={30} className={`text-gray-400
                 ${(value.trim() === '' && !uploadedFile) ? "hover:cursor-not-allowed" : "hover:text-gray-600"} `} onClick={handleSubmit} />}

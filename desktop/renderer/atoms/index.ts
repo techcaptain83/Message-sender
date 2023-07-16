@@ -64,8 +64,3 @@ export const logToDeleteState = atom<ILog>({
     key: "logToDeleteState",
     default: null
 });
-
-export const logToSaveState = atom<ILog>({
-    key: "logToSaveState",
-    default: null
-});

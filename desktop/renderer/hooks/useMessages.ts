@@ -1,10 +1,10 @@
-import { logToSaveState, selectedFileState } from '@/atoms';
-import { IUser } from '@/types';
+import { selectedFileState } from '@/atoms';
+import { ILogContact, IUser } from '@/types';
 import { generateUrl } from '@/utils/messaging';
 import axios from 'axios';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import useLogs from './useLogs';
 
 interface IContent {
@@ -18,10 +18,8 @@ interface IContent {
 export default function useMessages() {
 
     const [sendingMessages, setSendingMessages] = useState(false);
-    const [logTosave, setLogToSave] = useRecoilState(logToSaveState);
     const selectedFile = useRecoilValue(selectedFileState);
     const { createLog } = useLogs();
-
 
     const sendMessage = async (phoneNumber: string, content: IContent) => {
 
@@ -66,54 +64,54 @@ export default function useMessages() {
 
     const sendBulkMessages = async (contacts: IUser[], content: IContent) => {
         setSendingMessages(true);
-
         let sentCount = 0;
         let failedCount = 0;
-        setLogToSave({
-            filename: selectedFile.filename,
-            contacts: [],
-            sentCount: 0,
-            failedCount: 0,
-        })
-        contacts.map((contact) => {
+        let logContacts: ILogContact[] = [];
+
+
+        contacts.map((contact, index) => {
             sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), content).then((response) => {
                 if (response.data.message === "ok") {
                     toast.success("Message sent successfully to number : " + contact.phoneNumber);
                     sentCount++;
-                    setLogToSave({
-                        ...logTosave,
-                        contacts: [
-                            ...logTosave.contacts,
-                            {
-                                firstName: contact.firstName,
-                                lastName: contact.lastName,
-                                phoneNumber: contact.phoneNumber,
-                                sent: true,
-                            }
-                        ],
-                        sentCount: sentCount,
-                    })
+
+                    logContacts.push({
+                        firstName: contact.firstName,
+                        lastName: contact.lastName,
+                        phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
+                        sent: true,
+                    });
+                    if (index === contacts.length - 1) {
+                        setSendingMessages(false);
+                        createLog({
+                            filename: selectedFile?.filename,
+                            sentCount,
+                            failedCount,
+                            contacts: logContacts,
+                        });
+                    }
+
                 } else {
                     toast.error("failed to send message to number : " + contact.phoneNumber);
                     failedCount++;
-                    setLogToSave({
-                        ...logTosave,
-                        contacts: [
-                            ...logTosave.contacts,
-                            {
-                                firstName: contact.firstName,
-                                lastName: contact.lastName,
-                                phoneNumber: contact.phoneNumber,
-                                sent: false,
-                            }
-                        ],
-                        failedCount: failedCount,
+                    logContacts.push({
+                        firstName: contact.firstName,
+                        lastName: contact.lastName,
+                        phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
+                        sent: false,
                     });
+                    if (index === contacts.length - 1) {
+                        setSendingMessages(false);
+                        createLog({
+                            filename: selectedFile?.filename,
+                            sentCount,
+                            failedCount,
+                            contacts: logContacts,
+                        });
+                    }
                 }
             })
         });
-        setSendingMessages(false);
-        createLog();
     }
 
 

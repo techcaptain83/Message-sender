@@ -1,10 +1,9 @@
-import { logToDeleteState, selectedFileState, showDeleteFileState, showDeleteLogState } from '@/atoms';
-import useFiles from '@/hooks/useFiles';
+import { logToDeleteState, showDeleteLogState } from '@/atoms';
+import useLogs from '@/hooks/useLogs';
 import { Dialog } from '@headlessui/react';
 import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
-import useLogs from '@/hooks/useLogs';
 
 export default function DeleteLog() {
     const [showDeleteLog, setShowDeleteLog] = useRecoilState(showDeleteLogState);
