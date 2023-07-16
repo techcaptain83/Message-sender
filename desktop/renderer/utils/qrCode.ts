@@ -21,5 +21,6 @@ export const getQRCode = async () => {
         return response.data;
     } catch {
         console.log("error getting qr code");
+        return null;
     }
 }
