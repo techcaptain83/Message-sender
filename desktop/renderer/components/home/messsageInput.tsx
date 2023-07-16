@@ -1,16 +1,17 @@
 import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
-import { sendMessage } from '@/utils/messaging';
+import useMedia from '@/hooks/useMedia';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import 'react-quill/dist/quill.snow.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Loader from '../Loader';
-import useMedia from '@/hooks/useMedia';
+import useMessages from '@/hooks/useMessages';
 
 export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
     const { uploadMedia, uploadingAudio, uploadingImage, uploadingVideo } = useMedia();
+    const { sendingMessages, sendBulkMessages } = useMessages();
     const [value, setValue] = useState('');
     const [showUploadMedia, setShowUploadMedia] = useState(false);
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
@@ -20,62 +21,6 @@ export default function MesssageInput() {
     const [loading, setLoading] = useState(false);
     const uploadMediaRef = useRef<HTMLDivElement>(null);
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
-
-    const submitText = () => {
-        if (value.trim() === '') return;
-
-        setLoading(true);
-        selectedUsers.forEach(async user => {
-            await sendMessage(`${user.countryCode}${user.phoneNumber}`.trim(), {
-                body: value
-            }).finally(() => {
-                setLoading(false);
-                setValue('');
-                setUploadedFile(null);
-            })
-        })
-    }
-
-    const submitImage = () => {
-        setLoading(true);
-        selectedUsers.forEach(async user => {
-            await sendMessage(`${user.countryCode}${user.phoneNumber}`.trim(), {
-                image: uploadedFile?.fileUrl,
-                caption: value.trim().length > 0 ? value : null
-            }).finally(() => {
-                setLoading(false);
-                setValue('');
-                setUploadedFile(null);
-            })
-        });
-    }
-
-    const submitVideo = () => {
-        setLoading(true);
-        selectedUsers.forEach(async user => {
-            await sendMessage(`${user.countryCode}${user.phoneNumber}`.trim(), {
-                video: uploadedFile?.fileUrl,
-                caption: value.trim().length > 0 ? value : null
-            }).finally(() => {
-                setLoading(false);
-                setValue('');
-                setUploadedFile(null);
-            })
-        });
-    }
-
-    const submitAudio = () => {
-        setLoading(true);
-        selectedUsers.forEach(async user => {
-            await sendMessage(`${user.countryCode}${user.phoneNumber}`.trim(), {
-                audio: uploadedFile?.fileUrl
-            }).finally(() => {
-                setLoading(false);
-                setValue('');
-                setUploadedFile(null);
-            })
-        });
-    }
 
     const handleSubmit = () => {
         if (!phoneConnected) {
@@ -88,13 +33,30 @@ export default function MesssageInput() {
             toast.error('Please select at least one user to send a message to.');
         }
         else if (!uploadedFile) {
-            submitText();
+            sendBulkMessages(selectedUsers, {
+                body: value
+            });
+            setValue('');
         } else if (uploadedFile.type.includes('image')) {
-            submitImage();
+            sendBulkMessages(selectedUsers, {
+                image: uploadedFile?.fileUrl,
+                caption: value.trim().length > 0 ? value : null
+            });
+            setValue('');
+            setUploadedFile(null);
         } else if (uploadedFile.type.includes('video')) {
-            submitVideo();
+            sendBulkMessages(selectedUsers, {
+                video: uploadedFile?.fileUrl,
+                caption: value.trim().length > 0 ? value : null
+            })
+            setValue("");
+            setUploadedFile(null);
         } else if (uploadedFile.type.includes('audio')) {
-            submitAudio();
+            sendBulkMessages(selectedUsers, {
+                audio: uploadedFile?.fileUrl
+            });
+            setValue("");
+            setUploadedFile(null);
         }
     }
 

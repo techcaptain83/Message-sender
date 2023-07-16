@@ -20,7 +20,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 
 export default function LogView({ log }: Props) {
-    console.log(log);
 
     const downloadLogs = () => {
         const headers = ['First Name', 'Last Name', 'Phone Number', 'Status'];

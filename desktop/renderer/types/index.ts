@@ -41,10 +41,10 @@ export interface ILogContact {
     sent: boolean,
 }
 export interface ILog {
-    _id: string;
+    _id?: string;
     filename: string;
     sentCount: number;
     failedCount: number;
-    createdAt: string;
+    createdAt?: string;
     contacts: ILogContact[]
 }

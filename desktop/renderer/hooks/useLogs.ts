@@ -3,8 +3,8 @@ import useSWR from "swr";
 import useAuth from "./useAuth";
 import axios from "axios.config";
 import toast from "react-hot-toast";
-import { useRecoilState } from "recoil";
-import { logToDeleteState, showDeleteLogState } from "@/atoms";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { logToDeleteState, logToSaveState, showDeleteLogState } from "@/atoms";
 import { ILog } from "@/types";
 
 
@@ -12,6 +12,8 @@ export default function useLogs() {
     const { user } = useAuth();
     const [_showDeleteLog, setShowdeleteLog] = useRecoilState(showDeleteLogState);
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
+
+    const logToSave = useRecoilValue(logToSaveState);
 
     const [deletingLog, setDeletingLog] = useState(false);
     const { data, error, mutate } = useSWR(`/logs?user=${user?._id}`, async (url) => {
@@ -28,6 +30,20 @@ export default function useLogs() {
             return [];
         }
     });
+
+    const createLog = async () => {
+        try {
+            const { data } = await axios.post(`/logs?user=${user._id}`, logToSave);
+            if (data.message === "success") {
+                toast.success("Log created successfuly!");
+                mutate();
+            }
+        } catch (error) {
+            // toast.error("Error occured while creating log! try again later");
+            console.log("error occured while creating log");
+            console.log(error);
+        }
+    }
 
     const deleteLog = async (logId: string) => {
         setDeletingLog(true);
@@ -52,6 +68,7 @@ export default function useLogs() {
         logs: data,
         isFetching: !error && !data,
         deletingLog,
-        deleteLog
+        deleteLog,
+        createLog
     }
 }
