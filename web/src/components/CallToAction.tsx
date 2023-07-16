@@ -26,9 +26,14 @@ export function CallToAction() {
           <p className="mt-4 text-lg tracking-tight text-white">
             Empower yourself with Chatmaid enabling you to feel productive while your personal messaging &quot;maid&quot; handles the chatting for you. Invest today and unlock a new level of efficiency and convenience in your communication.
           </p>
-          <Button href="/register" color="white" className="mt-10">
-            Get 7 days free trial
-          </Button>
+          <div className='flex items-center justify-center sm:flex-row flex-col gap-4'>
+            <Button href="/register" color="white" className="mt-10">
+              Get 7 days free trial
+            </Button>
+            <Button href="/register" color="white" className="sm:mt-10">
+              Go straight to premium
+            </Button>
+          </div>
         </div>
       </Container>
     </section>

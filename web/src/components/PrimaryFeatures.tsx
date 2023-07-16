@@ -26,7 +26,7 @@ const features = [
   {
     title: 'Lifetime Access',
     description:
-      'Unlock unlimited access to the app with a one-time payment of $79.99 for a lifetime subscription without any additional charges or subscriptions.',
+      'unlock unlimited access to the app with a one time payment of $79.99  without any additional fees or subscriptions.',
     image: screenshotVatReturns,
   },
   {
