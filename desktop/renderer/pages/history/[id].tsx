@@ -1,27 +1,26 @@
 import LogsTable from '@/components/history/LogsTable';
 import { ILog } from '@/types';
+import axios from 'axios.config';
 import { saveAs } from 'file-saver';
+import { GetServerSideProps } from 'next';
+interface Props {
+    log: ILog
+}
 
-const log: ILog =
-{
-    _id: '1',
-    filename: 'Employees.csv',
-    sentCount: 20,
-    failedCount: 43,
-    createdAt: "2023-07-15T15:52:00.506Z",
-    contacts: [
-        {
-            firstName: "Mutesa",
-            lastName: "Cedric",
-            phoneNumber: "(+250)781892231",
-            sent: true
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { id } = context.params;
+    const { data } = await axios.get(`/logs/${id}`);
+
+    return {
+        props: {
+            log: data.log
         }
-    ]
+    }
 }
 
 
-export default function LogView() {
-
+export default function LogView({ log }: Props) {
+    console.log(log);
 
     const downloadLogs = () => {
         const headers = ['First Name', 'Last Name', 'Phone Number', 'Status'];
@@ -59,7 +58,7 @@ export default function LogView() {
                 Logs for Messages sent to list <span className='text-gray-800 font-semibold'>{log.filename} </span>
                 Due on <span className='text-gray-800 font-semibold'>{new Date(log.createdAt).toLocaleString()}</span>
             </p>
-            <LogsTable contacts={new Array(20).fill(log.contacts[0])} />
+            <LogsTable contacts={log.contacts} />
         </div>
     )
 }
