@@ -25,7 +25,7 @@ export default function LogsTable({contacts}) {
                 </thead>
 
                 <tbody className="bg-white">
-                    {contacts.length > 0 && contacts.map((contact: ILogContact) => (
+                    {contacts?.length > 0 && contacts.map((contact: ILogContact) => (
                         <LogCard key={contact.phoneNumber} {...contact} />
                     ))}
                 </tbody>

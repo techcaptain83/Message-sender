@@ -136,7 +136,7 @@ export default function MesssageInput() {
                             <XMarkIcon width={20} />
                         </button>
                     </div>
-                    {(uploadedFile.filename.includes('image') || uploadedFile.filename.includes('video')) &&
+                    {(uploadedFile.type.includes('image') || uploadedFile.type.includes('video')) &&
                         <textarea
                             value={value}
                             onChange={(e) => setValue(e.target.value)}
