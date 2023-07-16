@@ -5,6 +5,7 @@ import axios from "axios.config";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { logToDeleteState, showDeleteLogState } from "@/atoms";
+import { ILog } from "@/types";
 
 
 export default function useLogs() {
@@ -17,12 +18,14 @@ export default function useLogs() {
         try {
             const { data } = await axios.get(url);
             // return response.data;
-            return data.logs;
+            return data.logs as ILog[];
 
         } catch (error) {
             // return []
             console.log("error occured while fetching from backend : ")
             console.log(error);
+
+            return [];
         }
     });
 

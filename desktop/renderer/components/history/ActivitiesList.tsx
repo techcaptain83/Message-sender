@@ -3,25 +3,14 @@ import { ILog } from '@/types';
 import Link from 'next/link';
 import { useRecoilState } from 'recoil';
 
-const logs: ILog[] = [
-    {
-        _id: '1',
-        filename: 'Employees.csv',
-        sentCount: 20,
-        failedCount: 43,
-        createdAt: "2023-07-15T15:52:00.506Z",
-        contacts: []
-    }
-]
 
-
-export default function ActivitiesList() {
+export default function ActivitiesList({ logs }: { logs: ILog[] }) {
     const [_showDelLog, setShowDeleteLog] = useRecoilState(showDeleteLogState);
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
 
     return (
-        <ul role="list" className="divide-y divide-gray-300 h-[70vh] overflow-y-auto">
-            {new Array(12).fill(logs[0]).map((log: ILog, index) => (
+        <ul role="list" className={`divide-y divide-gray-300 h-[70vh] overflow-y-auto ${logs.length===0 && "flex items-center justify-center"}`}>
+            {logs.length > 0 ? logs.map((log: ILog, index) => (
                 <li key={index} className="flex items-center justify-between gap-x-6 py-5">
                     <div className="min-w-0">
                         <div className="flex items-start gap-x-3">
@@ -60,7 +49,27 @@ export default function ActivitiesList() {
                         </button>
                     </div>
                 </li>
-            ))}
+            )) :
+                <div
+                    className="relative block w-fit rounded-lg border-2 border-dashed border-gray-300 p-12 text-center hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                    <svg
+                        className="mx-auto h-12 w-12 text-gray-400"
+                        stroke="currentColor"
+                        fill="none"
+                        viewBox="0 0 48 48"
+                        aria-hidden="true"
+                    >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M8 14v20c0 4.418 7.163 8 16 8 1.381 0 2.721-.087 4-.252M8 14c0 4.418 7.163 8 16 8s16-3.582 16-8M8 14c0-4.418 7.163-8 16-8s16 3.582 16 8m0 0v14m0-4c0 4.418-7.163 8-16 8S8 28.418 8 24m32 10v6m0 0v6m0-6h6m-6 0h-6"
+                        />
+                    </svg>
+                    <span className="mt-2 block text-sm font-semibold text-gray-900">You haven't sent any message to any list.</span>
+                </div>
+            }
         </ul>
     )
 }

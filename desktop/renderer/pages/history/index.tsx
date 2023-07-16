@@ -1,10 +1,10 @@
 import ActivitiesList from '@/components/history/ActivitiesList'
+import useLogs from '@/hooks/useLogs'
 import React from 'react'
 
 export default function History() {
-  const downloadReport = () => {
+  const { logs } = useLogs();
 
-  }
 
   return (
     <div className='w-full h-[91vh px-8 py-4'>
@@ -22,7 +22,7 @@ export default function History() {
         Here, you will find history of the messages you've sent to lists,with all the stats of messages that were sent, the ones which were successful or the ones that failed.
       </p>
       <div className='p-6 rounded-md bg-gray-50 mt-8'>
-        <ActivitiesList />
+        <ActivitiesList logs={logs} />
       </div>
     </div >
   )
