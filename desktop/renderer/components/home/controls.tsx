@@ -52,14 +52,14 @@ export default function Controls() {
                 </button>
             </div>
             <div className="flex flex-row gap-4 items-center">
-                <label htmlFor="fileInput" className="relative w-full h-full">
+                {/* <label htmlFor="fileInput" className="relative w-full h-full">
                     <button
                         onClick={() => setShowUploadFile(true)}
                         className="control">
                         <MdOutlineUploadFile className='text-green-500' />
                         <p className='font-bold'>Upload List</p>
                     </button>
-                </label>
+                </label> */}
                 <button
                     onClick={() => setShowDeleteFile(true)}
                     className="control hover:bg-red-500 text-red-500 shrink-0">

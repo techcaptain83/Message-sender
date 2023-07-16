@@ -1,9 +1,10 @@
+import PrePageLoader from '@/components/LargeLoader';
 import ActivitiesList from '@/components/history/ActivitiesList'
 import useLogs from '@/hooks/useLogs'
 import React from 'react'
 
 export default function History() {
-  const { logs } = useLogs();
+  const { logs, isFetching } = useLogs();
 
 
   return (
@@ -22,7 +23,7 @@ export default function History() {
         Here, you will find history of the messages you've sent to lists,with all the stats of messages that were sent, the ones which were successful or the ones that failed.
       </p>
       <div className='p-6 rounded-md bg-gray-50 mt-8'>
-        <ActivitiesList logs={logs} />
+        {isFetching ? <PrePageLoader /> : <ActivitiesList logs={logs || []} />}
       </div>
     </div >
   )
