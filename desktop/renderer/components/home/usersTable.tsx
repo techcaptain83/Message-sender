@@ -13,8 +13,8 @@ export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
-
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [allChecked, setAllChecked] = useState(false);
   const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
   const activeUsers = useRecoilValue(activeUsersState);
   const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
@@ -104,9 +104,7 @@ export default function UsersTable() {
         <div className="sm:flex sm:items-center justify-between">
           <div className="">
             <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
-            {/* <p className="mt-2 text-sm text-gray-700">
-              A list of all the users in a current file including their names, locations, and their phone numbers.
-            </p> */}
+
           </div>
           <input
             id="filterInput"
@@ -121,7 +119,7 @@ export default function UsersTable() {
               type="button"
               className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
             >
-              upload a new file
+              upload a new list
             </button>
           </div>
         </div>
@@ -130,6 +128,22 @@ export default function UsersTable() {
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <table className="min-w-full divide-y divide-gray-300">
                 <thead>
+                  <div className="flex items-center gap-2 pl-2">
+                    <input type="checkbox"
+                      checked={allChecked}
+                      defaultChecked={allChecked}
+                      onClick={() => {
+                        setAllChecked(!allChecked);
+                        if (allChecked) {
+                          setSelectedUsers([]);
+                        } else {
+                          setChecked(true);
+                          setSelectedUsers(filteredUsers);
+                        }
+                      }}
+                    />
+                    <span className="text-sm">Select All</span>
+                  </div>
                   <tr>
                     <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
                       <input type="checkbox"
@@ -138,6 +152,7 @@ export default function UsersTable() {
                         onClick={() => {
                           setChecked(!checked);
                           if (checked) {
+                            setAllChecked(false);
                             setSelectedUsers([]);
                           } else {
                             setSelectedUsers(activeUsers);

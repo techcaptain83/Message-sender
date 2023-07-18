@@ -16,8 +16,8 @@ export default function ScanCode() {
     const { user } = useAuth();
     const [qrCode, setQrcode] = useState<string>(null);
     const [loadingCode, setLoadingCode] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [phoneConnected,setPhoneConnected]=useRecoilState(phoneConnectedState);
+    const [loading, setLoading] = useState(true);
+    const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
 
     const getQr = async () => {
         setLoadingCode(true);
@@ -41,19 +41,35 @@ export default function ScanCode() {
     }, []);
 
 
-    const submitCode = async () => {
-        setLoading(true);
-        const data = await checkPhoneConnection();
-        if (data.error) {
-            toast.error("Your phone hasn't been connected yet!");
-            setLoading(false);
-        } else {
-            toast.success("your phone has been connected! you can now send messages");
-            setLoading(false);
-            setShowScanCode(false);
-            setPhoneConnected(true);
-        }
-    }
+    // const submitCode = async () => {
+    //     setLoading(true);
+    //     const data = await checkPhoneConnection();
+    //     if (data.error) {
+    //         toast.error("Your phone hasn't been connected yet!");
+    //         setLoading(false);
+    //     } else {
+    //         toast.success("your phone has been connected! you can now send messages");
+    //         setLoading(false);
+    //         setShowScanCode(false);
+    //         setPhoneConnected(true);
+    //     }
+    // }
+
+    useEffect(() => {
+        const interval = setInterval(async () => {
+            const data = await checkPhoneConnection();
+            if (data.error) {
+                setPhoneConnected(false);
+            } else {
+                setLoading(false);
+                setPhoneConnected(true);
+                toast.success("your phone has been connected! you can now send messages");
+                setShowScanCode(false);
+            }
+        }, 2000);
+        return () => clearInterval(interval);
+    }, []);
+
 
 
     return (
@@ -89,12 +105,14 @@ export default function ScanCode() {
             </div>
             <div className="mt-5 sm:mt-4 sm:flex space-y-3 sm:space-y-0 sm:flex-row-reverse">
                 <button
-                    onClick={() => submitCode()}
-                    disabled={loadingCode || loading}
+                    // onClick={() => submitCode()}
+                    // disabled={loadingCode || loading}
+                    onClick={() => setShowScanCode(false)}
+                    disabled
                     type="button"
                     className="inline-flex w-full  justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                 >
-                    <span>{loading ? <Loader /> : "Done"}</span>
+                    <span>{loading ? <Loader /> : "Close"}</span>
                 </button>
                 {
                     qrCode && <button

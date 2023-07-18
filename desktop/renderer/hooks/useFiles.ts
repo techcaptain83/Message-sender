@@ -56,7 +56,7 @@ export default function useFiles() {
     const deleteFile = async (fileId: string) => {
         setDeletingFile(true);
         try {
-            const { data } = await axios.delete(`/files/${fileId}`);
+            const { data } = await axios.delete(`/files/${fileId}?user=${user._id}`);
             if (data.success) {
                 toast.success("File deleted successfuly!");
                 setSelectedFile(null);
@@ -72,55 +72,74 @@ export default function useFiles() {
         }
     }
 
-    const checkIfLimitIsExceeded =(file: File): boolean => {
-        let limitExceeded = false;
-        const fileReader = new FileReader();
-        fileReader.onload = (event) => {
-            const fileContents = event.target.result as string;
-            const users = fileContents.split("\n");
-            const totalUsers = users.length;
-            if (user.usersUploaded + totalUsers > 20 && !user.isPro) {
-                toast.error("You can only upload 20 users per month! if you need more, please upgrade to primium");
-                limitExceeded = true;
-                return true;
-            }
-        };
-        fileReader.readAsText(file);
-        return limitExceeded;
-
-    }
+    const checkIfLimitIsExceeded = async (file: File): Promise<{
+        hasExceededLimit: boolean,
+        totalUsers: number,
+    }> => {
+        return new Promise<{
+            hasExceededLimit: boolean,
+            totalUsers: number,
+        }>((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.onload = (event) => {
+                const fileContents = event.target.result as string;
+                const users = fileContents.split("\n");
+                const totalUsers = users.length;
+                const usersUploaded = user.usersUploaded || 0;
+                if (usersUploaded + totalUsers > 20 && !user.isPro) {
+                    toast.error("You can only upload 20 contacts with the free trial version. Upgrade to PREMIUM for unlimited.");
+                    resolve({
+                        hasExceededLimit: true,
+                        totalUsers
+                    });
+                } else {
+                    resolve({
+                        hasExceededLimit: false,
+                        totalUsers
+                    });
+                }
+            };
+            fileReader.onerror = () => {
+                reject(new Error("An error occurred while reading the file."));
+            };
+            fileReader.readAsText(file);
+        });
+    };
 
     const uploadFile = async (event: ChangeEvent<HTMLInputElement>) => {
-        setUploadingFile(true)
+        setUploadingFile(true);
         const file = event.target.files[0];
 
-        if (checkIfLimitIsExceeded(file)) {
-            setUploadingFile(false);
-            event.target.files = null;
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        axios.post(`/files/upload?user=${user._id}`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        })
-            .then(response => {
-                toast.success("File uploaded successfuly!");
-                mutate();
-                event.target.files = null;
-                setShowUploadFile(false);
-            })
-            .catch(error => {
-                console.error('Error uploading file:', error);
-                toast.error("Error occured while uploading file! try again later");
-            }).finally(() => {
+        try {
+            const limitExceeded = await checkIfLimitIsExceeded(file);
+            if (limitExceeded.hasExceededLimit) {
                 setUploadingFile(false);
+                event.target.files = null;
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+
+            await axios.post(`/files/upload?user=${user._id}&totalUsers=${limitExceeded.totalUsers}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
-    }
+
+            toast.success("File uploaded successfully!");
+            mutate();
+            event.target.files = null;
+            setShowUploadFile(false);
+        } catch (error) {
+            console.error('Error uploading file:', error);
+            toast.error("An error occurred while uploading the file. Please try again later.");
+        } finally {
+            setUploadingFile(false);
+        }
+    };
+
 
     const downloadFile = async () => {
         try {
