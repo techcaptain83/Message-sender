@@ -49,7 +49,7 @@ export default function UpgradeToPremium() {
             </div>
             <div className="mt-2">
                 <p className="py-4 text-gray-500">
-                    your are going to be redirected to the payment portal where you can pay <span className='font-semibold text-gray-800'> $79 </span> and get a lifetime access.
+                    your are going to be redirected to the payment portal where you can pay <span className='font-semibold text-gray-800'> $79.99 </span> and get a lifetime access.
                 </p>
             </div>
             <PayPalButtons

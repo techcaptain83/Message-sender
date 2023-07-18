@@ -63,7 +63,9 @@ export default function ScanCode() {
             } else {
                 setLoading(false);
                 setPhoneConnected(true);
-                toast.success("your phone has been connected! you can now send messages");
+                setTimeout(() => {
+                    toast.success("your phone has been connected! you can now send messages");
+                }, 1000)
                 setShowScanCode(false);
             }
         }, 2000);
@@ -90,7 +92,8 @@ export default function ScanCode() {
                             </ul>
                         </div>
                         <div className='text-start pb-3'>
-                            A QR code is valid only for 45 seconds.You can click <span className='font-semibold'>send</span> after the process has been completed
+                            A QR code is valid only for <span className='font-semibold'>45 seconds.
+                            </span>You can click after the process has been completed
                         </div>
                     </div>
                 </div>
@@ -112,7 +115,14 @@ export default function ScanCode() {
                     type="button"
                     className="inline-flex w-full  justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
                 >
-                    <span>{loading ? <Loader /> : "Close"}</span>
+                    <span>{
+                        loadingCode ? <div className='flex items-center gap-1'>
+                            <Loader /> generating code ...
+                        </div> : loading ? <div className='flex items-center gap-1'>
+                            <Loader /> connecting ...
+                        </div> : "Send"
+                    }
+                    </span>
                 </button>
                 {
                     qrCode && <button

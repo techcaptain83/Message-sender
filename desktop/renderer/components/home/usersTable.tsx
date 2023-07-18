@@ -135,6 +135,7 @@ export default function UsersTable() {
                       onClick={() => {
                         setAllChecked(!allChecked);
                         if (allChecked) {
+                          setChecked(false);
                           setSelectedUsers([]);
                         } else {
                           setChecked(true);

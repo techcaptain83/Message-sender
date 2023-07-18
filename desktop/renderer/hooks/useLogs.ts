@@ -45,7 +45,7 @@ export default function useLogs() {
         setDeletingLog(true);
         try {
             const { data } = await axios.delete(`/logs/${logId}`);
-            if (data.success) {
+            if (data.message==="success") {
                 toast.success("Log deleted successfuly!");
                 setLogToDelete(null);
                 setShowdeleteLog(false);
