@@ -8,6 +8,7 @@ import { useRecoilValue } from 'recoil';
 import useLogs from './useLogs';
 
 interface IContent {
+    displayName?: string,
     body?: string,
     audio?: string,
     image?: string,
@@ -29,7 +30,7 @@ export default function useMessages() {
         };
 
         if (content.body) {
-            data.body = content.body;
+            data.body = content.body.replace(/\[name\]/g, content.displayName || "");
         }
 
         if (content.audio) {
@@ -44,7 +45,7 @@ export default function useMessages() {
             data.video = content.video;
         }
         if (content.caption) {
-            data.caption = content.caption
+            data.caption = content.caption.replace(/\[name\]/g, content.displayName || "");
         }
 
         let requestData = JSON.stringify(data);
@@ -70,7 +71,9 @@ export default function useMessages() {
 
 
         contacts.map((contact, index) => {
-            sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), content).then((response) => {
+            sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
+                displayName: contact.displayName, ...content
+            }).then((response) => {
                 if (response.data.message === "ok") {
                     toast.success("Message sent successfully to number : " + contact.phoneNumber);
                     sentCount++;
