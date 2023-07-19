@@ -11,7 +11,7 @@ import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import Router from 'next/router';
 import NProgress from "nprogress";
 
-const inter = Poppins({
+const poppins = Poppins({
   subsets: ["latin"],
   weight: ['300', '400', '500', '600', '700', '800']
 });
@@ -31,7 +31,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   return (
     <PayPalScriptProvider options={{
       // clientId: process.env.PAYPAL_CLIENT_ID,
-      clientId: "test",
+      clientId: "AUVWWFSEca-zzdzcIg_Vv_mFln0SsS1sbpTMC2DF2LvfFxadZX6OVE3s468rCmtzAQo2o7Z0kiZgkr2E",
       currency: "USD",
       components: "buttons"
     }}>
@@ -39,7 +39,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <AuthProvider>
           <MainLayout>
             <Toaster />
-            <div className={` ${inter.className}`}>
+            <div className={` ${poppins.className}`}>
               <Component {...pageProps} />
             </div>
           </MainLayout>

@@ -94,15 +94,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const signIn = async (email: string, serialNumber: string) => {
         setLoading(true);
         await axios.post('/auth/login', {
-            email, serialNumber: parseInt(serialNumber)
+            email, serialNumber: parseInt(serialNumber),
+            hasPreviouslyLoggedIn: localStorage.getItem("hasPreviouslyLoggedIn") === "true"
         }).then(({ data }) => {
             if (data.user) {
                 toast.success("You've been logged in successfully!");
                 localStorage.setItem(UIDHASH, JSON.stringify(data.user));
+                localStorage.setItem("hasPreviouslyLoggedIn", "true");
                 setUser(data.user);
                 router.push("/");
             }
         }).catch(({ response }) => {
+            if (response?.data?.hasPreviouslyLoggedIn) {
+                toast.error("You can only use one device per account!")
+                return;
+            }
             switch (response?.status) {
                 case 400:
                     toast.error("Invalid credentials! ")
@@ -113,7 +119,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
         setLoading(false);
     }
-
     // logout
     const logout = async () => {
         setLoading(true);
