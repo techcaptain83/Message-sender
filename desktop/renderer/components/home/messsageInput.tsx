@@ -21,6 +21,7 @@ export default function MesssageInput() {
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
 
     const handleSubmit = () => {
+        
         if (selectedUsers.length === 0) {
             toast.error('Please select at least one contact to send a message to.');
         }

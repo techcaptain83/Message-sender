@@ -156,7 +156,7 @@ export default function UsersTable() {
                             setAllChecked(false);
                             setSelectedUsers([]);
                           } else {
-                            setSelectedUsers(activeUsers);
+                            setSelectedUsers(pageUsers);
                           }
                         }}
                       />
