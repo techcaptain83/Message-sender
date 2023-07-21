@@ -83,7 +83,7 @@ export default function UsersTable() {
   useEffect(() => {
     if (filter === '') return setFilteredUsers(users);
     const filteredUsers = users.filter(user => {
-      const { firstName, lastName, displayName, phoneNumber, id } = user;
+      const { firstName, lastName, displayName, phoneNumber, id, countryCode } = user;
       const searchTerm = filter.toLowerCase();
 
       return (
@@ -91,7 +91,8 @@ export default function UsersTable() {
         lastName.toLowerCase().includes(searchTerm) ||
         displayName.toLowerCase().includes(searchTerm) ||
         phoneNumber.includes(filter) ||
-        id.toLowerCase().includes(searchTerm)
+        id.toLowerCase().includes(searchTerm) ||
+        ("+").concat(countryCode).toLowerCase().includes(searchTerm)
       );
     });
     setFilteredUsers(filteredUsers)
@@ -110,7 +111,7 @@ export default function UsersTable() {
             id="filterInput"
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            placeholder="Filter by name, phone number,..."
+            placeholder="Filter by name, phone number,country code..."
             className="border-2 py-1 px-5 w-2/4 focus:ring-1 ring-blue-600 focus:outline-none"
           />
           <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -127,7 +128,7 @@ export default function UsersTable() {
           <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
               <table className="min-w-full divide-y divide-gray-300">
-                <thead>
+                <thead className="space-y-1">
                   <div className="flex items-center gap-2 pl-2">
                     <input type="checkbox"
                       checked={allChecked}
@@ -143,23 +144,27 @@ export default function UsersTable() {
                         }
                       }}
                     />
-                    <span className="text-sm">Select All</span>
+                    <span className="text-sm">Select All on list</span>
+                  </div>
+                  <div className="flex items-center gap-2 pl-2">
+                    <input type="checkbox"
+                      checked={checked}
+                      defaultChecked={checked}
+                      onClick={() => {
+                        setChecked(!checked);
+                        if (checked) {
+                          setAllChecked(false);
+                          setSelectedUsers([]);
+                        } else {
+                          setSelectedUsers(pageUsers);
+                        }
+                      }}
+                    />
+                    <span className="text-sm">Select All on page</span>
                   </div>
                   <tr>
                     <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
-                      <input type="checkbox"
-                        checked={checked}
-                        defaultChecked={checked}
-                        onClick={() => {
-                          setChecked(!checked);
-                          if (checked) {
-                            setAllChecked(false);
-                            setSelectedUsers([]);
-                          } else {
-                            setSelectedUsers(pageUsers);
-                          }
-                        }}
-                      />
+
                       <span>ID</span>
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
