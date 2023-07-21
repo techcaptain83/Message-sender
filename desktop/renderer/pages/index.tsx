@@ -38,7 +38,7 @@ export default function Index() {
         <div className='w-full h-full justify-between flex flex-col'>
           {selectedFile ? <UsersTable /> :
             <div className='w-full h-full flex items-center justify-center'>
-              <EmptyState title='no file selected' description='please select a file on left side or upload one.' />
+              <EmptyState title='no file selected' description='please select a file on right side or upload one.' />
             </div>
           }
           {selectedFile && <div className='w-full shadow-md  h-[24vh] px-6 bg-gray-50'>

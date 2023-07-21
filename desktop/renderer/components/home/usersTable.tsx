@@ -172,10 +172,10 @@ export default function UsersTable() {
                       Display Name
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Phone Number
+                      Country Code
                     </th>
                     <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Country Code
+                      Phone Number
                     </th>
                   </tr>
                 </thead>
