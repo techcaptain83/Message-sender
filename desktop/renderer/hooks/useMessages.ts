@@ -73,6 +73,11 @@ export default function useMessages() {
         for (let index = 0; index < contacts.length; index++) {
             const contact = contacts[index];
             try {
+                // check if there is a phone number in logContacts matching the current contact
+                // if so, skip sending message to that number
+                if (logContacts.find((logContact) => logContact.phoneNumber === `(${contact.countryCode}) ${contact.phoneNumber}`)) {
+                    continue;
+                }
                 const { data } = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
                     displayName: contact.displayName, ...content
                 });

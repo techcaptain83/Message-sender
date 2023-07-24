@@ -75,7 +75,7 @@ export default function UsersTable() {
 
   useEffect(() => {
     const getFileContent = async () => {
-      const fileContent = await getFileData(selectedFile?._id);
+       await getFileData(selectedFile?._id);
     }
     getFileContent();
   }, [selectedFile]);
