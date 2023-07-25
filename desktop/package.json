@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "nextron",
     "build": "nextron build",
+    "build:mac-win": "nextron build --mac --win --x64",
     "build:win": "nextron build --win --x64",
     "build:mac": "nextron build --mac --x64",
     "postinstall": "electron-builder install-app-deps"
