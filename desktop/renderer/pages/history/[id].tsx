@@ -2,12 +2,12 @@ import LogsTable from '@/components/history/LogsTable';
 import { ILog } from '@/types';
 import axios from 'axios.config';
 import { saveAs } from 'file-saver';
-import { GetServerSideProps } from 'next';
+import { GetStaticProps } from 'next';
 interface Props {
     log: ILog
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+export const getStaticProps: GetStaticProps = async (context) => {
     const { id } = context.params;
     const { data } = await axios.get(`/logs/${id}`);
 
@@ -18,6 +18,15 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 }
 
+export async function getStaticPaths() {
+    const { data } = await axios.get('/logs?ignoreUser=true');
+
+    const paths = data.logs.map((log: ILog) => ({
+        params: { id: log._id }
+    }));
+
+    return { paths, fallback: false }
+}
 
 export default function LogView({ log }: Props) {
 
