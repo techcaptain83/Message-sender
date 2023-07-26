@@ -1,9 +1,9 @@
 
-import { Button } from '@/components/Button'
+import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
 import ApppleLogo from '@/images/logos/apple.png';
 import WindowsLogo from '@/images/logos/windows.svg';
-import Image from 'next/image'
+import Image from 'next/image';
 
 export function Hero() {
   return (
@@ -27,13 +27,13 @@ export function Hero() {
         The simple, friendly, and powerful solution for personalized Whatsapp messaging.
       </p>
       <div className="mt-10 flex justify-center items-end gap-x-6">
-        <div className='flex items-center flex-col gap-3'>
+        <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
           <Image src={ApppleLogo} alt="mac" width={50} height={50} />
-          <Button href="/register">download for mac</Button>
+          <Button href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' target="_blank" rel='noreferrer'>download for mac</Button>
         </div>
-        <div className='flex items-center flex-col gap-3'>
+        <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
           <Image src={WindowsLogo} alt="mac" width={50} height={50} />
-          <Button href="/register">download for windows</Button>
+          <Button href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' rel='noreferrer' target='_blank'>download for windows</Button>
         </div>
       </div>
     </Container>
