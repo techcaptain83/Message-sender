@@ -1,7 +1,7 @@
 {
   "private": true,
-  "name": "my-nextron-app",
-  "description": "My application description",
+  "name": "chatmaid",
+  "description": "Chatmaid is a desktop app that helps you manage your WhatsApp chats, send bulk messages, and more.",
   "version": "1.0.0",
   "author": "Mutesa Cedric <mutesacedric@gmail.com>",
   "main": "app/background.js",
