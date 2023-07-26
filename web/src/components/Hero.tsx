@@ -29,11 +29,13 @@ export function Hero() {
       <div className="mt-10 flex justify-center items-end gap-x-6">
         <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
           <Image src={ApppleLogo} alt="mac" width={50} height={50} />
-          <Button href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' target="_blank" rel='noreferrer'>download for mac</Button>
+          {/* <Button href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' target="_blank" rel='noreferrer'>download for mac</Button> */}
+          <Button href='/register?os=mac'>download for mac</Button>
         </div>
         <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
           <Image src={WindowsLogo} alt="mac" width={50} height={50} />
-          <Button href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' rel='noreferrer' target='_blank'>download for windows</Button>
+          {/* <Button href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' rel='noreferrer' target='_blank'>download for windows</Button> */}
+          <Button href='/register?os=win'>download for windows</Button>
         </div>
       </div>
     </Container>

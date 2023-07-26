@@ -18,7 +18,7 @@ export default function SelectPlan() {
                     setPlan(e.target.value);
                 }}
                 value={plan}
-                label={'select os'} id={"os"}>
+                label={'select plan'} id={"plan"}>
                 <option value={''}>select</option>
                 <option value={'free'}>Free</option>
                 <option value={'mac'}>Premium ($79.99)</option>

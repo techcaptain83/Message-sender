@@ -106,7 +106,7 @@ export function Pricing() {
             name="For everyone"
             price="$79.99"
             description="One time payment for lifetime access."
-            href="/register"
+            href="/register?plan=premium"
           />
         </div>
       </Container>

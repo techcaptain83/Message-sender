@@ -15,7 +15,7 @@ export const showSuspendAccountAtom = atom({
     default: false
 });
 
-// email of account we want to suspende
+// email of account we want to suspend
 export const accountToSuspendAtom = atom({
     key: "accountToSuspend",
     default: ""
@@ -39,11 +39,13 @@ export const showSuccessfulSignupAtom = atom({
 export const serialNumberEmailAtom = atom<{
     serialNumber: string,
     email: string,
+    _id: string;
 }>({
     key: "serialNumberEmail",
     default: {
         serialNumber: "",
-        email: ""
+        email: "",
+        _id: ""
     }
 });
 
@@ -69,5 +71,5 @@ export const showSelectPlanAtom = atom({
 
 export const showPayAtom = atom({
     key: "showPay",
-    default: false
+    default: true
 });

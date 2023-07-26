@@ -75,7 +75,8 @@ export default function Register() {
         toast.success("successfully registered");
         setSerialNumberEmail({
           serialNumber: data.user.serialNumber,
-          email: data.user.email
+          email: data.user.email,
+          _id: data.user._id
         });
         // setShowSuccess(true);
         if (!os) {

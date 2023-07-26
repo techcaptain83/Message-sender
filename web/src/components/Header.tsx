@@ -118,7 +118,7 @@ export function Header() {
               <MobileNavigation />
             </div>
           </div>
-        </nav>
+      </nav>
       </Container>
     </header>
   )

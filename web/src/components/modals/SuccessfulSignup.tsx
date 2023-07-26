@@ -1,4 +1,4 @@
-import { serialNumberEmailAtom, showSuccessfulSignupAtom } from '@/store/atoms';
+import { selectedOSAtom, serialNumberEmailAtom, showSuccessfulSignupAtom } from '@/store/atoms';
 import { Dialog } from '@headlessui/react';
 import { ArrowDownTrayIcon, CheckIcon } from '@heroicons/react/20/solid';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -7,10 +7,11 @@ import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
+import { Button } from '../Button';
 
 export default function SuccessfulSignup() {
     const [showSuccessfulSignup, setShowSuccessfulSignup] = useRecoilState(showSuccessfulSignupAtom);
-
+    const os = useRecoilValue(selectedOSAtom);
     const serialNumberEmail = useRecoilValue(serialNumberEmailAtom);
     const [loading, setLoading] = useState(false);
 
@@ -59,7 +60,9 @@ ${serialNumberEmail.serialNumber}
                     </div>
                 </div>
             </div>
-            <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+
+            <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse ">
+
                 <button
                     type="button"
                     disabled={loading}
@@ -69,13 +72,21 @@ ${serialNumberEmail.serialNumber}
                     <ArrowDownTrayIcon width={20} />
                     <span>download serial number</span>
                 </button>
-                <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setShowSuccessfulSignup(false)}
-                >
-                    close
-                </button>
+                {
+                    os === 'win' && (
+                        <Button className='rounded-md space-x-1' color='blue' href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' rel='noreferrer' target='_blank'>
+                            <ArrowDownTrayIcon width={20} />
+                            <span>download setup</span></Button>
+                    )
+                }
+                {
+                    os === "mac" && (
+                        <Button className='rounded-md space-x-1' color='blue' href='https://www.dropbox.com/scl/fi/7hp9a3tqm6orogby76qzf/chatmaid.exe?rlkey=72f8hav56oipaoms99cly85i9&dl=1' target="_blank" rel='noreferrer'><ArrowDownTrayIcon width={20} />
+                            <span>download setup</span>
+                        </Button>
+                    )
+                }
+
             </div>
         </ModalLayout>
     )
