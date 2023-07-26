@@ -1,20 +1,31 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import axiosInstance from '@/axios.config'
 import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
 import Loader from '@/components/Loader'
 import { Logo } from '@/components/Logo'
-import { serialNumberEmailAtom, showSuccessfulSignupAtom } from '@/store/atoms'
+import PaypalPayment from '@/components/auth/PaypalPayment'
+import SelectOs from '@/components/auth/SelectOs'
+import SelectPlan from '@/components/auth/SelectPlan'
+import { selectedOSAtom, selectedPlanAtom, serialNumberEmailAtom, showPayAtom, showSelectOsAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms'
 import { countries } from '@/store/countries'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useRecoilState } from 'recoil'
 
 
 export default function Register() {
+  const [os, setOs] = useRecoilState(selectedOSAtom);
+  const [plan, setPlan] = useRecoilState(selectedPlanAtom);
+  const [showPay, setShowPay] = useRecoilState(showPayAtom);
+  const [showSelectOs, setShowSelectOs] = useRecoilState(showSelectOsAtom);
+  const [showSelectPlan, setShowSelectPlan] = useRecoilState(showSelectPlanAtom);
+
+
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const [_, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
@@ -28,6 +39,16 @@ export default function Register() {
     referredBy: ''
   })
 
+
+  useEffect(() => {
+    const { os, plan } = router.query;
+    if (os && (os === "win" || os === "mac")) {
+      setOs(os);
+    }
+    if (plan && (plan === "free" || plan === "premium")) {
+      setPlan(plan);
+    }
+  }, [router.query]);
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -51,16 +72,20 @@ export default function Register() {
 
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
-        toast.success("successfully registered")
+        toast.success("successfully registered");
         setSerialNumberEmail({
           serialNumber: data.user.serialNumber,
           email: data.user.email
         });
-        setShowSuccess(true);
+        // setShowSuccess(true);
+        if (!os) {
+          setShowSelectOs(true);
+        } else if (!plan) {
+          setShowSelectPlan(true);
+        }
       } else {
         toast.error(data.message);
       }
-
     } catch (error: any) {
       toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
@@ -80,7 +105,7 @@ export default function Register() {
           </Link>
 
         </div>
-        <form
+        {(!showSelectOs && !showSelectPlan && !showPay) && <form
           onSubmit={handleSubmit}
           className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
         >
@@ -156,7 +181,10 @@ export default function Register() {
                 </span>}
             </Button>
           </div>
-        </form>
+        </form>}
+        {showSelectOs && <SelectOs />}
+        {showSelectPlan && <SelectPlan />}
+        {showPay && <PaypalPayment />}
       </AuthLayout>
     </>
   )

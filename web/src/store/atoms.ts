@@ -46,3 +46,28 @@ export const serialNumberEmailAtom = atom<{
         email: ""
     }
 });
+
+export const selectedOSAtom = atom<"win" | "mac" | null>({
+    key: "selectedOS",
+    default: null
+});
+
+export const selectedPlanAtom = atom<"free" | "premium" | null>({
+    key: "selectedPlan",
+    default: null
+});
+
+export const showSelectOsAtom = atom({
+    key: "showSelectOs",
+    default: false
+});
+
+export const showSelectPlanAtom = atom({
+    key: "showSelectPlan",
+    default: false
+});
+
+export const showPayAtom = atom({
+    key: "showPay",
+    default: false
+});
