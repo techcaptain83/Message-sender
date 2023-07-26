@@ -71,5 +71,5 @@ export const showSelectPlanAtom = atom({
 
 export const showPayAtom = atom({
     key: "showPay",
-    default: true
+    default: false
 });
