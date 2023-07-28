@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from '@/axios.config';
 import { IAuthUser } from '@/types';
 import { UIDHASH } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import toast from "react-hot-toast";
-import axios from '@/axios.config';
 
 
 interface IAuth {
@@ -55,16 +55,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
                     case 200:
                         setUser(res.data.user);
                         localStorage.setItem(UIDHASH, JSON.stringify(res.data.user));
-                        router.pathname === "/login" && router.push("/");
+                        (router.pathname === "/login" || router.pathname === "/" || router.pathname === "/register") && router.push("/dashboard");
                         break;
                     default:
                         setUser(null);
-                        router.push("/login");
+                        (!["/login", "/register", "/"].includes(router.pathname)) && router.push("/login");
                         break;
                 }
             }).catch((err) => {
                 setUser(null);
-                router.push("/login");
+                (!["/login", "/register", "/"].includes(router.pathname)) && router.push("/login");
             }).finally(() => {
                 setInitialLoading(false);
             })
