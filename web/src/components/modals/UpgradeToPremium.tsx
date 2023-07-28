@@ -8,6 +8,7 @@ import ModalLayout from '../layouts/ModalLayout';
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import axios from '@/axios.config';
 import toast from 'react-hot-toast';
+import { PREMIUM_PRICE } from '@/utils/constants';
 
 
 export default function UpgradeToPremium() {
@@ -59,7 +60,7 @@ export default function UpgradeToPremium() {
                         purchase_units: [
                             {
                                 amount: {
-                                    value: "79.99",
+                                    value: PREMIUM_PRICE.toString()
                                 },
                             },
                         ],
@@ -70,7 +71,6 @@ export default function UpgradeToPremium() {
                     return actions.order.capture().then((details) => {
                         // @ts-ignore
                         const name = details.payer.name.given_name;
-                        // alert(`Transaction completed by ${name}`);
                         upgradeUserAccount()
                     });
                 }}

@@ -1,5 +1,6 @@
 import axios from '@/axios.config';
 import { serialNumberEmailAtom } from '@/store/atoms';
+import { PREMIUM_PRICE } from '@/utils/constants';
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import toast from 'react-hot-toast';
 import { useRecoilValue } from 'recoil';
@@ -28,7 +29,7 @@ export default function PaypalPayment() {
                         purchase_units: [
                             {
                                 amount: {
-                                    value: "0.50",
+                                    value: PREMIUM_PRICE.toString()
                                 },
                             },
                         ],
