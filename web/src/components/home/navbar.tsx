@@ -12,8 +12,8 @@ import { Logo } from '../Logo';
 const links: {
     label: string, href: string
 }[] = [
-        { label: "Dashboard", href: '/' },
-        { label: "History", href: '/history' },
+        { label: "Dashboard", href: '/dashboard' },
+        { label: "History", href: '/dashboard/history' },
     ]
 
 export default function Navbar() {
@@ -24,7 +24,7 @@ export default function Navbar() {
     return (
         <div className='w-full py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[9vh]'>
             <div className='flex items-center gap-3'>
-                <Link href={'/'}>
+                <Link href={'/dashboard'}>
                     <Logo className="h-10" />
                 </Link>
 

@@ -32,7 +32,7 @@ export default function MainLayout({ children }: Props) {
                 <div className='w-full h-full flex items-center justify-center'>
                     <PrePageLoader />
                 </div> :
-                <main>
+                <main className='min-h-screen'>
                     {showDeleteFile && <DeleteFile />}
                     {showUploadFile && <UploadFile />}
                     {showUpgrade && <UpgradeToPremium />}

@@ -7,8 +7,10 @@ import Loader from '@/components/Loader'
 import { Logo } from '@/components/Logo'
 import PaypalPayment from '@/components/auth/PaypalPayment'
 import SelectPlan from '@/components/auth/SelectPlan'
+import useAuth from '@/hooks/useAuth'
 import { selectedPlanAtom, serialNumberEmailAtom, showPayAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms'
 import { countries } from '@/store/countries'
+import { UIDHASH } from '@/utils/constants'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -20,6 +22,7 @@ import { useRecoilState } from 'recoil'
 export default function Register() {
   // const [os, setOs] = useRecoilState(selectedOSAtom);
   const [plan, setPlan] = useRecoilState(selectedPlanAtom);
+  const { setUser } = useAuth();
   const [showPay, setShowPay] = useRecoilState(showPayAtom);
   // const [showSelectOs, setShowSelectOs] = useRecoilState(showSelectOsAtom);
   const [showSelectPlan, setShowSelectPlan] = useRecoilState(showSelectPlanAtom);
@@ -34,6 +37,7 @@ export default function Register() {
     firstName: '',
     lastName: '',
     email: '',
+    password: '',
     country: 'United Kingdom',
     referredBy: ''
   })
@@ -46,6 +50,8 @@ export default function Register() {
     // }
     if (plan && (plan === "free" || plan === "premium")) {
       setPlan(plan);
+    } else {
+      setPlan(null);
     }
   }, [router.query]);
 
@@ -72,19 +78,14 @@ export default function Register() {
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
         toast.success("successfully registered");
-        setSerialNumberEmail({
-          serialNumber: data.user.serialNumber,
-          email: data.user.email,
-          _id: data.user._id
-        });
-        // setShowSuccess(true);
-        // if (!os) {
-        //   setShowSelectOs(true);
-        // } else if (!plan) {
-        //   setShowSelectPlan(true);
-        // }
+        setUser(data.user);
+        localStorage.setItem(UIDHASH, JSON.stringify(data.user));
         if (!plan) {
           setShowSelectPlan(true);
+        } else if (plan === "free") {
+          router.push("/dashboard");
+        } else {
+          setShowPay(true);
         }
       } else {
         toast.error(data.message);
@@ -101,103 +102,111 @@ export default function Register() {
       <Head>
         <title>Sign Up - Chatmaid</title>
       </Head>
-      <AuthLayout>
-        <div className="flex flex-col">
-          <Link href="/" aria-label="Home">
-            <Logo className="h-10 w-auto" />
-          </Link>
-          <p className="mt-4 text-sm text-gray-700">
-            Don’t have an account?{' '}
-            <Link
-              href="/register"
-              className="font-medium text-blue-600 hover:underline"
-            >
-              Sign up
-            </Link>{' '}
-            for a free trial.
-          </p>
-        </div>
-        {(!showSelectPlan && !showPay) && <form
-          onSubmit={handleSubmit}
-          className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
-        >
-          <TextField
-            label="First name"
-            id="first_name"
-            name="first_name"
-            type="text"
-            value={formData.firstName}
-            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-            autoComplete="given-name"
-            required
-          />
-          <TextField
-            label="Last name"
-            id="last_name"
-            name="last_name"
-            type="text"
-            value={formData.lastName}
-            autoComplete="family-name"
-            required
-            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-          />
-          <TextField
-            className="col-span-full"
-            label="Email address"
-            id="email"
-            name="email"
-            type="email"
-
-            value={formData.email}
-            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            autoComplete="email"
-            required
-          />
-          <SelectField
-            className="col-span-full"
-            label="Country"
-            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-            id="country"
-            value={formData.country}
-            name="country"
-            required
+      <div className="flex flex-col">
+        <Link href="/" aria-label="Home">
+          <Logo className="h-10 w-auto" />
+        </Link>
+        <p className="mt-4 text-sm text-gray-700">
+          Already have an account?{' '}
+          <Link
+            href="/login"
+            className="font-medium text-blue-600 hover:underline"
           >
-            {
-              countries.map((country) => (
-                <option key={country} value={country}>{country}</option>
-              ))
-            }
-          </SelectField>
-          <TextField
-            className="col-span-full"
-            label="Referred by (email)"
-            id="referred_by"
-            name="referred_by"
-            type="email"
-            value={formData.referredBy}
-            onChange={(e) => setFormData({ ...formData, referredBy: e.target.value })}
-          // autoComplete="email"
-          // required
-          />
-          <div className="col-span-full">
-            <Button
-              disabled={loading}
-              type="submit"
-              variant="solid"
-              color="blue"
-              className="w-full"
-            >
-              {loading ? <Loader /> :
-                <span>
-                  continue <span aria-hidden="true">&rarr;</span>
-                </span>}
-            </Button>
-          </div>
-        </form>}
-        {/* {showSelectOs && <SelectOs />} */}
-        {showSelectPlan && <SelectPlan />}
-        {showPay && <PaypalPayment />}
-      </AuthLayout>
+            Login
+          </Link>
+        </p>
+      </div>
+      {(!showSelectPlan && !showPay) && <form
+        onSubmit={handleSubmit}
+        className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
+      >
+        <TextField
+          label="First name"
+          id="first_name"
+          name="first_name"
+          type="text"
+          value={formData.firstName}
+          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+          autoComplete="given-name"
+          required
+        />
+        <TextField
+          label="Last name"
+          id="last_name"
+          name="last_name"
+          type="text"
+          value={formData.lastName}
+          autoComplete="family-name"
+          required
+          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+        />
+        <TextField
+          className="col-span-full"
+          label="Email address"
+          id="email"
+          name="email"
+          type="email"
+
+          value={formData.email}
+          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+          autoComplete="email"
+          required
+        />
+        <TextField
+          className="col-span-full"
+          label="Password"
+          id="password"
+          name="password"
+          type="password"
+          value={formData.password}
+          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+          autoComplete="email"
+          required
+        />
+        <SelectField
+          className="col-span-full"
+          label="Country"
+          onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+          id="country"
+          value={formData.country}
+          name="country"
+          required
+        >
+          {
+            countries.map((country) => (
+              <option key={country} value={country}>{country}</option>
+            ))
+          }
+        </SelectField>
+        <TextField
+          className="col-span-full"
+          label="Referred by (email)"
+          id="referred_by"
+          name="referred_by"
+          type="email"
+          value={formData.referredBy}
+          onChange={(e) => setFormData({ ...formData, referredBy: e.target.value })}
+        // autoComplete="email"
+        // required
+        />
+        <div className="col-span-full">
+          <Button
+            disabled={loading}
+            type="submit"
+            variant="solid"
+            color="blue"
+            className="w-full"
+          >
+            {loading ? <Loader /> :
+              <span>
+                continue <span aria-hidden="true">&rarr;</span>
+              </span>}
+          </Button>
+        </div>
+      </form>}
+      {/* {showSelectOs && <SelectOs />} */}
+      {showSelectPlan && <SelectPlan />}
+      {showPay && <PaypalPayment />}
     </>
   )
 }

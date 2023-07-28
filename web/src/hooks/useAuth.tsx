@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 interface IAuth {
     initialLoading: boolean
     user: IAuthUser | null
+    setUser: React.Dispatch<React.SetStateAction<IAuthUser | null>>
     signIn: (email: string, serialNumber: string) => Promise<void>
     logout: () => Promise<void>
     loading: boolean
@@ -19,6 +20,7 @@ interface IAuth {
 
 const AuthContext = createContext<IAuth>({
     user: null,
+    setUser: () => { },
     signIn: async () => { },
     logout: async () => { },
     reloadProfile: async () => { },
@@ -91,10 +93,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
 
     // login
-    const signIn = async (email: string, serialNumber: string) => {
+    const signIn = async (email: string, password: string) => {
         setLoading(true);
         await axios.post('/auth/login', {
-            email, serialNumber: parseInt(serialNumber),
+            email, password,
             hasPreviouslyLoggedIn: localStorage.getItem("hasPreviouslyLoggedIn") === "true"
         }).then(({ data }) => {
             if (data.user) {
@@ -102,7 +104,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 localStorage.setItem(UIDHASH, JSON.stringify(data.user));
                 localStorage.setItem("hasPreviouslyLoggedIn", "true");
                 setUser(data.user);
-                router.push("/");
+                data.user.isAdmin ? router.push("/admin") : router.push("/dashboard");
             }
         }).catch(({ response }) => {
             if (response?.data?.hasPreviouslyLoggedIn) {
@@ -133,7 +135,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     //useMemo to increase performance
     const memoedValue = useMemo(() => ({
-        user, signIn, loading, logout, initialLoading, reloadProfile
+        user, setUser, signIn, loading, logout, initialLoading, reloadProfile
     }), [user, loading, initialLoading])
 
     return (<AuthContext.Provider value={memoedValue}>

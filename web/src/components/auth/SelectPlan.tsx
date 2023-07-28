@@ -1,13 +1,16 @@
-import { selectedPlanAtom, showPayAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms';
+import { selectedPlanAtom, showPayAtom, showSelectPlanAtom } from '@/store/atoms';
+import { useRouter } from 'next/router';
+import toast from 'react-hot-toast';
 import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
 import { SelectField } from '../Fields';
 
+
 export default function SelectPlan() {
+    const router = useRouter();
     const [plan, setPlan] = useRecoilState(selectedPlanAtom);
     const [_, setShowSelectPlan] = useRecoilState(showSelectPlanAtom);
     const [_p, setShowPay] = useRecoilState(showPayAtom);
-    const [_ss, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
 
     return (
         <div className="mt-6 rounded-md min-h-[30vh] px-4 py-6 shadow border space-y-5 flex flex-col justify-between">
@@ -26,10 +29,12 @@ export default function SelectPlan() {
             <Button
                 onClick={() => {
                     if (!plan) return;
-                    setShowSelectPlan(false);
+                    // setShowSelectPlan(false);
                     if (plan === "free") {
-                        setShowSuccess(true);
+                        toast.success("Your account has been created successfuly! you are now in free plan!");
+                        router.push("/dashboard");
                     } else {
+                        setShowSelectPlan(false);
                         setShowPay(true);
                     }
                 }}
