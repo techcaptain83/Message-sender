@@ -6,9 +6,8 @@ import { SelectField, TextField } from '@/components/Fields'
 import Loader from '@/components/Loader'
 import { Logo } from '@/components/Logo'
 import PaypalPayment from '@/components/auth/PaypalPayment'
-import SelectOs from '@/components/auth/SelectOs'
 import SelectPlan from '@/components/auth/SelectPlan'
-import { selectedOSAtom, selectedPlanAtom, serialNumberEmailAtom, showPayAtom, showSelectOsAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms'
+import { selectedPlanAtom, serialNumberEmailAtom, showPayAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms'
 import { countries } from '@/store/countries'
 import Head from 'next/head'
 import Link from 'next/link'
@@ -19,10 +18,10 @@ import { useRecoilState } from 'recoil'
 
 
 export default function Register() {
-  const [os, setOs] = useRecoilState(selectedOSAtom);
+  // const [os, setOs] = useRecoilState(selectedOSAtom);
   const [plan, setPlan] = useRecoilState(selectedPlanAtom);
   const [showPay, setShowPay] = useRecoilState(showPayAtom);
-  const [showSelectOs, setShowSelectOs] = useRecoilState(showSelectOsAtom);
+  // const [showSelectOs, setShowSelectOs] = useRecoilState(showSelectOsAtom);
   const [showSelectPlan, setShowSelectPlan] = useRecoilState(showSelectPlanAtom);
 
 
@@ -42,9 +41,9 @@ export default function Register() {
 
   useEffect(() => {
     const { os, plan } = router.query;
-    if (os && (os === "win" || os === "mac")) {
-      setOs(os);
-    }
+    // if (os && (os === "win" || os === "mac")) {
+    //   setOs(os);
+    // }
     if (plan && (plan === "free" || plan === "premium")) {
       setPlan(plan);
     }
@@ -79,9 +78,12 @@ export default function Register() {
           _id: data.user._id
         });
         // setShowSuccess(true);
-        if (!os) {
-          setShowSelectOs(true);
-        } else if (!plan) {
+        // if (!os) {
+        //   setShowSelectOs(true);
+        // } else if (!plan) {
+        //   setShowSelectPlan(true);
+        // }
+        if (!plan) {
           setShowSelectPlan(true);
         }
       } else {
@@ -104,9 +106,18 @@ export default function Register() {
           <Link href="/" aria-label="Home">
             <Logo className="h-10 w-auto" />
           </Link>
-
+          <p className="mt-4 text-sm text-gray-700">
+            Don’t have an account?{' '}
+            <Link
+              href="/register"
+              className="font-medium text-blue-600 hover:underline"
+            >
+              Sign up
+            </Link>{' '}
+            for a free trial.
+          </p>
         </div>
-        {(!showSelectOs && !showSelectPlan && !showPay) && <form
+        {(!showSelectPlan && !showPay) && <form
           onSubmit={handleSubmit}
           className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
         >
@@ -183,7 +194,7 @@ export default function Register() {
             </Button>
           </div>
         </form>}
-        {showSelectOs && <SelectOs />}
+        {/* {showSelectOs && <SelectOs />} */}
         {showSelectPlan && <SelectPlan />}
         {showPay && <PaypalPayment />}
       </AuthLayout>

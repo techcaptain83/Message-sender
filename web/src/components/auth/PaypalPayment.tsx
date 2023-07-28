@@ -1,19 +1,19 @@
 import axios from '@/axios.config';
-import { serialNumberEmailAtom, showSuccessfulSignupAtom } from '@/store/atoms';
+import { serialNumberEmailAtom } from '@/store/atoms';
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import toast from 'react-hot-toast';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 
 export default function PaypalPayment() {
 
     const user = useRecoilValue(serialNumberEmailAtom);
-    const [_, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
+    // const [_, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
 
     const upgradeUserAccount = async () => {
         const { data } = await axios.put(`/users/upgrade-to-pro/${user._id}`);
         if (data.message === "success") {
             toast.success("You account have been upgraded successfuly!");
-            setShowSuccess(true);
+            // setShowSuccess(true);
         } else {
             toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
         }
