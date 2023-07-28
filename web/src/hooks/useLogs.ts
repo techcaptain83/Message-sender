@@ -1,4 +1,4 @@
-import { logToDeleteState, showDeleteLogState } from "@/atoms";
+import { logToDeleteState, selectedFileState, showDeleteLogState } from "@/atoms";
 import { ILog } from "@/types";
 import axios from "@/axios.config";
 import { useState } from "react";
@@ -12,6 +12,7 @@ export default function useLogs() {
     const { user } = useAuth();
     const [_showDeleteLog, setShowdeleteLog] = useRecoilState(showDeleteLogState);
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
+    const [_, setSelectedFile] = useRecoilState(selectedFileState)
 
 
     const [deletingLog, setDeletingLog] = useState(false);
@@ -50,6 +51,7 @@ export default function useLogs() {
                 toast.success("Log deleted successfuly!");
                 setLogToDelete(null);
                 setShowdeleteLog(false);
+                setSelectedFile(null);
                 mutate();
             }
         } catch (error) {

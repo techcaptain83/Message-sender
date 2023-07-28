@@ -1,6 +1,6 @@
 import { selectedFileState, showDeleteFileState, showUploadFileState } from "@/atoms";
-import { getDecodedFileData } from "@/utils/files";
 import axios from "@/axios.config";
+import { getDecodedFileData } from "@/utils/files";
 import { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRecoilState } from "recoil";
@@ -84,9 +84,12 @@ export default function useFiles() {
             const fileReader = new FileReader();
             fileReader.onload = (event) => {
                 const fileContents = event.target?.result as string;
-                const users = fileContents.split("\n");
+                const lines = fileContents.split("\n");
+                // remove empty lines and headers
+                const users = lines.filter((line) => line && !line.includes("firstName"));
                 const totalUsers = users.length;
                 const usersUploaded = user?.usersUploaded || 0;
+                console.log(totalUsers)
                 if (usersUploaded + totalUsers > 20 && !user?.isPro) {
                     toast.error("You can only upload 20 contacts with the free trial version. Upgrade to PREMIUM for unlimited.");
                     resolve({

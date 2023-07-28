@@ -9,7 +9,7 @@ export default function DeleteLog() {
     const [showDeleteLog, setShowDeleteLog] = useRecoilState(showDeleteLogState);
     const [logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
     const { deletingLog,deleteLog } = useLogs();
-
+    
 
     return (
         <ModalLayout open={showDeleteLog} setOpen={() => setShowDeleteLog(false)}>
