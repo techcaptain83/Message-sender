@@ -3,7 +3,6 @@ import useMedia from '@/hooks/useMedia';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
-import 'react-quill/dist/quill.snow.css';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import Loader from '../Loader';
 import useMessages from '@/hooks/useMessages';
