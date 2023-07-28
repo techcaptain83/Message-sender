@@ -75,14 +75,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
         checkUser();
     }, []);
 
-    useEffect(() => {
-        if (router.pathname.includes("/admin") && user && !user.isPro) {
-            router.push("/dashboard");
-        } else if (router.pathname.includes("/dashboard") && user && user.isPro) {
-            router.push("/admin");
-        }
-    }, [router.pathname]);
-
     const reloadProfile = async () => {
         await axios.get('/auth/me').then((res) => {
             switch (res.status) {

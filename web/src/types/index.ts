@@ -40,12 +40,14 @@ export interface IAuthUser {
     _id: string;
     isPro: boolean;
     firstName: string;
+    createdAt: string;
     lastName: string;
     email: string;
     usersUploaded: number;
     country: string;
-    serialNumber: string;
     referredBy: string;
+    datePaid: string;
+    updatedAt: string;
 }
 
 export interface IFile {

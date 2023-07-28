@@ -45,7 +45,6 @@ export default function Navbar() {
                     </div>
                     <div className='text-sm'>
                         <p>{user?.email}</p>
-                        <p className='uppercae text-gray-600'>{user?.serialNumber}</p>
                     </div>
                 </div>
                 {
