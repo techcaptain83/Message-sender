@@ -1,10 +1,11 @@
 import React from 'react'
+import Loader from './Loader';
 
 
 interface Props {
     name: string;
     Icon: any,
-    value: string | number
+    value?: string | number
 }
 export default function StatsCard({ name, Icon, value }: Props) {
     return (
@@ -18,7 +19,7 @@ export default function StatsCard({ name, Icon, value }: Props) {
                         <dl>
                             <dt className="truncate text-sm font-medium text-gray-500">{name}</dt>
                             <dd>
-                                <div className="text-lg font-medium text-gray-900">{value}</div>
+                                <div className="text-lg font-medium text-gray-900">{value ? value : <Loader />}</div>
                             </dd>
                         </dl>
                     </div>

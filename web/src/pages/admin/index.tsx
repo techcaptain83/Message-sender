@@ -16,6 +16,7 @@ import Head from 'next/head'
 import { useState } from 'react'
 import { CgProfile } from "react-icons/cg"
 import { FiLogOut } from "react-icons/fi"
+import { PREMIUM_PRICE } from '@/utils/constants'
 
 
 
@@ -91,9 +92,9 @@ export default function AdminDashboard() {
                                 <h2 className="text-lg font-medium leading-6 text-gray-900">Overview</h2>
                                 <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                                     {/* Card */}
-                                    <StatsCard name='Account Balance' value={'$32,000'} Icon={ScaleIcon} />
-                                    <StatsCard name='Total Users' value={20} Icon={UserGroupIcon} />
-                                    <StatsCard name='Premium Users' value={12} Icon={CheckBadgeIcon} />
+                                    <StatsCard name='Account Balance' value={`$${users ? users.filter(user => user.isPro).length * PREMIUM_PRICE : undefined}`} Icon={ScaleIcon} />
+                                    <StatsCard name='Total Users' value={users?.length} Icon={UserGroupIcon} />
+                                    <StatsCard name='Premium Users' value={users?.filter(user => user.isPro).length} Icon={CheckBadgeIcon} />
                                 </div>
                             </div>
                             {isLoading && <LoadingState message='Loading Users...' />}
