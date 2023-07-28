@@ -1,4 +1,4 @@
-import axios from "axios.config";
+import axios from "@/axios.config";
 import { useState } from "react"
 import useAuth from "./useAuth";
 import { toast } from "react-hot-toast";
@@ -25,7 +25,7 @@ export default function useMedia() {
         try {
             const formData = new FormData();
             formData.append("file", file);
-            const { data } = await axios.post(`/media/upload?user=${user._id}`, formData, {
+            const { data } = await axios.post(`/media/upload?user=${user?._id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

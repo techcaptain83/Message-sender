@@ -8,6 +8,7 @@ import NProgress from 'nprogress'
 import { Toaster } from 'react-hot-toast'
 import { RecoilRoot } from 'recoil'
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import { AuthProvider } from '@/hooks/useAuth'
 
 
 NProgress.configure({
@@ -23,16 +24,17 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <PayPalScriptProvider options={{
-      // clientId: process.env.PAYPAL_CLIENT_ID,
       clientId: "AUVWWFSEca-zzdzcIg_Vv_mFln0SsS1sbpTMC2DF2LvfFxadZX6OVE3s468rCmtzAQo2o7Z0kiZgkr2E",
       currency: "USD",
       components: "buttons"
     }}>
       <RecoilRoot>
-        <MainLayout>
-          <Toaster />
-          <Component {...pageProps} />
-        </MainLayout>
+        <AuthProvider>
+          <MainLayout>
+            <Toaster />
+            <Component {...pageProps} />
+          </MainLayout>
+        </AuthProvider>
       </RecoilRoot>
     </PayPalScriptProvider>
   )

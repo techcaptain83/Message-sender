@@ -75,6 +75,6 @@ export interface ILog {
     filename: string;
     sentCount: number;
     failedCount: number;
-    createdAt?: string;
+    createdAt: string;
     contacts: ILogContact[]
 }

@@ -4,7 +4,7 @@ import { UIDHASH } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import toast from "react-hot-toast";
-import axios from '../../axios.config';
+import axios from '@/axios.config';
 
 
 interface IAuth {

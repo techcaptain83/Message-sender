@@ -54,9 +54,11 @@ export default function UploadFile() {
                         accept='.csv'
                         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                         onChange={(e) => {
-                            const file = e.target.files[0];
-                            if (file) {
-                                uploadFile(e);
+                            if (e.target.files) {
+                                const file = e.target.files[0];
+                                if (file) {
+                                    uploadFile(e);
+                                }
                             }
                         }}
                     />}

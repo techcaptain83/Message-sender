@@ -31,6 +31,7 @@ export default function useFiles() {
         }
     });
 
+    // @ts-ignore
     const getFileData = async (fileId: string): Promise<string | ArrayBuffer> => {
         setGettingFileData(true);
         try {

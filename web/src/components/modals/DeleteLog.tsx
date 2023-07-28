@@ -35,7 +35,7 @@ export default function DeleteLog() {
                         <p className="text-sm text-gray-500">
                             Are you sure you want to delete logs for  <span className='font-semibold text-gray-900'>
                                 {logToDelete?.filename}
-                            </span> created on <span className='font-semibold text-gray-900'>{new Date(logToDelete.createdAt).toLocaleString()}</span>? All of its data will be permanently removed
+                            </span> created on <span className='font-semibold text-gray-900'>{new Date(logToDelete! .createdAt).toLocaleString()}</span>? All of its data will be permanently removed
                             from our servers forever. This action cannot be undone.
                         </p>
                     </div>

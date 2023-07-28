@@ -6,7 +6,7 @@ import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
 import { PayPalButtons } from '@paypal/react-paypal-js';
-import axios from 'axios.config';
+import axios from '@/axios.config';
 import toast from 'react-hot-toast';
 
 
@@ -15,11 +15,11 @@ export default function UpgradeToPremium() {
     const { user, reloadProfile } = useAuth();
 
     const upgradeUserAccount = async () => {
-        const { data } = await axios.put(`/users/upgrade-to-pro/${user._id}`);
+        const { data } = await axios.put(`/users/upgrade-to-pro/${user?._id}`);
         if (data.message === "success") {
             toast.success("You account have been upgraded successfuly!");
             reloadProfile();
-        }else{
+        } else {
             toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
         }
     }
@@ -66,7 +66,9 @@ export default function UpgradeToPremium() {
                     });
                 }}
                 onApprove={(data, actions) => {
+                    // @ts-ignore
                     return actions.order.capture().then((details) => {
+                        // @ts-ignore
                         const name = details.payer.name.given_name;
                         // alert(`Transaction completed by ${name}`);
                         upgradeUserAccount()

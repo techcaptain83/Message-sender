@@ -27,7 +27,7 @@ export default function useLogs() {
         }
     });
 
-    const createLog = async (log: ILog) => {
+    const createLog = async (log: Omit<ILog, "createdAt">) => {
         try {
             const { data } = await axios.post(`/logs?user=${user?._id}`, log);
             if (data.message === "success") {
@@ -41,7 +41,8 @@ export default function useLogs() {
         }
     }
 
-    const deleteLog = async (logId: string) => {
+    const deleteLog = async (logId?: string) => {
+        if (!logId) return;
         setDeletingLog(true);
         try {
             const { data } = await axios.delete(`/logs/${logId}`);

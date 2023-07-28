@@ -14,7 +14,7 @@ import { toast } from 'react-hot-toast';
 export default function ScanCode() {
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
     const { user } = useAuth();
-    const [qrCode, setQrcode] = useState<string>(null);
+    const [qrCode, setQrcode] = useState<string | null>(null);
     const [loadingCode, setLoadingCode] = useState(true);
     const [loading, setLoading] = useState(true);
     const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
@@ -102,7 +102,7 @@ export default function ScanCode() {
                         <div className='h-full w-full flex items-center justify-center pt-12'>
                             <div className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900"></div>
                         </div>
-                        : <QRCode value={qrCode} />}
+                        : qrCode && <QRCode value={qrCode} />}
 
                 </div>
             </div>

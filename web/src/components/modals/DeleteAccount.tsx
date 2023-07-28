@@ -1,10 +1,10 @@
-import { Fragment, useState } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import ModalLayout from '../layouts/ModalLayout';
-import { useRecoilState } from 'recoil';
 import { accountToDeleteAtom, showDeletAccountAtom } from '@/store/atoms';
+import { Dialog } from '@headlessui/react';
+import { ExclamationTriangleIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useRecoilState } from 'recoil';
+import ModalLayout from '../layouts/ModalLayout';
 
 export default function DeleteAccount() {
   const [showDeleteAccount, setShowDeleteAccount] = useRecoilState(showDeletAccountAtom);
