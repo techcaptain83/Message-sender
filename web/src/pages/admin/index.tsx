@@ -47,9 +47,9 @@ export default function AdminDashboard() {
                                             <div>
                                                 <div className="flex items-center">
                                                     <div className='rounded-full p-2  bg-blue-500 sm:hidden block'>
-                                                        <CgProfile className='text-gray-100 w-8 h-8' />
+                                                        <CgProfile className='text-gray-100 w-7 h-7' />
                                                     </div>
-                                                    <h1 className="ml-3 text-xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
+                                                    <h1 className="ml-3 text-lg font-bold leading-7 text-gray-900 sm:truncate sm:leading-9">
                                                         Hello, {user.firstName + " " + user.lastName}
                                                     </h1>
                                                 </div>
