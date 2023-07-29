@@ -40,6 +40,7 @@ export interface IAuthUser {
     _id: string;
     isPro: boolean;
     firstName: string;
+    manual: boolean;
     createdAt: string;
     lastName: string;
     email: string;

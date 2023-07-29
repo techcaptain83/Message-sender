@@ -21,7 +21,7 @@ export default function useUsers() {
         setIsUpgrading(true);
         setAccountBeingUpgraded(userId);
         try {
-            const { data } = await axios.put(`/users/upgrade-to-pro/${userId}`);
+            const { data } = await axios.put(`/users/upgrade-to-pro/${userId}?manual=true`);
             if (data.message === "success") {
                 toast.success("This account have been upgraded successfuly!");
                 mutate();

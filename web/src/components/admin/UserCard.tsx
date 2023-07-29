@@ -4,7 +4,7 @@ import { PREMIUM_PRICE } from '@/utils/constants'
 import React from 'react'
 import Loader from '../Loader';
 
-export default function AdminUserCard({ country, firstName, lastName, email, isPro, referredBy, createdAt, datePaid, updatedAt, _id }: IAuthUser) {
+export default function AdminUserCard({ country, firstName, lastName, email, isPro, referredBy, createdAt, datePaid, updatedAt, _id, manual }: IAuthUser) {
     const { isUpgrading, accountBeingUpgraded, releasePremiumVersion } = useUsers();
     return (
         <tr>
@@ -16,8 +16,10 @@ export default function AdminUserCard({ country, firstName, lastName, email, isP
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{email}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(createdAt).toLocaleString()}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{referredBy ? referredBy : "No One"}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? "Paypal" : "None"}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? `$${PREMIUM_PRICE}` : "$0"}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? manual ? "Cash" : "Paypal" : "None"}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? manual ? <span className='bg-gray-50 text-sm text-gray-500 rounded-lg p-2'>
+                Manual
+            </span> : `$${PREMIUM_PRICE}` : "$0"}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? datePaid ? new Date(datePaid).toLocaleString() : new Date(updatedAt).toLocaleString() : "Not Paid"}</td>
             {!isPro && <td>
                 <button

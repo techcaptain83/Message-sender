@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { activeUsersState, selectedFileState, selectedUsersState, showUploadFileState } from "@/atoms";
+import { activeUsersState, phoneConnectedState, selectedFileState, selectedUsersState, showScanCodeState, showUploadFileState } from "@/atoms";
 import axios from "@/axios.config";
 import { IUser } from "@/types";
 import { getDecodedFileData, getUsersFromFileContent, removeDuplicates } from "@/utils/files";
@@ -14,9 +14,11 @@ export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+  const phoneConnected = useRecoilValue(phoneConnectedState);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [allChecked, setAllChecked] = useState(false);
   const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
+  const [_, setShowScanCode] = useRecoilState(showScanCodeState);
   const activeUsers = useRecoilValue(activeUsersState);
   const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
   const [users, setUsers] = useState<IUser[]>([]);
@@ -115,7 +117,18 @@ export default function UsersTable() {
             placeholder="Filter by name, phone number,country code..."
             className="border-2 py-1 px-5 w-2/4 focus:ring-1 ring-blue-600 focus:outline-none"
           />
-          <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+          <div className="mt-4 sm:ml-16 sm:mt-0 flex gap-2">
+            {
+              !phoneConnected && (
+                <button
+                  onClick={() => setShowScanCode(true)}
+                  type="button"
+                  className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
+                >
+                  Connect Your Phone
+                </button>
+              )
+            }
             <button
               onClick={() => setShowUploadFile(true)}
               type="button"

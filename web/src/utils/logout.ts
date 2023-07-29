@@ -18,6 +18,6 @@ export const whatsappLogout = async () => {
         const response = await axios(config);
         return response.data;
     } catch {
-        throw new Error("Error getting QR code");
+        return {}
     }
 }
