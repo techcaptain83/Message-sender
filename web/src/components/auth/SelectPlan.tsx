@@ -32,6 +32,7 @@ export default function SelectPlan() {
                     // setShowSelectPlan(false);
                     if (plan === "free") {
                         toast.success("Your account has been created successfuly! you are now in free plan!");
+                        setShowSelectPlan(false);
                         router.push("/dashboard");
                     } else {
                         setShowSelectPlan(false);
