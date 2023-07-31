@@ -113,7 +113,7 @@ export default function useMessages() {
             } finally {
                 if (index === contacts.length - 1) {
                     setSendingMessages(false);
-                    createLog({
+                    await createLog({
                         filename: selectedFile!.filename,
                         sentCount,
                         failedCount,
