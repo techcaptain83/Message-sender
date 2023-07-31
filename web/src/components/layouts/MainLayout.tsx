@@ -27,7 +27,7 @@ export default function MainLayout({ children }: Props) {
     const showScanCode = useRecoilValue(showScanCodeState);
     const showDeleteLog = useRecoilValue(showDeleteLogState);
     useEffect(() => {
-        (user && user.isPro && router.pathname.includes("/dashboard")) && router.push("/admin");
+        (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
     }, [user, router.pathname])
 
     return (
@@ -37,7 +37,7 @@ export default function MainLayout({ children }: Props) {
                     <PrePageLoader />
                 </div> :
                 <main className='min-h-screen'>
-                    {(user && user.isPro && router.pathname.includes("/dashboard")) ?
+                    {(user && user.isAdmin && router.pathname.includes("/dashboard")) ?
                         <p>403- forbidden</p>
                         :
                         <>

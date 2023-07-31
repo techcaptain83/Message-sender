@@ -39,6 +39,7 @@ export interface IUser {
 export interface IAuthUser {
     _id: string;
     isPro: boolean;
+    isAdmin: boolean;
     firstName: string;
     manual: boolean;
     createdAt: string;

@@ -105,6 +105,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 localStorage.setItem(UIDHASH, JSON.stringify(data.user));
                 localStorage.setItem("hasPreviouslyLoggedIn", "true");
                 setUser(data.user);
+                console.log(data.user.isAdmin)
                 data.user.isAdmin ? router.push("/admin") : router.push("/dashboard");
             }
         }).catch(({ response }) => {
