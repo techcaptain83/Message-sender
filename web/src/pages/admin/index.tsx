@@ -1,29 +1,35 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 
-import EmptyState from '@/components/states/EmptyState'
 import StatsCard from '@/components/StatsCard'
 import AdminUsersTable from '@/components/admin/UsersTable'
+import EmptyState from '@/components/states/EmptyState'
 import LoadingState from '@/components/states/LoadingState'
 import useAuth from '@/hooks/useAuth'
 import useUsers from '@/hooks/useUsers'
+import { PREMIUM_PRICE } from '@/utils/constants'
 import {
     BuildingOfficeIcon,
     CheckCircleIcon
 } from '@heroicons/react/20/solid'
 import {
-    ScaleIcon, UserGroupIcon, CheckBadgeIcon
+    CheckBadgeIcon,
+    ScaleIcon, UserGroupIcon
 } from '@heroicons/react/24/outline'
 import Head from 'next/head'
-import { useState } from 'react'
+import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { CgProfile } from "react-icons/cg"
 import { FiLogOut } from "react-icons/fi"
-import { PREMIUM_PRICE } from '@/utils/constants'
 
 
 
 export default function AdminDashboard() {
-    const [sidebarOpen, setSidebarOpen] = useState(false)
     const { user, logout } = useAuth();
+    const router = useRouter();
     const { users, isLoading } = useUsers();
+    useEffect(() => {
+        (user && !user.isPro) && router.push('/dashboard')
+    }, [user])
 
     if (!user?.isPro) return <div>403 - Forbidden</div>
     return (
@@ -93,7 +99,7 @@ export default function AdminDashboard() {
                                 <h2 className="text-lg font-medium leading-6 text-gray-900">Overview</h2>
                                 <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
                                     {/* Card */}
-                                    <StatsCard name='Account Balance' value={`$${users ? users.filter(user => user.isPro).length * PREMIUM_PRICE : undefined}`} Icon={ScaleIcon} />
+                                    <StatsCard name='Account Balance' value={`$${users ? (users.filter(user => user.isPro).length * PREMIUM_PRICE).toFixed(2) : undefined}`} Icon={ScaleIcon} />
                                     <StatsCard name='Total Users' value={users?.length} Icon={UserGroupIcon} />
                                     <StatsCard name='Premium Users' value={users?.filter(user => user.isPro).length} Icon={CheckBadgeIcon} />
                                 </div>

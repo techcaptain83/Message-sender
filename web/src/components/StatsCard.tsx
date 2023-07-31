@@ -19,7 +19,7 @@ export default function StatsCard({ name, Icon, value }: Props) {
                         <dl>
                             <dt className="truncate text-sm font-medium text-gray-500">{name}</dt>
                             <dd>
-                                <div className="text-lg font-medium text-gray-900">{value ? value : <Loader />}</div>
+                                <div className="text-lg font-medium text-gray-900">{typeof value !== "undefined" ? value : <Loader />}</div>
                             </dd>
                         </dl>
                     </div>
