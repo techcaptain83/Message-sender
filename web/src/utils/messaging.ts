@@ -1,7 +1,3 @@
-import axios from 'axios';
-import { toast } from 'react-hot-toast';
-
-
 export const generateUrl = (body: {
     body?: string,
     audio?: string,
@@ -9,7 +5,7 @@ export const generateUrl = (body: {
     video?: string,
     caption?: string
 }): string => {
-    let url = `https://api.ultramsg.com/instance53164/messages`;
+    let url = `https://api.ultramsg.com/instance56307/messages`;
     if (body.body) {
         url += "/chat";
     } else if (body.audio) {

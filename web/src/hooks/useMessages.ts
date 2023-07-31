@@ -25,7 +25,7 @@ export default function useMessages() {
     const sendMessage = async (phoneNumber: string, content: IContent) => {
 
         let data: any = {
-            "token": "9fn5lnoeg7fszr1i",
+            "token": "pwj223o41dntp1z8",
             "to": phoneNumber
         };
 

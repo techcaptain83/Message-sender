@@ -1,13 +1,13 @@
 import axios from "axios";
 
 var params = {
-    "token": "9fn5lnoeg7fszr1i"
+    "token": "pwj223o41dntp1z8"
 };
 
 
 let config = {
     method: 'get',
-    url: 'https://api.ultramsg.com/instance53164/instance/qrCode',
+    url: 'https://api.ultramsg.com/instance56307/instance/qrCode',
     headers: {
         'Content-Type': 'application/json'
     },

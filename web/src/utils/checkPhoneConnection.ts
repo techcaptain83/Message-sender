@@ -1,12 +1,12 @@
 import axios from "axios";
 
 var params = {
-    "token": "9fn5lnoeg7fszr1i"
+    "token": "pwj223o41dntp1z8"
 };
 
 var config = {
     method: 'get',
-    url: 'https://api.ultramsg.com/instance53164/instance/me',
+    url: 'https://api.ultramsg.com/instance56307/instance/me',
     headers: {
         'Content-Type': 'application/json'
     },

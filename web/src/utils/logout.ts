@@ -1,12 +1,12 @@
 import axios from "axios";
 
 let data = JSON.stringify({
-    "token": "9fn5lnoeg7fszr1i"
+    "token": "pwj223o41dntp1z8"
 });
 
 let config = {
     method: 'post',
-    url: 'https://api.ultramsg.com/instance53164/instance/logout',
+    url: 'https://api.ultramsg.com/instance56307/instance/logout',
     headers: {
         'Content-Type': 'application/json'
     },
