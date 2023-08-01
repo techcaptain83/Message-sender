@@ -5,7 +5,6 @@ import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCame
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import Loader from '../Loader';
 
 export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
@@ -154,7 +153,8 @@ export default function MesssageInput() {
                 disabled={(value.trim() === '' || sendingMessages) && !uploadedFile}
                 className=' h-full p-2 bg-gray-50/75'>
                 {sendingMessages ?
-                    <Loader /> :
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-600" >
+                    </div> :
                     <PaperAirplaneIcon width={30} className={`text-gray-400
                 ${(value.trim() === '' && !uploadedFile) ? "hover:cursor-not-allowed" : "hover:text-gray-600"} `} onClick={handleSubmit} />}
             </button>
