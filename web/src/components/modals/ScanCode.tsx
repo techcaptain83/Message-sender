@@ -59,10 +59,10 @@ export default function ScanCode() {
         const interval = setInterval(async () => {
             const data = await checkPhoneConnection();
             if (data.error) {
-                setPhoneConnected(false);
+                setPhoneConnected(null);
             } else {
                 setLoading(false);
-                setPhoneConnected(true);
+                setPhoneConnected(data);
                 setTimeout(() => {
                     toast.success("your phone has been connected! you can now send messages");
                 }, 1000)

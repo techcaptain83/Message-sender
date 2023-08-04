@@ -50,9 +50,9 @@ export const showScanCodeState = atom<boolean>({
     default: false
 });
 
-export const phoneConnectedState = atom<boolean>({
+export const phoneConnectedState = atom<Object | null>({
     key: "phoneConnectedState",
-    default: false
+    default: null
 });
 
 export const showDeleteLogState = atom<boolean>({
