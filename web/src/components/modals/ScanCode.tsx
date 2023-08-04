@@ -1,15 +1,15 @@
 import { phoneConnectedState, showScanCodeState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
+import { checkPhoneConnection } from '@/utils/checkPhoneConnection';
+import { whatsappLogout } from '@/utils/logout';
+import { getQRCode } from '@/utils/qrCode';
 import { Dialog } from '@headlessui/react';
+import { useEffect, useState } from 'react';
+import { toast } from 'react-hot-toast';
 import QRCode from "react-qr-code";
 import { useRecoilState } from 'recoil';
-import ModalLayout from '../layouts/ModalLayout';
-import { useEffect, useState } from 'react';
-import { getQRCode } from '@/utils/qrCode';
-import { whatsappLogout } from '@/utils/logout';
-import { checkPhoneConnection } from '@/utils/checkPhoneConnection';
 import Loader from '../Loader';
-import { toast } from 'react-hot-toast';
+import ModalLayout from '../layouts/ModalLayout';
 
 export default function ScanCode() {
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);

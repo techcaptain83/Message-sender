@@ -8,13 +8,15 @@ import { toast } from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Pagination from "../pagination";
 import UserCard from "./userCard";
+import { whatsappLogout } from "@/utils/logout";
+import Loader from "../Loader";
 
 
 export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
-  const phoneConnected = useRecoilValue(phoneConnectedState);
+  const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [allChecked, setAllChecked] = useState(false);
   const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
@@ -30,6 +32,7 @@ export default function UsersTable() {
   const [currentPage, setCurrentPage] = useState(0);
   const pageStart = currentPage * rowsPerPage;
   const pageEnd = pageStart + rowsPerPage;
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handlePageChange = ({ selected }) => {
     if (selected === currentPage) return;
@@ -100,7 +103,20 @@ export default function UsersTable() {
     });
     setFilteredUsers(filteredUsers)
 
-  }, [filter])
+  }, [filter]);
+
+  const logout = async () => {
+    setLoggingOut(true);
+    const data = await whatsappLogout();
+    if (data.success === "done") {
+      toast.success("Logged out successfully");
+      setPhoneConnected(false);
+      setLoggingOut(false);
+    } else {
+      toast.error("An error occured while logging out! try again later");
+      setLoggingOut(false);
+    }
+  }
 
   return (
     <div className="pt-4">
@@ -119,7 +135,7 @@ export default function UsersTable() {
           />
           <div className="mt-4 sm:ml-16 sm:mt-0 flex gap-2">
             {
-              !phoneConnected && (
+              !phoneConnected ? (
                 <button
                   onClick={() => setShowScanCode(true)}
                   type="button"
@@ -127,7 +143,14 @@ export default function UsersTable() {
                 >
                   Connect Your Phone
                 </button>
-              )
+              ) :
+                <button
+                  onClick={logout}
+                  type="button"
+                  className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
+                >
+                  {loggingOut ? <Loader /> : "Disconnect Phone"}
+                </button>
             }
             <button
               onClick={() => setShowUploadFile(true)}
