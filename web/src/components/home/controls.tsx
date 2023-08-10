@@ -2,12 +2,9 @@ import { showDeleteFileState, showUploadFileState } from "@/atoms";
 import useFiles from "@/hooks/useFiles";
 import { AiFillDelete } from 'react-icons/ai';
 import { BiImport } from 'react-icons/bi';
-import { FaColumns, FaFilter } from 'react-icons/fa';
-import { MdOutlineUploadFile } from 'react-icons/md';
-import { TfiMenu } from 'react-icons/tfi';
+import { FaFilter } from 'react-icons/fa';
 import { useRecoilState } from "recoil";
 import Loader from "../Loader";
-import { useEffect } from "react";
 
 export default function Controls() {
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);

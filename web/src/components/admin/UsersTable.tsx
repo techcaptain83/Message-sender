@@ -3,6 +3,7 @@ import { IAuthUser } from "@/types"
 import AdminUserCard from "./UserCard"
 import { useEffect, useState } from "react";
 import Pagination from "../pagination";
+import { BiDownload } from "react-icons/bi";
 
 export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
     const [pageUsers, setPageUsers] = useState<IAuthUser[]>([]);
@@ -22,6 +23,38 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
         setPageUsers(users.slice(pageStart, pageEnd));
     }, [page, perPage, users]);
 
+    /*export interface IAuthUser {
+    _id: string;
+    isPro: boolean;
+    isAdmin: boolean;
+    firstName: string;
+    manual: boolean;
+    createdAt: string;
+    lastName: string;
+    email: string;
+    usersUploaded: number;
+    country: string;
+    referredBy: string;
+    datePaid: string;
+    updatedAt: string;
+}
+*/
+    const exportUsers = () => {
+        const header = "First Name,Last Name,Email,Country,Referred By,Plan,Date Paid,Date Joined\n";
+        const csv = users.map((user) => {
+            return `${user.firstName},${user.lastName},${user.email},${user.country},${user.referredBy},${user.isPro ? "Premium" : "Free"},${user.datePaid ? user.datePaid : "Not Paid yet!"},${new Date(user.createdAt).toLocaleString()}\n`;
+        }).join('');
+        const blob = new Blob([header, csv], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.setAttribute('hidden', '');
+        a.setAttribute('href', url);
+        a.setAttribute('download', 'users.csv');
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+
 
     return (
         <div className="px-4 sm:px-6 lg:px-8 pt-6">
@@ -32,15 +65,16 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
                         A list of all the users using chatmaid including their name, location, email and other properties.
                     </p>
                 </div>
-                {/* <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+                <div className="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
                     <button
+                        onClick={exportUsers}
                         type="button"
                         className="flex gap-2  rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
-                        <span>Add User</span>
-                        <PlusIcon className="w-6 h-6" />
+                        <span>Export Users</span>
+                        <BiDownload className="w-6 h-6" />
                     </button>
-                </div> */}
+                </div>
             </div>
             <div className="mt-8 flow-root">
                 <div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
