@@ -7,10 +7,11 @@ interface IProps {
   }) => void;
   currentPage: number;
   totalPages: number;
+  options: number[];
   rowsPerPage: number;
   setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
-const Pagination = ({ currentPage, totalPages, handlePageChange, rowsPerPage, setRowsPerPage }: IProps) => {
+const Pagination = ({ currentPage, totalPages, handlePageChange, rowsPerPage, setRowsPerPage, options }: IProps) => {
   return (
     <div className="w-full flex justify-between items-center md:px-6 xl:px-8 px-4 pt-4 pb-2 bg-gray-50">
       <div>
@@ -22,10 +23,15 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, rowsPerPage, se
           value={rowsPerPage}
           onChange={(e) => setRowsPerPage(Number(e.target.value))}
           className='border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-          <option value={10} selected>10</option>
+          {/* <option value={10} selected>10</option>
           <option value={25}>25</option>
           <option value={50}>50</option>
-          <option value={100}>100</option>
+          <option value={100}>100</option> */}
+          {
+            options.map((option) => (
+              <option key={option} value={option}>{option}</option>
+            ))
+          }
         </select>
       </div>
       <div className="flex space-x-2 text-white">

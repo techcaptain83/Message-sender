@@ -1,7 +1,28 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { IAuthUser } from "@/types"
 import AdminUserCard from "./UserCard"
+import { useEffect, useState } from "react";
+import Pagination from "../pagination";
 
 export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
+    const [pageUsers, setPageUsers] = useState<IAuthUser[]>([]);
+    const [page, setPage] = useState(0);
+    const [perPage, setPerPage] = useState(8);
+    const pageStart = page * perPage;
+    const pageEnd = pageStart + perPage;
+    const totalPages = Math.ceil(users.length / perPage);
+    const handlePageChange = ({ selected }: { selected: number }) => {
+        if (selected < 0 || selected > totalPages - 1) return;
+        if (selected === page) return;
+        setPage(selected);
+        setPageUsers(users.slice(pageStart, pageEnd));
+    }
+
+    useEffect(() => {
+        setPageUsers(users.slice(pageStart, pageEnd));
+    }, [page, perPage, users]);
+
+
     return (
         <div className="px-4 sm:px-6 lg:px-8 pt-6">
             <div className="sm:flex sm:items-center">
@@ -61,13 +82,16 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-gray-200 bg-white">
-                                    {users.map((user) => (<AdminUserCard key={user._id} {...user} />))}
+                                    {pageUsers.map((user) => (<AdminUserCard key={user._id} {...user} />))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
             </div>
+            <Pagination handlePageChange={handlePageChange} currentPage={page} totalPages={totalPages} rowsPerPage={perPage} setRowsPerPage={setPerPage}
+                options={[8, 16, 32, 64]}
+            />
         </div>
     )
 }

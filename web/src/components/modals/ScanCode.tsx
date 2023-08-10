@@ -72,8 +72,6 @@ export default function ScanCode() {
         return () => clearInterval(interval);
     }, []);
 
-
-
     return (
         <ModalLayout open={showScanCode} large setOpen={() => setShowScanCode(false)}>
             <div className='w-full flex  justify-between flex-col md:flex-row'>
@@ -93,7 +91,7 @@ export default function ScanCode() {
                         </div>
                         <div className='text-start pb-3'>
                             A QR code is valid only for <span className='font-semibold'>45 seconds.
-                            </span>You can click after the process has been completed
+                            </span>You can click after the process has  been completed
                         </div>
                     </div>
                 </div>
