@@ -42,7 +42,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [initialLoading, setInitialLoading] = useState(true);
 
     useEffect(() => {
-        console.log("Effect triggered!")
         const user = localStorage.getItem(UIDHASH);
         if (user) {
             setUser(JSON.parse(user));

@@ -20,7 +20,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
 }
 
 export async function getStaticPaths() {
-    const { data } = await axios.get('/logs?ignoreUser=true');
+    const { data } = await axios.get('/logs');
 
     const paths = data.logs.map((log: ILog) => ({
         params: { id: log._id }

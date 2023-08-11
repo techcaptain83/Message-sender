@@ -1,8 +1,6 @@
 import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import useMedia from '@/hooks/useMedia';
 import useMessages from '@/hooks/useMessages';
-import { checkPhoneConnection } from '@/utils/checkPhoneConnection';
-import { whatsappLogout } from '@/utils/logout';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -21,7 +19,7 @@ export default function MesssageInput() {
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
 
     const handleSubmit = async () => {
-        const connectionData = await checkPhoneConnection();
+        // const connectionData = await checkPhoneConnection();
 
         if (selectedUsers.length === 0) {
             toast.error('Please select at least one contact to send a message to.');
@@ -31,13 +29,8 @@ export default function MesssageInput() {
             setTimeout(() => {
                 setShowScanCode(true);
             }, 1000);
-        } else if (phoneConnected !== connectionData) {
-            toast.error("your phone has been disconnected! please reconnect your phone");
-            const logoutData = await whatsappLogout();
-            if (logoutData.success === "done") {
-                setShowScanCode(true);
-            }
         }
+       
         else if (!uploadedFile) {
             sendBulkMessages(selectedUsers, {
                 body: value

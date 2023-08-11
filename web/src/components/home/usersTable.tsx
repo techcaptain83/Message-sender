@@ -110,7 +110,7 @@ export default function UsersTable() {
     const data = await whatsappLogout();
     if (data.success === "done") {
       toast.success("Logged out successfully");
-      setPhoneConnected(null);
+      setPhoneConnected(false);
       setLoggingOut(false);
     } else {
       toast.error("An error occured while logging out! try again later");

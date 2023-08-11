@@ -8,15 +8,17 @@ import ModalLayout from '../layouts/ModalLayout';
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import axios from '@/axios.config';
 import toast from 'react-hot-toast';
-import { PREMIUM_PRICE } from '@/utils/constants';
+import { PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
+import { IAuthUser } from '@/types';
 
 
 export default function UpgradeToPremium() {
     const [showUpgrade, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
     const { user, reloadProfile } = useAuth();
+    const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || '{}') as IAuthUser;
 
     const upgradeUserAccount = async () => {
-        const { data } = await axios.put(`/users/upgrade-to-pro/${user?._id}`);
+        const { data } = await axios.put(`/users/upgrade-to-pro/${user?._id ? user._id : localstorageUser._id}`);
         if (data.message === "success") {
             toast.success("You account have been upgraded successfuly!");
             reloadProfile();

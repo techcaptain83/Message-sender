@@ -4,6 +4,8 @@ import useAuth from "./useAuth";
 import { toast } from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { uploadedFileState } from "@/atoms";
+import { UIDHASH } from "@/utils/constants";
+import { IAuthUser } from "@/types";
 
 
 export default function useMedia() {
@@ -13,6 +15,7 @@ export default function useMedia() {
     const [_, setUploadedFile] = useRecoilState(uploadedFileState);
 
     const { user } = useAuth();
+    const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
 
     const uploadMedia = async (file: File, type: "image" | "video" | "audio") => {
         if (type === "image") {
@@ -25,7 +28,7 @@ export default function useMedia() {
         try {
             const formData = new FormData();
             formData.append("file", file);
-            const { data } = await axios.post(`/media/upload?user=${user?._id}`, formData, {
+            const { data } = await axios.post(`/media/upload?user=${user?._id ? user._id : localstorageUser._id}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

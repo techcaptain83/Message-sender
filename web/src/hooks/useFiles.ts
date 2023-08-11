@@ -1,11 +1,14 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { selectedFileState, showDeleteFileState, showUploadFileState } from "@/atoms";
 import axios from "@/axios.config";
 import { getDecodedFileData } from "@/utils/files";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
 import useAuth from "./useAuth";
+import { UIDHASH } from "@/utils/constants";
+import { IAuthUser } from "@/types";
 
 
 export default function useFiles() {
@@ -13,19 +16,18 @@ export default function useFiles() {
     const [deletingFile, setDeletingFile] = useState(false);
     const [uploadingFile, setUploadingFile] = useState(false);
     const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
-    const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState)
+    const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const [downloadingFile, setDownloadingFile] = useState(false);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
     const { user } = useAuth();
+    const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
 
-    const { data, error, mutate } = useSWR(`/files?user=${user?._id}`, async (url) => {
+    const { data, error, mutate } = useSWR(`/files?user=${user?._id ? user._id : localstorageUser._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);
-            // return response.data;
             return data.files;
 
         } catch (error) {
-            // return []
             console.log("error occured while fetching from backend : ")
             console.log(error);
         }
@@ -57,7 +59,7 @@ export default function useFiles() {
     const deleteFile = async (fileId: string) => {
         setDeletingFile(true);
         try {
-            const { data } = await axios.delete(`/files/${fileId}?user=${user?._id}`);
+            const { data } = await axios.delete(`/files/${fileId}?user=${user?._id ? user._id : localstorageUser._id}`);
             if (data.success) {
                 toast.success("File deleted successfuly!");
                 setSelectedFile(null);
@@ -111,6 +113,7 @@ export default function useFiles() {
     };
 
     const uploadFile = async (event: ChangeEvent<HTMLInputElement>) => {
+        const localstorageUser: IAuthUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}");
         setUploadingFile(true);
         // @ts-ignore
         const file = event.target.files[0];
@@ -127,7 +130,7 @@ export default function useFiles() {
             formData.append('file', file);
 
 
-            await axios.post(`/files/upload?user=${user?._id}&totalUsers=${limitExceeded.totalUsers}`, formData, {
+            await axios.post(`/files/upload?user=${user?._id ? user._id : localstorageUser._id}&totalUsers=${limitExceeded.totalUsers}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

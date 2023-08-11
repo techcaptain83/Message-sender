@@ -22,6 +22,7 @@ export default function ScanCode() {
     const getQr = async () => {
         setLoadingCode(true);
         const data = await getQRCode();
+        console.log("data from getting qrcode : ", data);
         if (data?.qrCode) {
             setQrcode(data.qrCode);
             setLoadingCode(false);
@@ -40,29 +41,15 @@ export default function ScanCode() {
         getQr();
     }, []);
 
-
-    // const submitCode = async () => {
-    //     setLoading(true);
-    //     const data = await checkPhoneConnection();
-    //     if (data.error) {
-    //         toast.error("Your phone hasn't been connected yet!");
-    //         setLoading(false);
-    //     } else {
-    //         toast.success("your phone has been connected! you can now send messages");
-    //         setLoading(false);
-    //         setShowScanCode(false);
-    //         setPhoneConnected(true);
-    //     }
-    // }
-
     useEffect(() => {
         const interval = setInterval(async () => {
             const data = await checkPhoneConnection();
             if (data.error) {
-                setPhoneConnected(null);
+                setPhoneConnected(false);
             } else {
+                console.log(data);
                 setLoading(false);
-                setPhoneConnected(data);
+                setPhoneConnected(true);
                 setTimeout(() => {
                     toast.success("your phone has been connected! you can now send messages");
                 }, 1000)
