@@ -25,7 +25,7 @@ export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
   return (
     <PayPalScriptProvider options={{
-      clientId: "AUVWWFSEca-zzdzcIg_Vv_mFln0SsS1sbpTMC2DF2LvfFxadZX6OVE3s468rCmtzAQo2o7Z0kiZgkr2E",
+      clientId: "AZOqE__ZTWM6Khe01NmjdvSGDFk0RT6xlVZpYX2UjSqhcbSx-qemMo7II6juMAmfjI-UqbVExtrDi6XE",
       currency: "USD",
       components: "buttons"
     }}>
