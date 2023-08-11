@@ -232,7 +232,7 @@ export default function UsersTable() {
           </div>
         </div>
       </div>
-      <Pagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} />
+      <Pagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} rowsPerPage={rowsPerPage} setRowsPerPage={setRowsPerPage} options={[10, 25, 50, 100]} />
     </div>
   )
 }
