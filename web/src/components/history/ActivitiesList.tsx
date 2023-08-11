@@ -33,7 +33,7 @@ export default function ActivitiesList({ logs }: { logs: ILog[] }) {
                     </div>
                     <div className="flex flex-none items-center gap-x-4">
                         <Link
-                            href={`/history/${log._id}`}
+                            href={`/dashboard/history/${log._id}`}
                             className="hidden rounded-md bg-white px-2.5 py-1.5  font-semibold text-gray-900 shadow-sm ring-1 text-sm ring-inset ring-gray-300 hover:bg-gray-50 sm:block capitalize"
                         >
                             View logs<span className="sr-only">, {log.filename}</span>
