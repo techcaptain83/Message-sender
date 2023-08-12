@@ -95,11 +95,12 @@ export default function AdminDashboard() {
                         <div className="mt-8">
                             <div className="mx-auto  px-4 sm:px-6 lg:px-8">
                                 <h2 className="text-lg font-medium leading-6 text-gray-900">Overview</h2>
-                                <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                                <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
                                     {/* Card */}
                                     <StatsCard name='Account Balance' value={`$${users ? (users.filter(user => user.isPro).length * PREMIUM_PRICE).toFixed(2) : undefined}`} Icon={ScaleIcon} />
                                     <StatsCard name='Total Users' value={users?.length} Icon={UserGroupIcon} />
                                     <StatsCard name='Premium Users' value={users?.filter(user => user.isPro).length} Icon={CheckBadgeIcon} />
+                                    <StatsCard name='Free Trial Users' value={users?.filter(user => !user.isPro).length} Icon={CheckBadgeIcon} />
                                 </div>
                             </div>
                             {isLoading && <LoadingState message='Loading Users...' />}
