@@ -15,7 +15,7 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, rowsPerPage, se
   return (
     <div className="w-full flex justify-between items-center md:px-6 xl:px-8 px-4 pt-4 pb-2 bg-gray-50">
       <div>
-        <p className="text-sm text-gray-600 font-medium capitalize">Showing {currentPage + 1} out of {totalPages} pages</p>
+        <p className="text-sm text-gray-600 font-medium capitalize">Showing {currentPage + 1} out of {totalPages === 0 ? 1 : totalPages} pages</p>
       </div>
       <div className='flex items-center space-x-3 text-sm'>
         <p>rows per page : </p>
