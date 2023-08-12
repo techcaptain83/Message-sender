@@ -23,22 +23,6 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
         setPageUsers(users.slice(pageStart, pageEnd));
     }, [page, perPage, users]);
 
-    /*export interface IAuthUser {
-    _id: string;
-    isPro: boolean;
-    isAdmin: boolean;
-    firstName: string;
-    manual: boolean;
-    createdAt: string;
-    lastName: string;
-    email: string;
-    usersUploaded: number;
-    country: string;
-    referredBy: string;
-    datePaid: string;
-    updatedAt: string;
-}
-*/
     const exportUsers = () => {
         const header = "First Name,Last Name,Email,Country,Referred By,Plan,Date Paid,Date Joined\n";
         const csv = users.map((user) => {

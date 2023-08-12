@@ -27,9 +27,7 @@ export default function AdminDashboard() {
     const { user, logout } = useAuth();
     const router = useRouter();
     const { users, isLoading } = useUsers();
-    // useEffect(() => {
-    //     (user && !user.isAdmin) && router.push('/dashboard')
-    // }, [user])
+
 
     if (!user?.isAdmin) return <div>403 - Forbidden</div>
     return (

@@ -5,7 +5,7 @@ import React from 'react'
 import Loader from '../Loader';
 
 export default function AdminUserCard({ country, firstName, lastName, email, isPro, referredBy, createdAt, datePaid, updatedAt, _id, manual }: IAuthUser) {
-    const { isUpgrading, accountBeingUpgraded, releasePremiumVersion } = useUsers();
+    const { isUpgrading, accountBeingUpgraded, releasePremiumVersion, deleteAccount, deletingUser } = useUsers();
     return (
         <tr>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
@@ -31,6 +31,17 @@ export default function AdminUserCard({ country, firstName, lastName, email, isP
                     {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : "Manual Release PV"}
                 </button>
             </td>}
+            {/* delete */}
+            <td>
+                <button
+                    disabled={deletingUser?.deleting && deletingUser.userId === _id}
+                    onClick={() => deleteAccount(_id)}
+                    type="button"
+                    className="inline-flex  items-center rounded-md bg-red-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600"
+                >
+                    {(deletingUser && deletingUser.userId === _id) ? <Loader /> : "Delete"}
+                </button>
+            </td>
         </tr>
     )
 }
