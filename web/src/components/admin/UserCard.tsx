@@ -4,7 +4,7 @@ import { PREMIUM_PRICE } from '@/utils/constants'
 import React from 'react'
 import Loader from '../Loader';
 
-export default function AdminUserCard({ country, firstName, lastName, email, isPro, referredBy, createdAt, datePaid, updatedAt, _id, manual }: IAuthUser) {
+export default function AdminUserCard({ country, firstName, lastName, email, isPro, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified }: IAuthUser) {
     const { isUpgrading, accountBeingUpgraded, releasePremiumVersion, deleteAccount, deletingUser } = useUsers();
     return (
         <tr>
@@ -13,7 +13,9 @@ export default function AdminUserCard({ country, firstName, lastName, email, isP
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{firstName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{lastName}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{email}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{email}
+                {verified ? <span className='p-1 rounded-xl ml-2 bg-green-200'>Verified</span> : <span className='p-1 rounded-xl ml-2 bg-red-200'>Not Verified</span>}
+            </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(createdAt).toLocaleString()}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{referredBy ? referredBy : "No One"}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? manual ? "Cash" : "Paypal" : "None"}</td>

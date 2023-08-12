@@ -49,6 +49,7 @@ export interface IAuthUser {
     country: string;
     referredBy: string;
     datePaid: string;
+    verified?: boolean;
     updatedAt: string;
 }
 

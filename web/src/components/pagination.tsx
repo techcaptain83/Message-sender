@@ -23,13 +23,10 @@ const Pagination = ({ currentPage, totalPages, handlePageChange, rowsPerPage, se
           value={rowsPerPage}
           onChange={(e) => setRowsPerPage(Number(e.target.value))}
           className='border border-gray-300 rounded-md px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent'>
-          {/* <option value={10} selected>10</option>
-          <option value={25}>25</option>
-          <option value={50}>50</option>
-          <option value={100}>100</option> */}
+
           {
-            options.map((option) => (
-              <option key={option} value={option}>{option}</option>
+            options.map((option, idx) => (
+              <option key={option} value={option} selected={idx === 0} >{option}</option>
             ))
           }
         </select>

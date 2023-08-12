@@ -9,32 +9,17 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
     const [pageUsers, setPageUsers] = useState<IAuthUser[]>([]);
     const [allUsers, setAllUsers] = useState<IAuthUser[]>([]);
     const [search, setSearch] = useState("");
-    const [page, setPage] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
     const [perPage, setPerPage] = useState(8);
     const [pageStart, setPageStart] = useState(0);
     const [pageEnd, setPageEnd] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+
     const handlePageChange = ({ selected }: { selected: number }) => {
         if (selected < 0 || selected > totalPages - 1) return;
-        if (selected === page) return;
-        setPage(selected);
-        setPageUsers(users.slice(pageStart, pageEnd));
+        if (selected === currentPage) return;
+        setCurrentPage(selected);
     }
-
-    useEffect(() => {
-        setPageUsers(allUsers.slice(pageStart, pageEnd));
-        setTotalPages(Math.ceil(allUsers.length / perPage));
-    }, [page, perPage, allUsers]);
-
-
-    useEffect(() => {
-        setAllUsers(users);
-    }, [users]);
-
-    useEffect(() => {
-        setPageStart(page * perPage);
-        setPageEnd(page * perPage + perPage);
-    }, [page, perPage]);
 
     const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearch(e.target.value);
@@ -43,6 +28,24 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
         });
         setAllUsers(filteredUsers);
     }
+
+    useEffect(() => {
+        setAllUsers(users);
+    }, [users]);
+
+    useEffect(() => {
+        if (allUsers.length === 0) {
+            setPageUsers([]);
+            return;
+        }
+        const start = currentPage * perPage;
+        const end = start + perPage;
+        setPageStart(start);
+        setPageEnd(end);
+        setTotalPages(Math.ceil(allUsers.length / perPage));
+        setPageUsers(allUsers.slice(start, end));
+    }, [allUsers, currentPage, perPage]);
+
 
     const exportUsers = () => {
         const header = "First Name,Last Name,Email,Country,Referred By,Plan,Date Paid,Date Joined\n";
@@ -147,7 +150,7 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
                     </div>
                 </div>
             </div>
-            <Pagination handlePageChange={handlePageChange} currentPage={page} totalPages={totalPages} rowsPerPage={perPage} setRowsPerPage={setPerPage}
+            <Pagination handlePageChange={handlePageChange} currentPage={currentPage} totalPages={totalPages} rowsPerPage={perPage} setRowsPerPage={setPerPage}
                 options={[8, 16, 32, 64]}
             />
         </div>
