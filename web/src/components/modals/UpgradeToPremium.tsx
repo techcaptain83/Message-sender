@@ -20,7 +20,7 @@ export default function UpgradeToPremium() {
     const upgradeUserAccount = async () => {
         const { data } = await axios.put(`/users/upgrade-to-pro/${user?._id ? user._id : localstorageUser._id}`);
         if (data.message === "success") {
-            toast.success("You account have been upgraded successfuly!");
+            toast.success("thank you for your payment, please log out and re-log in to activate your premium account.");
             reloadProfile();
         } else {
             toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
@@ -75,6 +75,9 @@ export default function UpgradeToPremium() {
                         const name = details.payer.name.given_name;
                         upgradeUserAccount()
                     });
+                }}
+                onCancel={(data) => {
+                    toast.error("Payment canceled!");
                 }}
             />
         </ModalLayout>

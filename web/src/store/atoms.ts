@@ -73,3 +73,17 @@ export const showPayAtom = atom({
     key: "showPay",
     default: false
 });
+
+
+export const showCommentsAtom = atom<{
+    show: boolean,
+    comments: string[],
+}|null>({
+    key: "showComments",
+    default: null
+});
+
+export const showAddCommentAtom = atom<{ show: boolean, userId: string } | null>({
+    key: "showAddComment",
+    default: null
+});

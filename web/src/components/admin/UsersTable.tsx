@@ -11,8 +11,6 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
     const [search, setSearch] = useState("");
     const [currentPage, setCurrentPage] = useState(0);
     const [perPage, setPerPage] = useState(8);
-    const [pageStart, setPageStart] = useState(0);
-    const [pageEnd, setPageEnd] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
 
     const handlePageChange = ({ selected }: { selected: number }) => {
@@ -40,8 +38,6 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
         }
         const start = currentPage * perPage;
         const end = start + perPage;
-        setPageStart(start);
-        setPageEnd(end);
         setTotalPages(Math.ceil(allUsers.length / perPage));
         setPageUsers(allUsers.slice(start, end));
     }, [allUsers, currentPage, perPage]);

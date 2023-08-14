@@ -27,7 +27,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <PayPalScriptProvider options={{
       clientId: "AZOqE__ZTWM6Khe01NmjdvSGDFk0RT6xlVZpYX2UjSqhcbSx-qemMo7II6juMAmfjI-UqbVExtrDi6XE",
       currency: "USD",
-      components: "buttons"
+      components: "buttons",
     }}>
       <RecoilRoot>
         <AuthProvider>
