@@ -1,15 +1,15 @@
 import { showUpgradeToPremiumState } from '@/atoms';
+import axios from '@/axios.config';
 import useAuth from '@/hooks/useAuth';
+import { IAuthUser } from '@/types';
+import { PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { PayPalButtons } from '@paypal/react-paypal-js';
+import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
-import { PayPalButtons } from '@paypal/react-paypal-js';
-import axios from '@/axios.config';
-import toast from 'react-hot-toast';
-import { PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
-import { IAuthUser } from '@/types';
 
 
 export default function UpgradeToPremium() {
