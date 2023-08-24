@@ -19,12 +19,12 @@ export default function UpgradeToPremium() {
         if (data.message === "success") {
             toast.success("You account have been upgraded successfuly!");
             reloadProfile();
-        }else{
+        } else {
             toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
         }
     }
 
-
+ 
     return (
         <ModalLayout open={showUpgrade} setOpen={() => setShowUpgrade(false)}>
             <div className="absolute right-0 top-0 hidden pr-4 pt-4 sm:block">
