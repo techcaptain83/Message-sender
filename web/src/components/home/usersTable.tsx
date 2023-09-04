@@ -8,8 +8,8 @@ import { toast } from "react-hot-toast";
 import { useRecoilState, useRecoilValue } from "recoil";
 import Pagination from "../pagination";
 import UserCard from "./userCard";
-import { whatsappLogout } from "@/utils/logout";
 import Loader from "../Loader";
+import useWhatsappAPI from "@/hooks/useWhatsappApi";
 
 
 export default function UsersTable() {
@@ -33,6 +33,7 @@ export default function UsersTable() {
   const pageStart = currentPage * rowsPerPage;
   const pageEnd = pageStart + rowsPerPage;
   const [loggingOut, setLoggingOut] = useState(false);
+  const { logout: whatsappLogout } = useWhatsappAPI();
 
   const handlePageChange = ({ selected }) => {
     if (selected === currentPage) return;

@@ -1,8 +1,5 @@
 import { phoneConnectedState, showScanCodeState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { checkPhoneConnection } from '@/utils/checkPhoneConnection';
-import { whatsappLogout } from '@/utils/logout';
-import { getQRCode } from '@/utils/qrCode';
 import { Dialog } from '@headlessui/react';
 import { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -10,6 +7,7 @@ import QRCode from "react-qr-code";
 import { useRecoilState } from 'recoil';
 import Loader from '../Loader';
 import ModalLayout from '../layouts/ModalLayout';
+import useWhatsappAPI from '@/hooks/useWhatsappApi';
 
 export default function ScanCode() {
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
@@ -18,6 +16,7 @@ export default function ScanCode() {
     const [loadingCode, setLoadingCode] = useState(true);
     const [loading, setLoading] = useState(true);
     const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
+    const { getQRCode, logout, checkPhoneConnection } = useWhatsappAPI();
 
     const getQr = async () => {
         setLoadingCode(true);
@@ -27,7 +26,7 @@ export default function ScanCode() {
             setQrcode(data.qrCode);
             setLoadingCode(false);
         } else {
-            const logoutData = await whatsappLogout();
+            const logoutData = await logout();
             if (logoutData.success === "done") {
                 const qrData = await getQRCode();
                 if (qrData.qrCode) {

@@ -1,11 +1,10 @@
 import { selectedFileState } from '@/atoms';
 import { ILogContact, IUser } from '@/types';
-import { generateUrl } from '@/utils/messaging';
-import axios from 'axios';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useRecoilValue } from 'recoil';
 import useLogs from './useLogs';
+import useWhatsappAPI from './useWhatsappApi';
 
 interface IContent {
     displayName?: string,
@@ -21,47 +20,7 @@ export default function useMessages() {
     const [sendingMessages, setSendingMessages] = useState(false);
     const selectedFile = useRecoilValue(selectedFileState);
     const { createLog } = useLogs();
-
-    const sendMessage = async (phoneNumber: string, content: IContent) => {
-
-        let data: any = {
-            "token": "pwj223o41dntp1z8",
-            "to": phoneNumber
-        };
-
-        if (content.body) {
-            data.body = content.body.replace(/\[name\]/g, content.displayName || "");
-        }
-
-        if (content.audio) {
-            data.audio = content.audio;
-        }
-
-        if (content.image) {
-            data.image = content.image;
-        }
-
-        if (content.video) {
-            data.video = content.video;
-        }
-        if (content.caption) {
-            data.caption = content.caption.replace(/\[name\]/g, content.displayName || "");
-        }
-
-        let requestData = JSON.stringify(data);
-
-        let config = {
-            method: 'post',
-            url: generateUrl(content),
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            data: requestData
-        };
-
-        return axios(config)
-    }
-
+    const { sendMessage } = useWhatsappAPI();
 
     const sendBulkMessages = async (contacts: IUser[], content: IContent) => {
         setSendingMessages(true);
@@ -72,6 +31,7 @@ export default function useMessages() {
 
         for (let index = 0; index < contacts.length; index++) {
             const contact = contacts[index];
+            
             // check if there is a phone number in logContacts matching the current contact
             // if so, skip sending message to that number
             if (logContacts.find((logContact) => logContact.phoneNumber === `(${contact.countryCode}) ${contact.phoneNumber}`)) {

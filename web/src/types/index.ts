@@ -53,6 +53,10 @@ export interface IAuthUser {
     browser?: string,
     verified?: boolean;
     updatedAt: string;
+    api?: {
+        instanceId: string;
+        token: string;
+    }
 }
 
 export interface IFile {
