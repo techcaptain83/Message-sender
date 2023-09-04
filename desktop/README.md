@@ -1,1 +1,0 @@
-This is the Nextlon project of chatmaid
