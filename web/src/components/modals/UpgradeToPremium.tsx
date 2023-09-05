@@ -1,15 +1,20 @@
 import { showUpgradeToPremiumState } from '@/atoms';
 import axios from '@/axios.config';
+import normalAxios from "axios";
 import useAuth from '@/hooks/useAuth';
 import { IAuthUser } from '@/types';
 import { PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { PayPalButtons } from '@paypal/react-paypal-js';
 import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
+import { loadStripe } from '@stripe/stripe-js';
+import { Button } from '../Button';
+import { ArrowRightIcon } from '@heroicons/react/20/solid';
+
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 
 export default function UpgradeToPremium() {
@@ -24,6 +29,27 @@ export default function UpgradeToPremium() {
             reloadProfile();
         } else {
             toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
+        }
+    }
+
+    const handlePayment = async () => {
+        const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
+            product_name: 'Premium Account',
+            amount: PREMIUM_PRICE * 100, // convert to cents
+            user_id: user?._id ? user._id : localstorageUser._id
+        });
+        if (data.sessionId) {
+            const stripe = await stripePromise;
+            if (stripe) {
+                const { error } = await stripe.redirectToCheckout({
+                    sessionId: data.sessionId,
+                });
+                if (error) {
+                    toast.error(`Payment failed: ${error.message}`);
+                }
+            }
+        } else {
+            toast.error('Unable to initiate payment. Please try again later.');
         }
     }
 
@@ -55,31 +81,17 @@ export default function UpgradeToPremium() {
                     your are going to be redirected to the payment portal where you can pay <span className='font-semibold text-gray-800'> $79.99 </span> and get a lifetime access.
                 </p>
             </div>
-            <PayPalButtons
+            <div className="mt-4">
+                <Button
+                    onClick={handlePayment}
+                    color='blue'
+                    className='rounded-md'
+                >
+                    <span>Proceed</span>
+                    <ArrowRightIcon color='white' className='w-8 h-4' />
+                </Button>
+            </div>
 
-                createOrder={(data, actions) => {
-                    return actions.order.create({
-                        purchase_units: [
-                            {
-                                amount: {
-                                    value: PREMIUM_PRICE.toString()
-                                },
-                            },
-                        ],
-                    });
-                }}
-                onApprove={(data, actions) => {
-                    // @ts-ignore
-                    return actions.order.capture().then((details) => {
-                        // @ts-ignore
-                        const name = details.payer.name.given_name;
-                        upgradeUserAccount()
-                    });
-                }}
-                onCancel={(data) => {
-                    toast.error("Payment canceled!");
-                }}
-            />
         </ModalLayout>
     )
 }
