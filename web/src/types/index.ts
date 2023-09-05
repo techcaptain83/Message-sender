@@ -38,7 +38,7 @@ export interface IUser {
 }
 export interface IAuthUser {
     _id: string;
-    isPro: boolean;
+    plan: "free" | "pro" | "enterprise"
     isAdmin: boolean;
     firstName: string;
     manual: boolean;

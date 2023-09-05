@@ -46,7 +46,7 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
     const exportUsers = () => {
         const header = "First Name,Last Name,Email,Country,Referred By,Plan,Date Paid,Date Joined\n";
         const csv = users.map((user) => {
-            return `${user.firstName},${user.lastName},${user.email},${user.country},${user.referredBy},${user.isPro ? "Premium" : "Free"},${user.datePaid ? user.datePaid : "Not Paid yet!"},${new Date(user.createdAt).toLocaleString()}\n`;
+            return `${user.firstName},${user.lastName},${user.email},${user.country},${user.referredBy},${user.plan === "pro" ? "Premium" : user.plan === "enterprise" ? "Enterprise" : "Free"},${user.datePaid ? user.datePaid : "Not Paid yet!"},${new Date(user.createdAt).toLocaleString()}\n`;
         }).join('');
         const blob = new Blob([header, csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);
@@ -82,12 +82,6 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
                             className="focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md"
                             placeholder="Search by firstname,lastname, country or email..."
                         />
-                        {/* <button
-                            type="button"
-                            className="flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                        >
-                            Search
-                        </button> */}
                     </div>
                     <button
                         onClick={exportUsers}

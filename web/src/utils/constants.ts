@@ -1,2 +1,3 @@
 export const UIDHASH='d2f7b2e0-4b9a-11eb-ae93-0242ac130002'
-export const PREMIUM_PRICE=0.50
+export const PREMIUM_PRICE=79.9
+export const ENTERPRISE_PRICE=99.9

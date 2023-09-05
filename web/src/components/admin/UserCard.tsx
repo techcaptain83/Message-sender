@@ -4,7 +4,7 @@ import { PREMIUM_PRICE } from '@/utils/constants'
 import React from 'react'
 import Loader from '../Loader';
 
-export default function AdminUserCard({ country, firstName, lastName, email, isPro, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified }: IAuthUser) {
+export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan }: IAuthUser) {
     const { isUpgrading, accountBeingUpgraded, releasePremiumVersion, deleteAccount, deletingUser } = useUsers();
     return (
         <tr>
@@ -18,11 +18,11 @@ export default function AdminUserCard({ country, firstName, lastName, email, isP
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(createdAt).toLocaleString()}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{referredBy ? referredBy : "No One"}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? manual ? "Cash" : "Paypal" : "None"}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? manual ? <span className='bg-gray-50 text-sm text-gray-500 rounded-lg p-2'>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{["pro", "enterprise"].includes(plan) ? manual ? "Cash" : "Stripe" : "None"}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{["pro", "enterprise"].includes(plan) ? manual ? <span className='bg-gray-50 text-sm text-gray-500 rounded-lg p-2'>
                 Manual
             </span> : `$${PREMIUM_PRICE}` : "$0"}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{isPro ? datePaid ? new Date(datePaid).toLocaleString() : new Date(updatedAt).toLocaleString() : "Not Paid"}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{["pro", "enterprise"].includes(plan) ? datePaid ? new Date(datePaid).toLocaleString() : new Date(updatedAt).toLocaleString() : "Not Paid"}</td>
             {/* delete */}
             <td>
                 <button
@@ -34,7 +34,7 @@ export default function AdminUserCard({ country, firstName, lastName, email, isP
                     {(deletingUser && deletingUser.userId === _id) ? <Loader /> : "Delete"}
                 </button>
             </td>
-            {!isPro && <td>
+            {plan !== "free" && <td>
                 <button
                     disabled={isUpgrading && accountBeingUpgraded !== _id}
                     onClick={() => releasePremiumVersion(_id)}

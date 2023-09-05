@@ -1,18 +1,17 @@
 import { showUpgradeToPremiumState } from '@/atoms';
 import axios from '@/axios.config';
-import normalAxios from "axios";
 import useAuth from '@/hooks/useAuth';
 import { IAuthUser } from '@/types';
-import { PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
+import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { loadStripe } from '@stripe/stripe-js';
+import normalAxios from "axios";
 import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
-import ModalLayout from '../layouts/ModalLayout';
-import { loadStripe } from '@stripe/stripe-js';
 import { Button } from '../Button';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import ModalLayout from '../layouts/ModalLayout';
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
@@ -32,10 +31,10 @@ export default function UpgradeToPremium() {
         }
     }
 
-    const handlePayment = async () => {
+    const handlePayment = async (plan: "pro" | "enterprise") => {
         const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
-            product_name: 'Premium Account',
-            amount: PREMIUM_PRICE * 100, // convert to cents
+            product_name: plan === "pro" ? 'Premium Account' : "Enterprise Account",
+            amount: (plan === "pro" ? PREMIUM_PRICE : ENTERPRISE_PRICE) * 100, // convert to cents
             user_id: user?._id ? user._id : localstorageUser._id
         });
         if (data.sessionId) {
@@ -78,17 +77,23 @@ export default function UpgradeToPremium() {
             </div>
             <div className="mt-2">
                 <p className="py-4 text-gray-500">
-                    your are going to be redirected to the payment portal where you can pay <span className='font-semibold text-gray-800'> $79.99 </span> and get a lifetime access.
+                    your are going to be redirected to the payment portal where you can finish your payment.
                 </p>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 flex w-full items-center justify-between gap-3">
                 <Button
-                    onClick={handlePayment}
+                    onClick={() => handlePayment("pro")}
                     color='blue'
-                    className='rounded-md'
+                    className='rounded-md w-full'
                 >
-                    <span>Proceed</span>
-                    <ArrowRightIcon color='white' className='w-8 h-4' />
+                    <span>Buy Shared premium (${PREMIUM_PRICE})</span>
+                </Button>
+                <Button
+                    onClick={() => handlePayment("enterprise")}
+                    color='blue'
+                    className='rounded-md w-full'
+                >
+                    <span>Buy enterprise (${ENTERPRISE_PRICE})</span>
                 </Button>
             </div>
 
