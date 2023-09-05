@@ -4,7 +4,7 @@ import { PREMIUM_PRICE } from '@/utils/constants'
 import React from 'react'
 import Loader from '../Loader';
 
-export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan }: IAuthUser) {
+export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan, api }: IAuthUser) {
     const { isUpgrading, accountBeingUpgraded, releasePremiumVersion, deleteAccount, deletingUser } = useUsers();
     return (
         <tr>
@@ -34,16 +34,38 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
                     {(deletingUser && deletingUser.userId === _id) ? <Loader /> : "Delete"}
                 </button>
             </td>
-            {plan !== "free" && <td>
-                <button
-                    disabled={isUpgrading && accountBeingUpgraded !== _id}
-                    onClick={() => releasePremiumVersion(_id)}
-                    type="button"
-                    className="inline-flex  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
-                >
-                    {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : "Manual Release PV"}
-                </button>
+            {plan === "free" && <td className='pl-4'>
+                <div className='flex gap-2'>
+                    <button
+                        disabled={isUpgrading && accountBeingUpgraded !== _id}
+                        onClick={() => releasePremiumVersion(_id)}
+                        type="button"
+                        className="inline-flex shrink-0  h-max items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : "Manual Release PV"}
+                    </button>
+                    <button
+                        disabled={isUpgrading && accountBeingUpgraded !== _id}
+                        onClick={() => releasePremiumVersion(_id)}
+                        type="button"
+                        className="inline-flex shrink-0  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : "Manual Release EV"}
+                    </button>
+                </div>
             </td>}
+            {
+                plan === "enterprise" && <td className='pl-4'>
+                    <button
+                        disabled={isUpgrading && accountBeingUpgraded !== _id}
+                        onClick={() => releasePremiumVersion(_id)}
+                        type="button"
+                        className="inline-flex shrink-0  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                    >
+                        {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : api ? "Edit Api credentials " : "Add Api credentials"}
+                    </button>
+                </td>
+            }
         </tr>
     )
 }
