@@ -95,12 +95,12 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
                     <div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                         <div className="overflow-auto  shadow ring-1 ring-black ring-opacity-5 sm:rounded-lg">
                             <table className="min-w-full  divide-y divide-gray-300">
-                                <thead className="bg-gray-50">
+                                <thead className="">
                                     <tr>
                                         <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
                                             Country
                                         </th>
-                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                        <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900 shrink-0">
                                             First Name
                                         </th>
                                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
