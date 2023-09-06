@@ -1,28 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import StatsCard from '@/components/StatsCard'
-import Topbar from '@/components/admin/Topbar'
-import AdminUsersTable from '@/components/admin/UsersTable'
 import AdminDashboardLayout from '@/components/layouts/AdminDashboardLayout'
-import EmptyState from '@/components/states/EmptyState'
-import LoadingState from '@/components/states/LoadingState'
 import useAuth from '@/hooks/useAuth'
 import useUsers from '@/hooks/useUsers'
 import { IAuthUser } from '@/types'
 import { ENTERPRISE_PRICE, PREMIUM_PRICE } from '@/utils/constants'
 import {
-    BuildingOfficeIcon,
-    CheckCircleIcon
-} from '@heroicons/react/20/solid'
-import {
     CheckBadgeIcon,
     ScaleIcon, UserGroupIcon
 } from '@heroicons/react/24/outline'
-import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { CgProfile } from "react-icons/cg"
-import { FiLogOut } from "react-icons/fi"
-
 
 
 export default function AdminDashboard() {
@@ -42,8 +30,6 @@ export default function AdminDashboard() {
         return balance.toFixed(2);
     }
 
-
-
     if (!user?.isAdmin) return <div>403 - Forbidden</div>
     return (
         <AdminDashboardLayout>
@@ -57,9 +43,9 @@ export default function AdminDashboard() {
                     <StatsCard name='Free Trial Users' value={users?.filter(user => user.plan === "free").length} Icon={CheckBadgeIcon} />
                 </div>
             </div>
-            {isLoading && <LoadingState message='Loading Users...' />}
-            {users?.length === 0 && !isLoading && <EmptyState message="we don't have any users yet!" />}
-            {(users && users.length > 0) && <AdminUsersTable users={users} />}
+            <div className='min-h-[50vh]  m-6 bg-gray-100 flex items-center justify-center'>
+                <p>Stats Graphs (coming soon...)</p>
+            </div>
         </AdminDashboardLayout>
     )
 }

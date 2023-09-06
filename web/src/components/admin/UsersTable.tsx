@@ -5,7 +5,11 @@ import { BiDownload } from "react-icons/bi";
 import Pagination from "../pagination";
 import AdminUserCard from "./UserCard";
 
-export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
+interface IProps {
+    users: IAuthUser[],
+    title?: string
+}
+export default function AdminUsersTable({ users, title }: IProps) {
     const [pageUsers, setPageUsers] = useState<IAuthUser[]>([]);
     const [allUsers, setAllUsers] = useState<IAuthUser[]>([]);
     const [search, setSearch] = useState("");
@@ -64,7 +68,7 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
         <div className="px-4 sm:px-6 lg:px-8 pt-6">
             <div className="sm:flex sm:items-center j">
                 <div className="sm:flex-auto">
-                    <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
+                    <h1 className="text-base font-semibold leading-6 text-gray-900 w-max">{title ? title : "All Users"}</h1>
                 </div>
 
 
