@@ -13,7 +13,7 @@ interface IProps {
 }
 const Pagination = ({ currentPage, totalPages, handlePageChange, rowsPerPage, setRowsPerPage, options }: IProps) => {
   return (
-    <div className="w-full flex justify-between items-center md:px-6 xl:px-8 px-4 pt-4 pb-2 bg-gray-50">
+    <div className="w-full flex justify-between items-center md:px-6 xl:px-8 px-4 pt-4 pb-2">
       <div>
         <p className="text-sm text-gray-600 font-medium capitalize">Showing {currentPage + 1} out of {totalPages === 0 ? 1 : totalPages} pages</p>
       </div>

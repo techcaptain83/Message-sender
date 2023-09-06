@@ -65,9 +65,6 @@ export default function AdminUsersTable({ users }: { users: IAuthUser[] }) {
             <div className="sm:flex sm:items-center j">
                 <div className="sm:flex-auto">
                     <h1 className="text-base font-semibold leading-6 text-gray-900">Users</h1>
-                    {/* <p className="mt-2 text-sm text-gray-700">
-                        A list of all the users using chatmaid including their name, location, email and other properties.
-                    </p> */}
                 </div>
 
 
