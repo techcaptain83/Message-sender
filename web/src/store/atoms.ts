@@ -78,12 +78,37 @@ export const showPayAtom = atom({
 export const showCommentsAtom = atom<{
     show: boolean,
     comments: string[],
-}|null>({
+} | null>({
     key: "showComments",
     default: null
 });
 
 export const showAddCommentAtom = atom<{ show: boolean, userId: string } | null>({
     key: "showAddComment",
+    default: null
+});
+
+
+export const showCreateTicketModalAtom = atom({
+    key: 'showCreateTicketModal',
+    default: false,
+});
+
+export const showTicketDetailsModalAtom = atom({
+    key: 'showTicketDetailsModal',
+    default: false,
+});
+
+export const ticketDetailsAtom = atom<{ title: string, body: string, response?: string } | null>({
+    key: 'ticketDetails',
+    default: null,
+});
+
+export const showAnswerTicketModalAtom = atom<{
+    show: boolean, ticket: {
+        id: string, body: string, response?: string
+    }
+} | null>({
+    key: "showAnswerTicket",
     default: null
 });

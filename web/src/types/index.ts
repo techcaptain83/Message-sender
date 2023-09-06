@@ -59,6 +59,16 @@ export interface IAuthUser {
     }
 }
 
+export interface ITicket {
+    _id: string;
+    title: string,
+    body: string,
+    createdAt: string,
+    createdBy: IUser,
+    response?: string,
+    status: "open" | "closed"
+  }
+
 export interface IFile {
     _id: string;
     filename: string;
