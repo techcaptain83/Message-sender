@@ -92,7 +92,7 @@ export default function useFiles() {
                 const totalUsers = users.length;
                 const usersUploaded = user?.usersUploaded || 0;
                 console.log(totalUsers)
-                if (usersUploaded + totalUsers > 20 && !user?.isPro) {
+                if (usersUploaded + totalUsers > 20 && user?.plan === "free") {
                     toast.error("You can only upload 20 contacts with the free trial version. Upgrade to PREMIUM for unlimited.");
                     resolve({
                         hasExceededLimit: true,

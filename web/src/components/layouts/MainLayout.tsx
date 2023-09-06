@@ -12,6 +12,10 @@ import ScanCode from '../modals/ScanCode';
 import UpgradeToPremium from '../modals/UpgradeToPremium';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
+import { showAnswerTicketModalAtom, showCreateTicketModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import CreateTicket from '../modals/CreateTicket';
+import TicketDetails from '../modals/TicketDetails';
+import AnswerTicket from '../modals/AnswerTicket';
 
 interface Props {
     children: React.ReactNode
@@ -26,6 +30,10 @@ export default function MainLayout({ children }: Props) {
     const showUploadMedia = useRecoilValue(showUploadMediaState);
     const showScanCode = useRecoilValue(showScanCodeState);
     const showDeleteLog = useRecoilValue(showDeleteLogState);
+    const showCreateTicket = useRecoilValue(showCreateTicketModalAtom);
+    const showTicketDetails = useRecoilValue(showTicketDetailsModalAtom);
+    const showAnswerTicket = useRecoilValue(showAnswerTicketModalAtom);
+
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
     }, [user, router.pathname])
@@ -46,6 +54,9 @@ export default function MainLayout({ children }: Props) {
                             {showUpgrade && <UpgradeToPremium />}
                             {showUploadMedia && <UploadMedia />}
                             {showScanCode && <ScanCode />}
+                            {showCreateTicket && <CreateTicket />}
+                            {showTicketDetails && <TicketDetails />}
+                            {showAnswerTicket?.show && <AnswerTicket />}
                             {showDeleteLog && <DeleteLog />}
                             {(router.pathname === "/dashboard" || router.pathname === "/dashboard/history" || router.pathname === "dashboard/history/[id]") && <Navbar />}
                             {children}

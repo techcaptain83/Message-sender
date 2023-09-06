@@ -5,8 +5,8 @@ import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
 import Loader from '@/components/Loader'
 import { Logo } from '@/components/Logo'
-import PaypalPayment from '@/components/auth/PaypalPayment'
 import SelectPlan from '@/components/auth/SelectPlan'
+import UpgradeToPremium from '@/components/modals/UpgradeToPremium'
 import useAuth from '@/hooks/useAuth'
 import { selectedPlanAtom, serialNumberEmailAtom, showPayAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms'
 import { countries } from '@/store/countries'
@@ -206,7 +206,7 @@ export default function Register() {
       </form>}
       {/* {showSelectOs && <SelectOs />} */}
       {showSelectPlan && <SelectPlan />}
-      {showPay && <PaypalPayment />}
+      {showPay && <UpgradeToPremium />}
     </>
   )
 }

@@ -29,6 +29,19 @@ export function TextField({
   )
 }
 
+export function TextAreaField({ id, label, className = '', ...props }) {
+  return (
+    <div className={className}>
+      {label && <Label id={id}>{label}</Label>}
+      <textarea
+        id={id}
+        {...props}
+        className={clsx(formClasses, 'resize-none h-32')}
+      />
+    </div>
+  )
+}
+
 export function SelectField({ id, label, className = '', ...props }) {
   return (
     <div className={className}>
