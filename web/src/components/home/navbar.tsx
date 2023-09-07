@@ -1,12 +1,10 @@
 import { showUpgradeToPremiumState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
-import Loader from '../Loader';
-import { useRouter } from 'next/router';
 import { Logo } from '../Logo';
 
 const links: {
@@ -22,17 +20,17 @@ export default function Navbar() {
     const router = useRouter();
 
     return (
-        <div className='w-full py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[9vh]'>
+        <div className='w-full fixed top-0  left-0  py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[9vh]'>
             <div className='flex items-center gap-3'>
                 <Link href={'/dashboard'}>
                     <Logo className="h-10" />
                 </Link>
 
-                {links.map(link => (
+                {/* {links.map(link => (
                     <Link key={link.href} href={link.href}>
                         <button className={`rounded-md text-gray-700 font-medium hover:text-blue-500  p-2 text-sm ${router.pathname === link.href && "bg-blue-500 text-white hover:text-white"}`} >{link.label}</button>
                     </Link>
-                ))}
+                ))} */}
             </div>
             {/* <div className='relative'>
                 <Bars4Icon width={20} className='hover:text-blue-500' />
@@ -43,9 +41,9 @@ export default function Navbar() {
                         {/* @ts-ignore */}
                         {user?.firstName[0] + user?.lastName[0]}
                     </div>
-                    <div className='text-sm'>
+                    {/* <div className='text-sm'>
                         <p>{user?.email}</p>
-                    </div>
+                    </div> */}
                 </div>
                 {
                     user?.plan === "free" ?
@@ -62,15 +60,7 @@ export default function Navbar() {
                             <FaCrown width={20} />
                         </div>
                 }
-                <Button variant='solid' color='blue'
-                    onClick={logout}
-                    className='rounded-md space-x-2 lg:text-base text-xs'>
-                    {loading ? <Loader /> : <>
-                        <span>Logout</span>
-                        <ArrowRightOnRectangleIcon width={20} />
-                    </>
-                    }
-                </Button>
+               
             </div>
         </div>
     )

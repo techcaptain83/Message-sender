@@ -4,6 +4,7 @@ import Controls from '@/components/home/controls'
 import MesssageInput from '@/components/home/messsageInput'
 import { Sidebar } from '@/components/home/sidebar'
 import UsersTable from '@/components/home/usersTable'
+import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
 import useFiles from '@/hooks/useFiles'
 import Head from 'next/head'
 import { useEffect } from 'react'
@@ -30,7 +31,7 @@ export default function Index() {
     const selectedFile = useRecoilValue(selectedFileState);
 
     return (
-        <>
+        <UserDashboardLayout>
             <Head>
                 <title>Your dashboard - Chatmaid</title>
             </Head>
@@ -48,6 +49,6 @@ export default function Index() {
                 </div>
                 <Sidebar files={files || []} />
             </div>
-        </>
+        </UserDashboardLayout>
     )
 }  

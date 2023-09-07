@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/local/bin/yarn add stripe
+  /usr/local/bin/node /usr/local/bin/yarn add @kurkle/color
 
 PATH: 
   /usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Tomcat/bin:/Library/Tomcat/bin
@@ -14,7 +14,7 @@ Platform:
   darwin x64
 
 Trace: 
-  Error: 4086E958F87F0000:error:1C800066:Provider routines:ossl_gcm_stream_update:cipher operation failed:../deps/openssl/openssl/providers/implementations/ciphers/ciphercommon_gcm.c:320:
+  Error: 40168E47F87F0000:error:1C800066:Provider routines:ossl_gcm_stream_update:cipher operation failed:../deps/openssl/openssl/providers/implementations/ciphers/ciphercommon_gcm.c:320:
 
 npm manifest: 
   {
@@ -31,6 +31,7 @@ npm manifest:
     "dependencies": {
       "@headlessui/react": "^1.7.13",
       "@heroicons/react": "^2.0.18",
+      "chart.js": "^4.2.1",
       "@stripe/stripe-js": "^1.54.1",
       "@tailwindcss/forms": "^0.5.3",
       "autoprefixer": "^10.4.12",
@@ -41,6 +42,7 @@ npm manifest:
       "postcss-focus-visible": "^6.0.4",
       "react": "18.2.0",
       "react-aria": "^3.25.0",
+      "react-chartjs-2": "^5.2.0",
       "react-dom": "18.2.0",
       "react-hot-toast": "^2.4.1",
       "react-stately": "^3.23.0",
@@ -3615,6 +3617,11 @@ Lockfile:
       "@react-aria/utils" "^3.17.0"
       "@react-aria/visually-hidden" "^3.8.1"
       "@react-types/shared" "^3.18.1"
+  
+  react-chartjs-2@^5.2.0:
+    version "5.2.0"
+    resolved "https://registry.yarnpkg.com/react-chartjs-2/-/react-chartjs-2-5.2.0.tgz#43c1e3549071c00a1a083ecbd26c1ad34d385f5d"
+    integrity sha512-98iN5aguJyVSxp5U3CblRLH67J8gkfyGNbiK3c+l1QI/G4irHMPQw44aEPmjVag+YKTyQ260NcF82GTQ3bdscA==
   
   react-dom@18.2.0:
     version "18.2.0"

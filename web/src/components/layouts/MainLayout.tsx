@@ -58,7 +58,7 @@ export default function MainLayout({ children }: Props) {
                             {showTicketDetails && <TicketDetails />}
                             {showAnswerTicket?.show && <AnswerTicket />}
                             {showDeleteLog && <DeleteLog />}
-                            {(router.pathname === "/dashboard" || router.pathname === "/dashboard/history" || router.pathname === "dashboard/history/[id]") && <Navbar />}
+                            {/* {(router.pathname === "/dashboard" || router.pathname === "/dashboard/history" || router.pathname === "dashboard/history/[id]") && <Navbar />} */}
                             {children}
                         </>
                     }

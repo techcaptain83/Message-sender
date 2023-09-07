@@ -7,7 +7,6 @@ const baseStyles = {
   outline:
     'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-none',
 }
-
 const variantStyles = {
   solid: {
     slate:
