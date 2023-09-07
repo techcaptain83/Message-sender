@@ -34,9 +34,6 @@ export default function Tickets() {
                         <p className="mt-2 text-sm text-gray-700">
                             A list of all tickets submitted by different users.
                         </p>
-                        <div>
-
-                        </div>
                     </div>
                 </div>
                 {(tickets && tickets.length > 0) && (<TicketsTable tickets={tickets} />)}
