@@ -10,7 +10,7 @@ const links: { label: string, href: string }[] = [
     { label: "Messaging", href: "/dashboard" },
     { label: "History", href: "/dashboard/history" },
     { label: "Reservations", href: "/dashboard/reservations" },
-    { label: "Deposit", href: "/dashboard/deposit" },
+    { label: "Deposits", href: "/dashboard/deposits" },
     { label: "Profile", href: "/dashboard/profile" },
     { label: "Support", href: "/dashboard/support" },
 ]

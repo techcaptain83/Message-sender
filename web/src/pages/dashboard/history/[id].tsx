@@ -4,6 +4,7 @@ import axios from '@/axios.config';
 import { saveAs } from 'file-saver';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
+import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
 interface Props {
     log: ILog
 }
@@ -53,10 +54,10 @@ export default function LogView({ log }: Props) {
     }
 
     return (
-        <>
-        <Head>
-            <title>Chatmaid - Logs</title>
-        </Head>
+        <UserDashboardLayout>
+            <Head>
+                <title>Chatmaid - Logs</title>
+            </Head>
             <div className='w-full h-[91vh px-8 py-4'>
                 <div className='w-full flex items-center justify-between'>
                     <h1 className="text-base font-medium leading-6 text-gray-900">Logs</h1>
@@ -74,6 +75,6 @@ export default function LogView({ log }: Props) {
                 </p>
                 <LogsTable contacts={log.contacts} />
             </div>
-        </>
+        </UserDashboardLayout>
     )
 }

@@ -18,10 +18,10 @@ export default function Suport() {
             <Head>
                 <title>Chatmaid | Support</title>
             </Head>
-            <main className='space-y-4'>
+            <main className='space-y-4 px-6'>
                 <header>
                     {/* Heading */}
-                    <div className="flex flex-col items-start justify-between gap-x-8 gap-y-4 bg-white sm:flex-row sm:items-center px-6">
+                    <div className="flex flex-col items-start justify-between gap-x-8 gap-y-4 bg-white sm:flex-row sm:items-center">
                         <div className='space-y-3'>
                             <h1 className="text-xl font-semibold leading-6 text-gray-700">
                                 Support
