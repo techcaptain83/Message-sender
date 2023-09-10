@@ -46,7 +46,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         if (user) {
             const parsedUser = JSON.parse(user) as IAuthUser;
             setUser(parsedUser);
-            if (router.pathname === "/login") {
+            if (router.pathname === "/login" || router.pathname === "/" || router.pathname === "/register") {
                 if (parsedUser.isAdmin) {
                     router.push("/admin");
                 } else {

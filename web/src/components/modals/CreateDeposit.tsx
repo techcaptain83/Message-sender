@@ -5,17 +5,22 @@ import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
+import useDeposits from '@/hooks/useDeposits'
+import toast from 'react-hot-toast'
 
 export default function CreateDeposit() {
     const [showModal, setShowModal] = useRecoilState(showNewDepositModalAtom);
-    const [loading, setLoading] = useState(false);
-    const [amount, setAmount] = useState(0.5);
+    const { createDeposit, creatingDeposit } = useDeposits();
+    const [amount, setAmount] = useState(1);
 
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setLoading(true);
-
+        if (amount < 1) {
+            toast.error("Amount must be greater than $1");
+            return;
+        }
+        createDeposit(amount);
     }
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >
@@ -36,20 +41,20 @@ export default function CreateDeposit() {
                     value={amount}
                     name="amount"
                     type="number"
-                    min={0.5}
+                    min={1}
                     onChange={(e) => setAmount(Number(e.target.value))}
                     required
                 />
 
                 <div className="col-span-full">
                     <Button
-                        disabled={loading}
+                        disabled={creatingDeposit}
                         type="submit"
                         variant="solid"
                         color="blue"
                         className="w-full"
                     >
-                        {loading ?
+                        {creatingDeposit ?
                             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" /> :
                             <span>
                                 Proceed <span aria-hidden="true">&rarr;</span>
