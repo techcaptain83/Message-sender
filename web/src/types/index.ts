@@ -67,7 +67,7 @@ export interface ITicket {
     createdBy: IUser,
     response?: string,
     status: "open" | "closed"
-  }
+}
 
 export interface IFile {
     _id: string;
@@ -98,4 +98,11 @@ export interface ILog {
     failedCount: number;
     createdAt: string;
     contacts: ILogContact[]
+}
+
+export interface IDeposit {
+    _id: string;
+    amount: number;
+    createdAt: string;
+    depositedBy: IAuthUser;
 }
