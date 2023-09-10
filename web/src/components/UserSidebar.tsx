@@ -11,7 +11,7 @@ const links: { label: string, href: string }[] = [
     { label: "History", href: "/dashboard/history" },
     { label: "Reservations", href: "/dashboard/reservations" },
     { label: "Deposits", href: "/dashboard/deposits" },
-    { label: "Profile", href: "/dashboard/profile" },
+    // { label: "Profile", href: "/dashboard/profile" },
     { label: "Support", href: "/dashboard/support" },
 ]
 

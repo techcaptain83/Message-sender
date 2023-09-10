@@ -40,7 +40,7 @@ export default function TicketDetails() {
                         color="blue"
                         className="w-full"
                     >
-                        Close
+                        Close Modal
                     </Button>
                 </div>
             </div>

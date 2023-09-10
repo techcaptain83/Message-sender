@@ -106,3 +106,9 @@ export interface IDeposit {
     createdAt: string;
     depositedBy: IAuthUser;
 }
+
+export interface IReservation {
+    createdBy: IAuthUser;
+    startsAt: string;
+    endsAt: string;
+}

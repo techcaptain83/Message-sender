@@ -1,15 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { selectedFileState, showDeleteFileState, showUploadFileState } from "@/atoms";
 import axios from "@/axios.config";
+import { IAuthUser } from "@/types";
+import { UIDHASH } from "@/utils/constants";
 import { getDecodedFileData } from "@/utils/files";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
 import useAuth from "./useAuth";
-import { UIDHASH } from "@/utils/constants";
-import { IAuthUser } from "@/types";
-
 
 export default function useFiles() {
     const [gettingFileData, setGettingFileData] = useState(false);
@@ -21,7 +20,7 @@ export default function useFiles() {
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
     const { user } = useAuth();
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
-
+    
     const { data, error, mutate } = useSWR(`/files?user=${user?._id ? user._id : localstorageUser._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);

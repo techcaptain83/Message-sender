@@ -9,7 +9,7 @@ export default function ActivitiesList({ logs }: { logs: ILog[] }) {
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
 
     return (
-        <ul role="list" className={`divide-y divide-gray-300 h-[70vh] overflow-y-auto ${logs.length===0 && "flex items-center justify-center"}`}>
+        <ul role="list" className={`divide-y divide-gray-300 h-[65vh] overflow-y-auto ${logs.length===0 && "flex items-center justify-center"}`}>
             {logs?.length > 0 ? logs.map((log: ILog, index) => (
                 <li key={index} className="flex items-center justify-between gap-x-6 py-5">
                     <div className="min-w-0">

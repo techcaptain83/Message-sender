@@ -6,49 +6,51 @@ import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { loadStripe } from '@stripe/stripe-js';
-import normalAxios from "axios";
 import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
 import ModalLayout from '../layouts/ModalLayout';
+import { useState } from 'react';
+import Loader from '../Loader';
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 
 export default function UpgradeToPremium() {
     const [showUpgrade, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
-    const { user, reloadProfile } = useAuth();
+    const { user, setUser } = useAuth();
+    const [proLoading, setProLoading] = useState(false);
+    const [enterpriseLoading, setEnterpriseLoading] = useState(false);
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || '{}') as IAuthUser;
 
-    const upgradeUserAccount = async () => {
-        const { data } = await axios.put(`/users/upgrade-to-pro/${user?._id ? user._id : localstorageUser._id}`);
-        if (data.message === "success") {
-            toast.success("thank you for your payment, please log out and re-log in to activate your premium account.");
-            reloadProfile();
-        } else {
-            toast.error(" Your payment has been received but there was an error upgrading your account! please contact support!");
-        }
-    }
 
     const handlePayment = async (plan: "pro" | "enterprise") => {
-        const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
-            product_name: plan === "pro" ? 'Premium Account' : "Enterprise Account",
-            amount: (plan === "pro" ? PREMIUM_PRICE : ENTERPRISE_PRICE) * 100, // convert to cents
-            user_id: user?._id ? user._id : localstorageUser._id
-        });
-        if (data.sessionId) {
-            const stripe = await stripePromise;
-            if (stripe) {
-                const { error } = await stripe.redirectToCheckout({
-                    sessionId: data.sessionId,
-                });
-                if (error) {
-                    toast.error(`Payment failed: ${error.message}`);
-                }
-            }
+        if (plan === "pro") {
+            setProLoading(true);
         } else {
-            toast.error('Unable to initiate payment. Please try again later.');
+            setEnterpriseLoading(true);
+        }
+        try {
+            const { data } = await axios.put(`/users/upgrade-account/${user ? user._id : localstorageUser._id}`, { plan });
+            if (data.success) {
+                toast.success("Payment Successful!");
+                localStorage.setItem(UIDHASH, JSON.stringify(data.user));
+                setUser(data.user);
+                setShowUpgrade(false);
+            } else {
+                console.log(data);
+                toast.error("Something went wrong! try again later.");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Something went wrong! try again later.");
+        } finally {
+            if (plan === "pro") {
+                setProLoading(false);
+            } else {
+                setEnterpriseLoading(false);
+            }
         }
     }
 
@@ -86,14 +88,14 @@ export default function UpgradeToPremium() {
                     color='blue'
                     className='rounded-md w-full'
                 >
-                    <span>Buy Shared premium (${PREMIUM_PRICE})</span>
+                    {proLoading ? <Loader /> : <span>Buy Shared premium (${PREMIUM_PRICE})</span>}
                 </Button>
                 <Button
                     onClick={() => handlePayment("enterprise")}
                     color='blue'
                     className='rounded-md w-full'
                 >
-                    <span>Buy enterprise (${ENTERPRISE_PRICE})</span>
+                    {enterpriseLoading ? <Loader /> : <span>Buy enterprise (${ENTERPRISE_PRICE})</span>}
                 </Button>
             </div>
 
