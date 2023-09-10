@@ -8,7 +8,7 @@ import useAuth from '@/hooks/useAuth';
 
 const links: { label: string, href: string }[] = [
     { label: "Messaging", href: "/dashboard" },
-    { label: "History", href: "/dashboard/history" },
+    { label: "Messaging History", href: "/dashboard/history" },
     { label: "Reservations", href: "/dashboard/reservations" },
     { label: "Deposits", href: "/dashboard/deposits" },
     // { label: "Profile", href: "/dashboard/profile" },

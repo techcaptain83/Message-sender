@@ -2,6 +2,7 @@ import PrePageLoader from '@/components/LargeLoader';
 import ActivitiesList from '@/components/history/ActivitiesList'
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
 import useLogs from '@/hooks/useLogs'
+import Head from 'next/head';
 import React from 'react'
 
 export default function History() {
@@ -10,16 +11,12 @@ export default function History() {
 
   return (
     <UserDashboardLayout>
+      <Head>
+        <title>Chatmaid - Messaging History</title>
+      </Head>
       <div className='w-full h-[91vh px-8 py-4'>
         <div className='w-full flex items-center justify-between'>
-          <h1 className="text-base font-medium leading-6 text-gray-900">Recent activities</h1>
-          {/* <button
-          onClick={downloadReport}
-          type="button"
-          className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
-        >
-          Download Report
-        </button> */}
+          <h1 className="text-base font-medium leading-6 text-gray-900">Messaging History</h1>
         </div>
         <p className='pt-3 text-gray-600 max-w-4xl'>
           Here, you will find history of the messages you&apos;ve sent to lists,with all the stats of messages that were sent, the ones which were successful or the ones that failed.
