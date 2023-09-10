@@ -112,3 +112,8 @@ export const showAnswerTicketModalAtom = atom<{
     key: "showAnswerTicket",
     default: null
 });
+
+export const showNewDepositModalAtom = atom({
+    key: "showNewDepositModal",
+    default: false
+});

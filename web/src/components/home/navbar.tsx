@@ -7,12 +7,6 @@ import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
 import { Logo } from '../Logo';
 
-const links: {
-    label: string, href: string
-}[] = [
-        { label: "Dashboard", href: '/dashboard' },
-        { label: "History", href: '/dashboard/history' },
-    ]
 
 export default function Navbar() {
     const { user, logout, loading } = useAuth();
@@ -41,9 +35,10 @@ export default function Navbar() {
                         {/* @ts-ignore */}
                         {user?.firstName[0] + user?.lastName[0]}
                     </div>
-                    {/* <div className='text-sm'>
-                        <p>{user?.email}</p>
-                    </div> */}
+                    <div className='text-sm'>
+                        <p>balance</p>
+                        <span className='font-semibold'>${user?.balance.toFixed(2)}</span>
+                    </div>
                 </div>
                 {
                     user?.plan === "free" ?

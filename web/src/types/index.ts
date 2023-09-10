@@ -53,6 +53,7 @@ export interface IAuthUser {
     browser?: string,
     verified?: boolean;
     updatedAt: string;
+    balance: number;
     api?: {
         instanceId: string;
         token: string;
@@ -105,6 +106,7 @@ export interface IDeposit {
     amount: number;
     createdAt: string;
     depositedBy: IAuthUser;
+    status: "pending" | "completed" | "cancelled";
 }
 
 export interface IReservation {
