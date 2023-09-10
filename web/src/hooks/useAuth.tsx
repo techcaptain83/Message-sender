@@ -44,8 +44,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     useEffect(() => {
         const user = localStorage.getItem(UIDHASH);
         if (user) {
-            setUser(JSON.parse(user));
-            router.pathname === "/login" && router.push("/");
+            const parsedUser = JSON.parse(user) as IAuthUser;
+            setUser(parsedUser);
+            if (router.pathname === "/login") {
+                if (parsedUser.isAdmin) {
+                    router.push("/admin");
+                } else {
+                    router.push("/dashboard");
+                }
+            }
             setTimeout(() => {
                 setInitialLoading(false);
             }, 200);
