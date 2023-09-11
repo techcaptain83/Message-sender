@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
 import StatsCard from '@/components/StatsCard'
+import UsageGraph from '@/components/admin/UsageGraph'
 import AdminDashboardLayout from '@/components/layouts/AdminDashboardLayout'
 import useAuth from '@/hooks/useAuth'
 import useUsers from '@/hooks/useUsers'
@@ -44,7 +45,8 @@ export default function AdminDashboard() {
                 </div>
             </div>
             <div className='min-h-[50vh]  m-6 bg-gray-100 flex items-center justify-center'>
-                <p>Stats Graphs (coming soon...)</p>
+                {/* <p>Stats Graphs (coming soon...)</p> */}
+                <UsageGraph />
             </div>
         </AdminDashboardLayout>
     )
