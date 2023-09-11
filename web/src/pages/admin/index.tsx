@@ -14,9 +14,14 @@ import {
 import { useRouter } from 'next/router'
 
 
+const legend: { color: string; meaning: string }[] = [
+    { color: "#085497", meaning: "Free Users" },
+    { color: "#2a88ba", meaning: "Premium Users" },
+    { color: "#E0DE40", meaning: "Enterprise Users" },
+];
+
 export default function AdminDashboard() {
     const { user, logout } = useAuth();
-    const router = useRouter();
     const { users, isLoading } = useUsers();
 
     const calculateAccountBalance = (users: IAuthUser[]) => {
@@ -44,8 +49,21 @@ export default function AdminDashboard() {
                     <StatsCard name='Free Trial Users' value={users?.filter(user => user.plan === "free").length} Icon={CheckBadgeIcon} />
                 </div>
             </div>
-            <div className='min-h-[50vh]  m-6 bg-gray-100 flex items-center justify-center'>
-                {/* <p>Stats Graphs (coming soon...)</p> */}
+            <div className='min-h-[50vh]  m-6 '>
+                <h2 className="text-lg font-medium leading-6 text-gray-900">Users gain</h2>
+                <div className="flex space-x-6 py-4 ">
+                    {legend.map((item, index) => (
+                        <div key={index} className="flex items-center space-x-2">
+                            <div
+                                className="w-4 h-4"
+                                style={{ backgroundColor: item.color }}
+                            ></div>
+                            <p className="opacity-75 2sm:text-base xs:text-sm text-xs">
+                                {item.meaning}
+                            </p>
+                        </div>
+                    ))}
+                </div>
                 <UsageGraph />
             </div>
         </AdminDashboardLayout>

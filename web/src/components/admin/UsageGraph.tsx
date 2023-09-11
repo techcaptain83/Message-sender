@@ -24,29 +24,29 @@ const UsageGraph = () => {
         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         datasets: [
             {
-                label: 'Total Users',
+                label: 'Free Users',
                 data: [
                     100, 120, 130, 190, 200, 210, 220, 230, 240, 250, 157, 278
                 ],
-                backgroundColor: '#009289',
-                borderColor: '#009289',
+                backgroundColor: '#085497',
+                borderColor: '#085497',
                 borderWidth: 1,
                 barPercentage: 0.3,
                 minBarLength: 5
             },
             {
-                label: 'Cases Opened',
+                label: 'Premium Users',
                 data: [
                     12, 4, 15, 32, 5, 9, 12, 4, 15, 32, 5, 9
                 ],
-                backgroundColor: '#7BCF54',
-                borderColor: '#7BCF54',
+                backgroundColor: '#2a88ba',
+                borderColor: '#2a88ba',
                 borderWidth: 1,
                 barPercentage: 0.3,
                 minBarLength: 5
             },
             {
-                label: 'Cases Closed',
+                label: 'Enterprise Users',
                 data: [
                     8, 2, 5, 12, 2, 4, 8, 2, 5, 12, 2, 4
                 ],
