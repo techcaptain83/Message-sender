@@ -12,11 +12,12 @@ import ScanCode from '../modals/ScanCode';
 import UpgradeToPremium from '../modals/UpgradeToPremium';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
-import { showAnswerTicketModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAnswerTicketModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import CreateTicket from '../modals/CreateTicket';
 import TicketDetails from '../modals/TicketDetails';
 import AnswerTicket from '../modals/AnswerTicket';
 import CreateDeposit from '../modals/CreateDeposit';
+import CreateReservation from '../modals/CreateReservation';
 
 interface Props {
     children: React.ReactNode
@@ -35,6 +36,7 @@ export default function MainLayout({ children }: Props) {
     const showTicketDetails = useRecoilValue(showTicketDetailsModalAtom);
     const showAnswerTicket = useRecoilValue(showAnswerTicketModalAtom);
     const showCreateDeposit = useRecoilValue(showNewDepositModalAtom);
+    const showCreateReservation = useRecoilValue(showCreateReservationModalAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -61,6 +63,7 @@ export default function MainLayout({ children }: Props) {
                             {showAnswerTicket?.show && <AnswerTicket />}
                             {showDeleteLog && <DeleteLog />}
                             {showCreateDeposit && <CreateDeposit />}
+                            {showCreateReservation && <CreateReservation />}
                             {children}
                         </>
                     }

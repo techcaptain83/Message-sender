@@ -31,10 +31,10 @@ export default function Reservations() {
               <p>Available minutes : <span className='bg-green-100 text-green-500 p-1 rounded-md text-sm font-medium'>
                 {user?.plan === "free" ? '15 minutes' : user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
               </span></p>
-              {user?.plan !== "enterprise" && <Button
+              {<Button
                 onClick={() => setShowModal(true)}
                 variant='solid' color='blue' className='rounded-md'>
-                <span>New Deposit</span>
+                <span>Get more minutes</span>
                 <PlusIcon className='w-6 h-6' />
               </Button>}
             </div>
