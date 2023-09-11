@@ -117,3 +117,8 @@ export const showNewDepositModalAtom = atom({
     key: "showNewDepositModal",
     default: false
 });
+
+export const showCreateReservationModalAtom = atom({
+    key: "showCreateReservationModal",
+    default: false
+});

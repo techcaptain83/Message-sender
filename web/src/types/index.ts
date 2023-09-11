@@ -54,6 +54,7 @@ export interface IAuthUser {
     verified?: boolean;
     updatedAt: string;
     balance: number;
+    availableTime:number;
     api?: {
         instanceId: string;
         token: string;

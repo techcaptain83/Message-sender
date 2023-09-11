@@ -6,16 +6,16 @@ import Loader from './Loader';
 import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid';
 import useAuth from '@/hooks/useAuth';
 
-const links: { label: string, href: string }[] = [
-    { label: "Messaging", href: "/dashboard" },
-    { label: "Messaging History", href: "/dashboard/history" },
-    { label: "Reservations", href: "/dashboard/reservations" },
-    { label: "Deposits", href: "/dashboard/deposits" },
-    // { label: "Profile", href: "/dashboard/profile" },
-    { label: "Support", href: "/dashboard/support" },
-]
-
 export default function UserSidebar() {
+
+    const links: { label: string, href: string }[] = [
+        { label: "Messaging", href: "/dashboard" },
+        { label: "Messaging History", href: "/dashboard/history" },
+        { label: "Reservations", href: "/dashboard/reservations" },
+        { label: "Deposits", href: "/dashboard/deposits" },
+        // { label: "Profile", href: "/dashboard/profile" },
+        { label: "Support", href: "/dashboard/support" },
+    ]
 
     const router = useRouter();
     const { logout, loading } = useAuth();
