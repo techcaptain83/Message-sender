@@ -1,11 +1,16 @@
 import axios from "@/axios.config";
+import { showAddCredentialsModalAtom } from "@/store/atoms";
 import { IAuthUser } from "@/types";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRecoilState } from "recoil";
 import useSWR from "swr";
 
 export default function useUsers() {
     const [isUpgrading, setIsUpgrading] = useState(false);
+    const [addingCredentials, setAddingCredentials] = useState(false);
+    const [_, setShowAddCredentials] = useRecoilState(showAddCredentialsModalAtom);
+
     const [deletingUser, setDeletingUser] = useState<{
         deleting: boolean;
         userId: string
@@ -41,6 +46,26 @@ export default function useUsers() {
         }
     }
 
+    const addApiCredentials = async (userId: string, instanceId: string, token: string) => {
+        setAddingCredentials(true);
+        try {
+            const { data } = await axios.post(`/users/add-api-credentials/${userId}`, { instanceId, token });
+            if (data.success) {
+                toast.success("Api credentials added successfuly!");
+                mutate();
+                setShowAddCredentials({ show: false, user: null })
+            }
+            else {
+                toast.error(" There was an error adding this credentials! try again later!")
+            }
+        } catch (error) {
+            console.log(error)
+            toast.error(" There was an error adding this credentials! try again later!")
+        } finally {
+            setAddingCredentials(false);
+        }
+    }
+
     const deleteAccount = async (userId: string) => {
         setDeletingUser({
             deleting: true,
@@ -69,6 +94,8 @@ export default function useUsers() {
         releasePremiumVersion,
         accountBeingUpgraded,
         deletingUser,
-        deleteAccount
+        deleteAccount,
+        addingCredentials,
+        addApiCredentials
     };
 }

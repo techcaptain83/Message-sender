@@ -7,22 +7,24 @@ import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
+import useUsers from '@/hooks/useUsers'
+import useAuth from '@/hooks/useAuth'
 
 export default function AddApiCredentials() {
     const [showModal, setShowModal] = useRecoilState(showAddCredentialsModalAtom);
-    const { createDeposit, creatingDeposit } = useDeposits();
-    const [amount, setAmount] = useState(1);
+    const { user } = useAuth();
+    const { addingCredentials, addApiCredentials } = useUsers();
     const [instanceId, setInstanceId] = useState('');
     const [token, setToken] = useState('');
 
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (amount < 1) {
-            toast.error("Amount must be greater than $1");
+        if (token.length < 5 || instanceId.length < 5) {
+            toast.error("Instance Id and Token must be greater than 5 characters");
             return;
         }
-        createDeposit(amount);
+        addApiCredentials(showModal.user?._id!, instanceId, token);
     }
     return (
         <ModalLayout open={showModal.show} setOpen={() => setShowModal({
@@ -34,6 +36,7 @@ export default function AddApiCredentials() {
                     <CodeBracketIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
                 </div>
                 <p className='font-medium text-lg text-gray-600 w-full'>Add Api credentials to <span>{showModal.user?.email} </span></p>
+                <p>you can obtain those credentials from ultramsg.com by creating an instance.</p>
             </div>
             <form
                 onSubmit={(e) => handleSubmit(e)}
@@ -50,27 +53,27 @@ export default function AddApiCredentials() {
                     onChange={(e) => setInstanceId(e.target.value)}
                     required
                 />
-                 <TextField
+                <TextField
                     className="col-span-full"
                     label="Token"
                     id="token"
                     placeholder="ex : pwj223o51dntp1z8"
-                    value={instanceId}
+                    value={token}
                     name="token"
                     type="text"
-                    onChange={(e) => setInstanceId(e.target.value)}
+                    onChange={(e) => setToken(e.target.value)}
                     required
                 />
 
                 <div className="col-span-full">
                     <Button
-                        disabled={creatingDeposit}
+                        disabled={addingCredentials}
                         type="submit"
                         variant="solid"
                         color="blue"
                         className="w-full"
                     >
-                        {creatingDeposit ?
+                        {addingCredentials ?
                             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" /> :
                             <span>
                                 Save
