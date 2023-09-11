@@ -1,15 +1,14 @@
 import { Button } from '@/components/Button';
-import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
-import useAuth from '@/hooks/useAuth'
-import { showCreateReservationModalAtom } from '@/store/atoms';
+import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
+import useAuth from '@/hooks/useAuth';
+import { showPurchaseMinutesModalAtom } from '@/store/atoms';
 import { PlusIcon } from '@heroicons/react/20/solid';
-import Head from 'next/head'
-import React from 'react'
+import Head from 'next/head';
 import { useRecoilState } from 'recoil';
 
 export default function Reservations() {
   const { user } = useAuth();
-  const [_, setShowModal] = useRecoilState(showCreateReservationModalAtom);
+  const [_, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);
   return (
     <UserDashboardLayout>
       <Head>
@@ -31,7 +30,7 @@ export default function Reservations() {
               <p>Available minutes : <span className='bg-green-100 text-green-500 p-1 rounded-md text-sm font-medium'>
                 {user?.plan === "free" ? '15 minutes' : user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
               </span></p>
-              {<Button
+              {user?.plan !== "enterprise" && <Button
                 onClick={() => setShowModal(true)}
                 variant='solid' color='blue' className='rounded-md'>
                 <span>Get more minutes</span>

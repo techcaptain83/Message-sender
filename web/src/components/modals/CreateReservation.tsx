@@ -16,11 +16,7 @@ export default function CreateReservation() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        // if (amount < 1) {
-        //     toast.error("Amount must be greater than $1");
-        //     return;
-        // }
-        // createDeposit(amount);
+      
     }
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >

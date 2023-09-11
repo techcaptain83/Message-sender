@@ -122,3 +122,8 @@ export const showCreateReservationModalAtom = atom({
     key: "showCreateReservationModal",
     default: false
 });
+
+export const showPurchaseMinutesModalAtom = atom({
+    key: "showPurchaseMinutesModal",
+    default: false
+});
