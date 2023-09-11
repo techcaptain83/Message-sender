@@ -46,9 +46,9 @@ export default function Reservations() {
               <h1 className='text-xl font-semibold text-gray-700'>You are on an enterprise plan, you can use the system without any restrictions.</h1>
             </div>
             :
-            <>
-
-            </>
+            <div className='min-h-[60vh] bg-gray-100 rounded-lg mt-6 py-6 flex flex-col items-center justify-center gap-6'>
+              <h1 className='text-xl font-semibold text-gray-700'>The other parts are still in development. not yet in production!</h1>
+            </div>
         }
       </main>
     </UserDashboardLayout>
