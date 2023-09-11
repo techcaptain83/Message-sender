@@ -1,22 +1,30 @@
-import useDeposits from '@/hooks/useDeposits'
+/* eslint-disable react-hooks/exhaustive-deps */
+import useUsers from '@/hooks/useUsers'
 import { showAddCredentialsModalAtom } from '@/store/atoms'
 import { CodeBracketIcon } from '@heroicons/react/20/solid'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
-import useUsers from '@/hooks/useUsers'
-import useAuth from '@/hooks/useAuth'
 
 export default function AddApiCredentials() {
     const [showModal, setShowModal] = useRecoilState(showAddCredentialsModalAtom);
-    const { user } = useAuth();
+    const { users } = useUsers();
     const { addingCredentials, addApiCredentials } = useUsers();
     const [instanceId, setInstanceId] = useState('');
     const [token, setToken] = useState('');
 
+    useEffect(() => {
+        if (showModal.user) {
+            const user = users?.find((user) => user._id === showModal.user?._id);
+            if (user?.api) {
+                setInstanceId(user.api.instanceId);
+                setToken(user.api.token);
+            }
+        }
+    }, []);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
