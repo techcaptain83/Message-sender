@@ -79,13 +79,14 @@ export default function Register() {
         toast.success("successfully registered");
         setUser(data.user);
         localStorage.setItem(UIDHASH, JSON.stringify(data.user));
-        if (!plan) {
-          setShowSelectPlan(true);
-        } else if (plan === "free") {
-          router.push("/dashboard");
-        } else {
-          setShowPay(true);
-        }
+        router.push("/dashboard");
+        // if (!plan) {
+        //   setShowSelectPlan(true);
+        // } else if (plan === "free") {
+        //   router.push("/dashboard");
+        // } else {
+        //   setShowPay(true);
+        // }
       } else {
         toast.error(data.message);
       }
