@@ -3,9 +3,12 @@ import { IAuthUser } from '@/types'
 import { PREMIUM_PRICE } from '@/utils/constants'
 import React from 'react'
 import Loader from '../Loader';
+import { useRecoilState } from 'recoil';
+import { showAddCredentialsModalAtom } from '@/store/atoms';
 
-export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan, api }: IAuthUser) {
+export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan, api,...user }: IAuthUser) {
     const { isUpgrading, accountBeingUpgraded, releasePremiumVersion, deleteAccount, deletingUser } = useUsers();
+    const [_,setShowAddCredentials]=useRecoilState(showAddCredentialsModalAtom)
     return (
         <tr>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
@@ -57,8 +60,12 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
             {
                 plan === "enterprise" && <td className='pl-4'>
                     <button
-                        disabled={isUpgrading && accountBeingUpgraded !== _id}
-                        onClick={() => releasePremiumVersion(_id)}
+                        onClick={() => setShowAddCredentials({
+                            show: true,
+                            user: {
+                                email,_id
+                            }
+                        })}
                         type="button"
                         className="inline-flex shrink-0  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >

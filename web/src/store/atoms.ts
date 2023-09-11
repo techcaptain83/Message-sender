@@ -1,3 +1,4 @@
+import { IAuthUser } from "@/types";
 import { atom } from "recoil";
 
 export const showAddUserModalAtom = atom({
@@ -126,4 +127,15 @@ export const showCreateReservationModalAtom = atom({
 export const showPurchaseMinutesModalAtom = atom({
     key: "showPurchaseMinutesModal",
     default: false
+});
+
+export const showAddCredentialsModalAtom = atom<{
+    show: boolean,
+    user: {email:string,_id:string} | null
+}>({
+    key: "showAddCredentialsModal",
+    default: {
+        show: false,
+        user: null
+    }
 });
