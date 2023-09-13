@@ -131,11 +131,16 @@ export const showPurchaseMinutesModalAtom = atom({
 
 export const showAddCredentialsModalAtom = atom<{
     show: boolean,
-    user: {email:string,_id:string} | null
+    user: { email: string, _id: string } | null
 }>({
     key: "showAddCredentialsModal",
     default: {
         show: false,
         user: null
     }
+});
+
+export const showConnectPhoneModalAtom = atom({
+    key: "showConnectPhoneModal",
+    default: false
 });

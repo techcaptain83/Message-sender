@@ -31,7 +31,7 @@ export default function Navbar() {
             </div> */}
             <div className='flex items-center gap-6'>
                 <div className='flex gap-3 items-center '>
-                    <div className='w-10 h-10 rounded-full flex items-center bg-blue-500 justify-center font-medium text-white text-sm '>
+                    <div className='w-10 h-10 rounded-full flex items-center bg-blue-500 justify-center font-medium text-white text-sm uppercase '>
                         {/* @ts-ignore */}
                         {user?.firstName[0] + user?.lastName[0]}
                     </div>

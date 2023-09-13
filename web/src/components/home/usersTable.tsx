@@ -10,12 +10,16 @@ import Pagination from "../pagination";
 import UserCard from "./userCard";
 import Loader from "../Loader";
 import useWhatsappAPI from "@/hooks/useWhatsappApi";
+import UsersTableHeader from "./usersTableHeader";
+import { showConnectPhoneModalAtom } from "@/store/atoms";
+import useAuth from "@/hooks/useAuth";
 
 
 export default function UsersTable() {
   const selectedFile = useRecoilValue(selectedFileState);
   const [gettingFileData, setGettingFileData] = useState(false);
   const [showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
+
   const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [allChecked, setAllChecked] = useState(false);
@@ -24,12 +28,14 @@ export default function UsersTable() {
   const activeUsers = useRecoilValue(activeUsersState);
   const [_ac, setActiveUsers] = useRecoilState(activeUsersState);
   const [users, setUsers] = useState<IUser[]>([]);
+  const { user } = useAuth();
   const [totalPages, setTotalPages] = useState(0);
   const [filter, setFilter] = useState('');
   const [filteredUsers, setFilteredUsers] = useState<IUser[]>([])
   const [checked, setChecked] = useState(false);
   const [pageUsers, setPageUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  const [_s, setShowConnectPhone] = useRecoilState(showConnectPhoneModalAtom);
   const pageStart = currentPage * rowsPerPage;
   const pageEnd = pageStart + rowsPerPage;
   const [loggingOut, setLoggingOut] = useState(false);
@@ -138,7 +144,10 @@ export default function UsersTable() {
             {
               !phoneConnected ? (
                 <button
-                  onClick={() => setShowScanCode(true)}
+                  onClick={() => {
+                    user?.plan === "enterprise" ? setShowScanCode(true) :
+                      setShowConnectPhone(true)
+                  }}
                   type="button"
                   className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
                 >
@@ -200,27 +209,7 @@ export default function UsersTable() {
                     />
                     <span className="text-sm">Select All on page</span>
                   </div>
-                  <tr>
-                    <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
-
-                      <span>ID</span>
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      First Name
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Last Name
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Display Name
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Country Code
-                    </th>
-                    <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                      Phone Number
-                    </th>
-                  </tr>
+                  <UsersTableHeader />
                 </thead>
 
                 <tbody className="bg-white">
