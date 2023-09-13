@@ -1,43 +1,50 @@
-import { Dialog } from '@headlessui/react';
-import ModalLayout from '../layouts/ModalLayout';
-import { useRecoilState } from 'recoil';
-import { showConnectPhoneModalAtom } from '@/store/atoms';
 import useAuth from '@/hooks/useAuth';
 import useReservations from '@/hooks/useReservations';
+import { showConnectPhoneModalAtom } from '@/store/atoms';
+import { PhoneIcon } from '@heroicons/react/20/solid';
+import { useEffect } from 'react';
+import { useRecoilState } from 'recoil';
+import ModalLayout from '../layouts/ModalLayout';
 
 export default function ConnectPhone() {
     const [show, setShow] = useRecoilState(showConnectPhoneModalAtom);
     const { user } = useAuth();
-    const { } = useReservations();
+    const { searchingActiveReservation, searchForActiveReservation } = useReservations();
 
     /* 
         1.check user plan
         2.if enterprise, show qr code
         3.if premium, check if he has active reservation, if no, tell him to check reservations.
-        4. if free, check if he has used his 15 minutes for testing. if yes, tell him to upgrade to premium. if no, show qr code and tell him that he will get 15 minutes of connnection.
+        4. if free, check if he has used his 15 minutes for testing. if yes, tell him to upgrade to premium. if no,  show qr code and tell him that he will get 15 minutes of connnection.
     */
+
+    useEffect(() => {
+        console.log("connnect phone component did mount");
+        
+        const checkReservation = async () => {
+            const reservation = await searchForActiveReservation();
+        }
+        checkReservation();
+
+    }, []);
 
     return (
         <ModalLayout open={show} large setOpen={() => setShow(false)}>
-            <div className='w-full flex  justify-between flex-col md:flex-row'>
-                <div className="sm:flex sm:items-start">
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                        <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
-                            Connect your phone
-                        </Dialog.Title>
-                    </div>
+            <div className='w-full flex flex-col items-center gap-2'>
+                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
+                    <PhoneIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
                 </div>
+                <h2 className='font-medium text-xl text-gray-600'>Connect Your Phone </h2>
             </div>
-            <div className="mt-5 sm:mt-4 sm:flex space-y-3 sm:space-y-0 sm:flex-row-reverse">
-                <button
-                    type="button"
-                    className="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-                    onClick={() => setShow(false)}
-                >
-                    Cancel
-                </button>
-            </div>
-
+            {searchingActiveReservation && <div className='w-full min-h-[10vh] bg-gray-50 rounded-lg mt-6 py-6 flex flex-col items-center justify-center gap-6'>
+                {/* loading spinner */}
+                <div
+                    className="animate-spin rounded-full h-24 w-24 border-t-2 border-b-2 border-gray-900"
+                />
+                <h1 className='text-xl font-semibold text-gray-700'>
+                    Checking if you have an active reservation...
+                </h1>
+            </div>}
         </ModalLayout>
     )
 }

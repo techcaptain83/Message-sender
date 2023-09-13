@@ -9,7 +9,7 @@ import { useState } from "react";
 
 export default function useReservations() {
     const { user } = useAuth();
-    const [searchingReservation, setSearchingReservation] = useState(false);
+    const [searchingActiveReservation, setSearchingActiveReservation] = useState(false);
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
     const { data: reservations, error, mutate } = useSWR('/api/reservations', async (url: string) => {
         try {
@@ -23,20 +23,20 @@ export default function useReservations() {
     });
 
     const searchForActiveReservation = async () => {
-        setSearchingReservation(true);
+        setSearchingActiveReservation(true);
         try {
             const { data } = await axios.get(`/reservations/active/${user ? user._id : localstorageUser._id}`);
             if (data.notFound) {
                 return null;
             }
             return data.reservation as IReservation;
+            
         } catch (error) {
             console.log(error);
-            toast.error("something went wrong while checking reservations");
             return null;
         }
         finally {
-            setSearchingReservation(false);
+            setSearchingActiveReservation(false);
         }
     }
 
@@ -45,7 +45,7 @@ export default function useReservations() {
     return {
         reservations,
         fetchingReservations: !reservations && !error,
-        searchingReservation,
+        searchingActiveReservation,
         searchForActiveReservation
     }
 
