@@ -3,10 +3,12 @@ import ModalLayout from '../layouts/ModalLayout';
 import { useRecoilState } from 'recoil';
 import { showConnectPhoneModalAtom } from '@/store/atoms';
 import useAuth from '@/hooks/useAuth';
+import useReservations from '@/hooks/useReservations';
 
 export default function ConnectPhone() {
     const [show, setShow] = useRecoilState(showConnectPhoneModalAtom);
     const { user } = useAuth();
+    const { } = useReservations();
 
     /* 
         1.check user plan
