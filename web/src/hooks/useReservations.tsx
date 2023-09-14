@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function useReservations() {
     const { user } = useAuth();
     const [searchingActiveReservation, setSearchingActiveReservation] = useState(false);
-    const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
+    const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
     const { data: reservations, error, mutate } = useSWR('/api/reservations', async (url: string) => {
         try {
             const { data } = await axios.get(`/reservations/user/${user ? user._id : localstorageUser._id}`);
@@ -30,7 +30,7 @@ export default function useReservations() {
                 return null;
             }
             return data.reservation as IReservation;
-            
+
         } catch (error) {
             console.log(error);
             return null;

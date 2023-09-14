@@ -2,15 +2,16 @@ import useAuth from '@/hooks/useAuth';
 import useReservations from '@/hooks/useReservations';
 import { showConnectPhoneModalAtom } from '@/store/atoms';
 import { PhoneIcon } from '@heroicons/react/20/solid';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import ModalLayout from '../layouts/ModalLayout';
+import { IReservation } from '@/types';
 
 export default function ConnectPhone() {
     const [show, setShow] = useRecoilState(showConnectPhoneModalAtom);
     const { user } = useAuth();
     const { searchingActiveReservation, searchForActiveReservation } = useReservations();
-
+    const [reservation, setReservation] = useState<IReservation | null>(null);
     /* 
         1.check user plan
         2.if enterprise, show qr code
@@ -19,13 +20,11 @@ export default function ConnectPhone() {
     */
 
     useEffect(() => {
-        console.log("connnect phone component did mount");
-        
-        const checkReservation = async () => {
+        const getReservation = async () => {
             const reservation = await searchForActiveReservation();
+            setReservation(reservation);
         }
-        checkReservation();
-
+        getReservation();
     }, []);
 
     return (
@@ -45,6 +44,7 @@ export default function ConnectPhone() {
                     Checking if you have an active reservation...
                 </h1>
             </div>}
+
         </ModalLayout>
     )
 }

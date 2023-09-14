@@ -35,6 +35,7 @@ export default function UsersTable() {
   const [checked, setChecked] = useState(false);
   const [pageUsers, setPageUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
+  
   const [_s, setShowConnectPhone] = useRecoilState(showConnectPhoneModalAtom);
   const pageStart = currentPage * rowsPerPage;
   const pageEnd = pageStart + rowsPerPage;
