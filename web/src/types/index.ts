@@ -54,7 +54,7 @@ export interface IAuthUser {
     verified?: boolean;
     updatedAt: string;
     balance: number;
-    availableTime:number;
+    availableTime: number;
     api?: {
         instanceId: string;
         token: string;
@@ -111,6 +111,7 @@ export interface IDeposit {
 }
 
 export interface IReservation {
+    _id: string;
     createdBy: IAuthUser;
     startsAt: string;
     endsAt: string;

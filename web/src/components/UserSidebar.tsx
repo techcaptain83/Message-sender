@@ -3,8 +3,10 @@ import { useRouter } from 'next/router'
 import React from 'react'
 import { Button } from './Button';
 import Loader from './Loader';
-import { ArrowRightOnRectangleIcon } from '@heroicons/react/20/solid';
+import { ArrowRightOnRectangleIcon, PlusIcon } from '@heroicons/react/20/solid';
 import useAuth from '@/hooks/useAuth';
+import { useRecoilState } from 'recoil';
+import { showCreateReservationModalAtom } from '@/store/atoms';
 
 export default function UserSidebar() {
 
@@ -18,7 +20,8 @@ export default function UserSidebar() {
     ]
 
     const router = useRouter();
-    const { logout, loading } = useAuth();
+    const { logout, loading, user } = useAuth();
+    const [__, setShowCreateReservation] = useRecoilState(showCreateReservationModalAtom);
 
     return (
         <div className='w-[15vw] h-[91vh] fixed  shadow top-[9vh] left-0 p-2 pt-4 border-r border-gray-200 flex flex-col justify-between'>
@@ -32,6 +35,14 @@ export default function UserSidebar() {
                         </Link>
                     </li>
                 ))}
+                {
+                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6'
+                        onClick={() => setShowCreateReservation(true)}
+                    >
+                        <span>Reserve a slot</span>
+                        <PlusIcon className='w-6 h-6' />
+                    </Button>
+                }
             </ul>
             <Button variant='solid'
                 onClick={logout}

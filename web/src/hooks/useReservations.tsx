@@ -13,7 +13,7 @@ export default function useReservations() {
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
     const { data: reservations, error, mutate } = useSWR('/api/reservations', async (url: string) => {
         try {
-            const { data } = await axios.get(`/reservations/user/${user ? user._id : localstorageUser._id}`);
+            const { data } = await axios.get(`/reservations/user/${user ? user._id : localstorageUser._id}?active=true`);
             return data.reservations as IReservation[];
         } catch (error) {
             console.log(error);

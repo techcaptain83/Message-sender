@@ -1,7 +1,11 @@
 import { Button } from '@/components/Button';
+import EmptyState from '@/components/states/EmptyState';
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
+import LoadingState from '@/components/states/LoadingState';
 import useAuth from '@/hooks/useAuth';
-import { showPurchaseMinutesModalAtom } from '@/store/atoms';
+import useReservations from '@/hooks/useReservations';
+import { showCreateReservationModalAtom, showPurchaseMinutesModalAtom } from '@/store/atoms';
+import { IReservation } from '@/types';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import Head from 'next/head';
 import { useRecoilState } from 'recoil';
@@ -9,6 +13,9 @@ import { useRecoilState } from 'recoil';
 export default function Reservations() {
   const { user } = useAuth();
   const [_, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);
+  const { reservations, fetchingReservations } = useReservations();
+  const [__, setShowCreateReservation] = useRecoilState(showCreateReservationModalAtom);
+
   return (
     <UserDashboardLayout>
       <Head>
@@ -45,11 +52,40 @@ export default function Reservations() {
               <h1 className='text-xl font-semibold text-gray-700'>You are on an enterprise plan, you can use the system without any restrictions.</h1>
             </div>
             :
-            <div className='min-h-[60vh] bg-gray-100 rounded-lg mt-6 py-6 flex flex-col items-center justify-center gap-6'>
-              <h1 className='text-xl font-semibold text-gray-700'>The other parts are still in development. not yet in production!</h1>
+            <div className='space-y-3'>
+              <div className='space-y-2'>
+                <h2 className='text-lg font-semibold leading-6 text-gray-700'>Your Active Reservations (reservations that haven&apos;t expired)</h2>
+                {fetchingReservations && <LoadingState message='loading reservations ...' minHeight='min-h-[20vh]' />}
+                {(!fetchingReservations && reservations?.length === 0) && <EmptyState message="you don't have any upcoming reservations!" minHeight='min-h-[20vh]' />}
+                {(!fetchingReservations && reservations && reservations.length > 0) && reservations?.map(reservation => <Reservation key={reservation._id} {...reservation} />)}
+              </div>
+
+              <Button
+                variant='solid' color='blue' className='rounded-md'
+                onClick={() => setShowCreateReservation(true)}
+              >
+                <span>Reserve a new slot</span>
+                <PlusIcon className='w-6 h-6' />
+              </Button>
             </div>
         }
       </main>
     </UserDashboardLayout>
+  )
+}
+
+
+const Reservation = ({ startsAt, endsAt }: IReservation) => {
+  return (
+    <div className='flex items-center justify-between bg-white rounded-md px-4 py-2 shadow-md'>
+      <div className='flex flex-col'>
+        <p className='text-gray-600'>Starts at : {startsAt}</p>
+        <p className='text-gray-600'>Ends at : {endsAt}</p>
+      </div>
+      <div className='flex flex-col'>
+        <p className='text-gray-600'>Minutes : 15</p>
+        {/* <p className='text-gray-600'>Price : $1</p> */}
+      </div>
+    </div>
   )
 }

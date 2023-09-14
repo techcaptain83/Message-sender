@@ -1,6 +1,6 @@
 import { showUploadFileState } from '@/atoms';
-import { PlusIcon } from '@heroicons/react/20/solid'
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { PlusIcon } from '@heroicons/react/20/solid';
+import { useRecoilState } from 'recoil';
 
 
 interface IProps {
