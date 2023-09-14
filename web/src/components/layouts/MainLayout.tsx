@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoReservationModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -19,6 +19,7 @@ import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
 import AddApiCredentials from '../modals/AddApiCredentails';
 import ConnectPhone from '../modals/ConnectPhone';
+import NoReservation from '../modals/NoReservation';
 
 interface Props {
     children: React.ReactNode
@@ -39,7 +40,8 @@ export default function MainLayout({ children }: Props) {
     const showCreateDeposit = useRecoilValue(showNewDepositModalAtom);
     const showCreateReservation = useRecoilValue(showCreateReservationModalAtom);
     const showAddCredentials = useRecoilValue(showAddCredentialsModalAtom);
-    const showConnectPhone = useRecoilState(showConnectPhoneModalAtom);
+    const showConnectPhone = useRecoilValue(showConnectPhoneModalAtom);
+    const showNoReservation = useRecoilValue(showNoReservationModalAtom)
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -70,6 +72,7 @@ export default function MainLayout({ children }: Props) {
                             {showCreateReservation && <CreateReservation />}
                             {showAddCredentials.show && <AddApiCredentials />}
                             {children}
+                            {showNoReservation && <NoReservation />}
                         </>
                     }
                 </main>

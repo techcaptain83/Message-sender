@@ -11,8 +11,9 @@ import UserCard from "./userCard";
 import Loader from "../Loader";
 import useWhatsappAPI from "@/hooks/useWhatsappApi";
 import UsersTableHeader from "./usersTableHeader";
-import { showConnectPhoneModalAtom } from "@/store/atoms";
+import { showConnectPhoneModalAtom, showNoReservationModalAtom } from "@/store/atoms";
 import useAuth from "@/hooks/useAuth";
+import useReservations from "@/hooks/useReservations";
 
 
 export default function UsersTable() {
@@ -35,13 +36,13 @@ export default function UsersTable() {
   const [checked, setChecked] = useState(false);
   const [pageUsers, setPageUsers] = useState<IUser[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  
   const [_s, setShowConnectPhone] = useRecoilState(showConnectPhoneModalAtom);
   const pageStart = currentPage * rowsPerPage;
   const pageEnd = pageStart + rowsPerPage;
   const [loggingOut, setLoggingOut] = useState(false);
   const { logout: whatsappLogout } = useWhatsappAPI();
-
+  const { searchingActiveReservation, searchForActiveReservation } = useReservations();
+  const [_ss, setShowNoReservation] = useRecoilState(showNoReservationModalAtom);
   const handlePageChange = ({ selected }) => {
     if (selected === currentPage) return;
     if (selected < 0 || selected >= totalPages) return;
@@ -145,14 +146,22 @@ export default function UsersTable() {
             {
               !phoneConnected ? (
                 <button
-                  onClick={() => {
-                    user?.plan === "enterprise" ? setShowScanCode(true) :
-                      setShowConnectPhone(true)
+                  onClick={async () => {
+                    if (user?.plan === "enterprise") {
+                      setShowScanCode(true);
+                    } else {
+                      const reservation = await searchForActiveReservation();
+                      if (reservation) {
+                        setShowScanCode(true);
+                      } else {
+                        setShowNoReservation(true);
+                      }
+                    }
                   }}
                   type="button"
                   className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
                 >
-                  Connect Your Phone
+                  {searchingActiveReservation ? <Loader /> : "Connect Your Phone"}
                 </button>
               ) :
                 <button

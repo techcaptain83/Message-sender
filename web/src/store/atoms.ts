@@ -144,3 +144,8 @@ export const showConnectPhoneModalAtom = atom({
     key: "showConnectPhoneModal",
     default: false
 });
+
+export const showNoReservationModalAtom = atom({
+    key: "showNoReservationModal",
+    default: false
+});
