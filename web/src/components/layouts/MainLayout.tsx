@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoReservationModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -20,6 +20,7 @@ import UploadMedia from '../modals/uploadMedia';
 import AddApiCredentials from '../modals/AddApiCredentails';
 import ConnectPhone from '../modals/ConnectPhone';
 import NoReservation from '../modals/NoReservation';
+import NoApi from '../modals/NoApi';
 
 interface Props {
     children: React.ReactNode
@@ -41,7 +42,8 @@ export default function MainLayout({ children }: Props) {
     const showCreateReservation = useRecoilValue(showCreateReservationModalAtom);
     const showAddCredentials = useRecoilValue(showAddCredentialsModalAtom);
     const showConnectPhone = useRecoilValue(showConnectPhoneModalAtom);
-    const showNoReservation = useRecoilValue(showNoReservationModalAtom)
+    const showNoReservation = useRecoilValue(showNoReservationModalAtom);
+    const showNoApi = useRecoilValue(showNoApiModalAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -73,6 +75,7 @@ export default function MainLayout({ children }: Props) {
                             {showAddCredentials.show && <AddApiCredentials />}
                             {children}
                             {showNoReservation && <NoReservation />}
+                            {showNoApi && <NoApi />}
                         </>
                     }
                 </main>

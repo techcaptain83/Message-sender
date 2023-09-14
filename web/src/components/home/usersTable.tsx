@@ -11,7 +11,7 @@ import UserCard from "./userCard";
 import Loader from "../Loader";
 import useWhatsappAPI from "@/hooks/useWhatsappApi";
 import UsersTableHeader from "./usersTableHeader";
-import { showConnectPhoneModalAtom, showNoReservationModalAtom } from "@/store/atoms";
+import { showConnectPhoneModalAtom, showNoApiModalAtom, showNoReservationModalAtom } from "@/store/atoms";
 import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
 
@@ -43,6 +43,8 @@ export default function UsersTable() {
   const { logout: whatsappLogout } = useWhatsappAPI();
   const { searchingActiveReservation, searchForActiveReservation } = useReservations();
   const [_ss, setShowNoReservation] = useRecoilState(showNoReservationModalAtom);
+  const [__, setShowNoApi] = useRecoilState(showNoApiModalAtom);
+
   const handlePageChange = ({ selected }) => {
     if (selected === currentPage) return;
     if (selected < 0 || selected >= totalPages) return;
@@ -148,7 +150,7 @@ export default function UsersTable() {
                 <button
                   onClick={async () => {
                     if (user?.plan === "enterprise") {
-                      setShowScanCode(true);
+                      user?.api ? setShowScanCode(true) : setShowNoApi(true);
                     } else {
                       const reservation = await searchForActiveReservation();
                       if (reservation) {

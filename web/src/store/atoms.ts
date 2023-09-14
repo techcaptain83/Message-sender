@@ -149,3 +149,9 @@ export const showNoReservationModalAtom = atom({
     key: "showNoReservationModal",
     default: false
 });
+
+export const showNoApiModalAtom = atom({
+    key: "showNoApiModal",
+    default: false
+});
+
