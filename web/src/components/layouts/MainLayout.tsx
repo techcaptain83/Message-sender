@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -21,6 +21,7 @@ import AddApiCredentials from '../modals/AddApiCredentails';
 import ConnectPhone from '../modals/ConnectPhone';
 import NoReservation from '../modals/NoReservation';
 import NoApi from '../modals/NoApi';
+import PurchaseMinutes from '../modals/PurchaseMinutes';
 
 interface Props {
     children: React.ReactNode
@@ -44,6 +45,7 @@ export default function MainLayout({ children }: Props) {
     const showConnectPhone = useRecoilValue(showConnectPhoneModalAtom);
     const showNoReservation = useRecoilValue(showNoReservationModalAtom);
     const showNoApi = useRecoilValue(showNoApiModalAtom);
+    const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -76,6 +78,7 @@ export default function MainLayout({ children }: Props) {
                             {children}
                             {showNoReservation && <NoReservation />}
                             {showNoApi && <NoApi />}
+                            {showPurchaseMinutes && <PurchaseMinutes />}
                         </>
                     }
                 </main>

@@ -42,7 +42,7 @@ export default function CreateDeposit() {
                     name="amount"
                     type="number"
                     min={1}
-                    onChange={(e) => setAmount(Number(e.target.value))}
+                    onChange={(e) => setAmount(e.target.value)}
                     required
                 />
 
