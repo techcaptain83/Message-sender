@@ -1,15 +1,15 @@
+import axios from '@/axios.config'
 import useAuth from '@/hooks/useAuth'
 import { showPurchaseMinutesModalAtom } from '@/store/atoms'
-import { MINUTES_IN_SLOT, SLOT_PRICE } from '@/utils/constants'
+import { IAuthUser } from '@/types'
+import { MINUTES_IN_SLOT, SLOT_PRICE, UIDHASH } from '@/utils/constants'
 import { PhoneIcon } from '@heroicons/react/20/solid'
-import { FormEvent, useState } from 'react'
+import { useState } from 'react'
 import toast from 'react-hot-toast'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
-import axios from '@/axios.config'
-import { IAuthUser } from '@/types'
 
 export default function PurchaseMinutes() {
     const [showModal, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);
@@ -19,7 +19,7 @@ export default function PurchaseMinutes() {
 
     const { user, setUser } = useAuth();
 
-    const localStorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem('user') || "{}") as IAuthUser : {} as IAuthUser;
+    const localStorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
 
     const purchase = async ({ withBalance }: { withBalance: boolean }) => {
@@ -34,6 +34,7 @@ export default function PurchaseMinutes() {
                 paidWithBalance: withBalance
             });
             setUser(data.user);
+            localStorage.setItem(UIDHASH, JSON.stringify(data.user));
             toast.success("Minutes Purchased successfully");
             setShowModal(false);
         } catch (error) {
@@ -69,7 +70,7 @@ export default function PurchaseMinutes() {
                     onChange={(e) => setSlots(e.target.value)}
                     required
                 />
-                <p className='text-center py-2 bg-gray-100 col-span-full rounded-sm'>Minutes : {slots*MINUTES_IN_SLOT}, Price : ${slots * SLOT_PRICE}</p>
+                <p className='text-center py-2 bg-gray-100 col-span-full rounded-sm'>Minutes : {slots * MINUTES_IN_SLOT}, Price : ${slots * SLOT_PRICE}</p>
 
                 <div className="col-span-full flex items-center space-x-2">
                     <Button
