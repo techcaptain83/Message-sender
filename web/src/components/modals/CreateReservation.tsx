@@ -8,16 +8,26 @@ import { SelectField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
 import useReservations from '@/hooks/useReservations'
 
+interface ISlot {
+    date: string//format : YYYY-MM-DD
+    hour: string //format : HH (24-hour format)
+    slot: {
+        starts: number,
+        ends: number,
+    }
+}
+
 export default function CreateReservation() {
     const [showModal, setShowModal] = useRecoilState(showCreateReservationModalAtom);
-    const { creatingReservation, createReservation } = useReservations();
+    const { creatingReservation, createReservation, gettingReservationsForHour, getReservationsForHour } = useReservations();
+    const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
 
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [timeRange, setTimeRange] = useState('0:00 AM - 1:00 AM');
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        
     }
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >

@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { logToDeleteState, selectedFileState, showDeleteLogState } from "@/atoms";
-import { IAuthUser, ILog } from "@/types";
 import axios from "@/axios.config";
-import { useEffect, useState } from "react";
+import { IAuthUser, ILog } from "@/types";
+import { UIDHASH } from "@/utils/constants";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
 import useAuth from "./useAuth";
-import { UIDHASH } from "@/utils/constants";
 
 
 export default function useLogs() {
@@ -25,6 +25,7 @@ export default function useLogs() {
 
         } catch (error) {
             console.log(error);
+            toast.error("error fetching your history! try again later")
             return [];
         }
     });
