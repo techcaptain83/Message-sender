@@ -5,16 +5,15 @@ import { IAuthUser } from '@/types';
 import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
-import { loadStripe } from '@stripe/stripe-js';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
 import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
-import ModalLayout from '../layouts/ModalLayout';
-import { useState } from 'react';
 import Loader from '../Loader';
+import ModalLayout from '../layouts/ModalLayout';
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
+// const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 
 export default function UpgradeToPremium() {

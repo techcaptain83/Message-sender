@@ -6,17 +6,18 @@ import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { SelectField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
+import useReservations from '@/hooks/useReservations'
 
 export default function CreateReservation() {
     const [showModal, setShowModal] = useRecoilState(showCreateReservationModalAtom);
-    const { createDeposit, creatingDeposit } = useDeposits();
+    const { creatingReservation, createReservation } = useReservations();
+
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [timeRange, setTimeRange] = useState('0:00 AM - 1:00 AM');
 
-
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-      
+
     }
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >
@@ -78,20 +79,17 @@ export default function CreateReservation() {
                             )
                         })}
                     </div>
-                    
                 </div>
-
-
 
                 <div className="col-span-full">
                     <Button
-                        disabled={creatingDeposit}
+                        disabled={creatingReservation}
                         type="submit"
                         variant="solid"
                         color="blue"
                         className="w-full"
                     >
-                        {creatingDeposit ?
+                        {creatingReservation ?
                             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" /> :
                             <span>
                                 Proceed <span aria-hidden="true">&rarr;</span>
