@@ -21,7 +21,7 @@ import { useRecoilState } from 'recoil'
 export default function Register() {
   // const [os, setOs] = useRecoilState(selectedOSAtom);
   const [plan, setPlan] = useRecoilState(selectedPlanAtom);
-  const { setUser } = useAuth();
+  const { updateUser } = useAuth();
   const [showPay, setShowPay] = useRecoilState(showPayAtom);
   // const [showSelectOs, setShowSelectOs] = useRecoilState(showSelectOsAtom);
   const [showSelectPlan, setShowSelectPlan] = useRecoilState(showSelectPlanAtom);
@@ -77,8 +77,7 @@ export default function Register() {
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
         toast.success("successfully registered");
-        setUser(data.user);
-        localStorage.setItem(UIDHASH, JSON.stringify(data.user));
+        updateUser(data.user);
         router.push("/dashboard");
         // if (!plan) {
         //   setShowSelectPlan(true);

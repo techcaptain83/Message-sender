@@ -19,7 +19,7 @@ const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 export default function UpgradeToPremium() {
     const [showUpgrade, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
-    const { user, setUser } = useAuth();
+    const { user, updateUser } = useAuth();
     const [proLoading, setProLoading] = useState(false);
     const [enterpriseLoading, setEnterpriseLoading] = useState(false);
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || '{}') as IAuthUser;
@@ -35,8 +35,7 @@ export default function UpgradeToPremium() {
             const { data } = await axios.put(`/users/upgrade-account/${user ? user._id : localstorageUser._id}`, { plan });
             if (data.success) {
                 toast.success("Payment Successful!");
-                localStorage.setItem(UIDHASH, JSON.stringify(data.user));
-                setUser(data.user);
+                updateUser(data.user);
                 setShowUpgrade(false);
             } else {
                 console.log(data);

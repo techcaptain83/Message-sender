@@ -9,7 +9,7 @@ import { useRecoilState } from "recoil";
 import { showNewDepositModalAtom } from "@/store/atoms";
 
 export default function useDeposits() {
-    const { user, setUser } = useAuth();
+    const { user, updateUser } = useAuth();
     const [creatingDeposit, setCreatingDeposit] = useState(false);
     const [_, setShowDepositModal] = useRecoilState(showNewDepositModalAtom);
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
@@ -42,8 +42,7 @@ export default function useDeposits() {
             const { data } = await axios.post('/deposits', { amount, userId: user?._id ? user._id : localstorageUser._id });
             userDeposits ? mutateUserDeposits([...userDeposits, data.deposit]) : mutateUserDeposits();
             toast.success("Money deposited to your account successfully!");
-            setUser(data.user);
-            localStorage.setItem(UIDHASH, JSON.stringify(data.user));
+            updateUser(data.user);
             setShowDepositModal(false);
         } catch (error) {
             console.log(error);

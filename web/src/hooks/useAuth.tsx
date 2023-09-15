@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 interface IAuth {
     initialLoading: boolean
     user: IAuthUser | null
+    updateUser: (user: IAuthUser) => void;
     setUser: React.Dispatch<React.SetStateAction<IAuthUser | null>>
     signIn: (email: string, serialNumber: string) => Promise<void>
     logout: () => Promise<void>
@@ -23,6 +24,7 @@ const AuthContext = createContext<IAuth>({
     setUser: () => { },
     signIn: async () => { },
     logout: async () => { },
+    updateUser: () => { },
     reloadProfile: async () => { },
     loading: false,
     initialLoading: true,
@@ -129,6 +131,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         });
         setLoading(false);
     }
+
+    const updateUser = (user: IAuthUser) => {
+        setUser(user);
+        localStorage.setItem(UIDHASH, JSON.stringify(user));
+    }
+
     // logout
     const logout = async () => {
         setLoading(true);
@@ -143,7 +151,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     //useMemo to increase performance
     const memoedValue = useMemo(() => ({
-        user, setUser, signIn, loading, logout, initialLoading, reloadProfile
+        user, setUser, signIn, loading, logout, initialLoading, reloadProfile, updateUser
     }), [user, loading, initialLoading])
 
     return (<AuthContext.Provider value={memoedValue}>

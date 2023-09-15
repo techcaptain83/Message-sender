@@ -17,7 +17,7 @@ export default function PurchaseMinutes() {
     const [purchasingWithBalance, setPurchasingWithBalance] = useState(false);
     const [purchasingWithBank, setPurchasingWithBank] = useState(false);
 
-    const { user, setUser } = useAuth();
+    const { user, updateUser } = useAuth();
 
     const localStorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
@@ -33,7 +33,7 @@ export default function PurchaseMinutes() {
                 slots,
                 paidWithBalance: withBalance
             });
-            setUser(data.user);
+            updateUser(data.user);
             localStorage.setItem(UIDHASH, JSON.stringify(data.user));
             toast.success("Minutes Purchased successfully");
             setShowModal(false);
