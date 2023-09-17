@@ -1,12 +1,12 @@
-import useDeposits from '@/hooks/useDeposits'
+import useReservations from '@/hooks/useReservations'
 import { showCreateReservationModalAtom } from '@/store/atoms'
-import { FormEvent, useState } from 'react'
-import { BiMoney } from 'react-icons/bi'
+import { FormEvent, useEffect, useState } from 'react'
+import { BsWatch } from 'react-icons/bs'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { SelectField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
-import useReservations from '@/hooks/useReservations'
+import LoadingState from '../states/LoadingState'
 
 interface ISlot {
     date: string//format : YYYY-MM-DD
@@ -27,13 +27,21 @@ export default function CreateReservation() {
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
     }
+
+
+    // get reservations for hour when time range changes
+    useEffect(() => {
+        const checkAvailableSlots = async () => {
+
+        }
+    }, [timeRange]);
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >
             <div className='w-full flex flex-col items-center gap-2'>
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
-                    <BiMoney className="h-6 w-6 text-blue-600" aria-hidden="true" />
+                    <BsWatch className="h-6 w-6 text-blue-600" aria-hidden="true" />
                 </div>
                 <h2 className='font-medium text-xl text-gray-600'> Reserve one or more time slots </h2>
             </div>
@@ -89,6 +97,9 @@ export default function CreateReservation() {
                             )
                         })}
                     </div>
+                    {
+                        gettingReservationsForHour && <LoadingState message={`getting time available timeslots between ${timeRange} `} />
+                    }
                 </div>
 
                 <div className="col-span-full">
