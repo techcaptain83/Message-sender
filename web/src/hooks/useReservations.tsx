@@ -8,11 +8,11 @@ import useAuth from "./useAuth";
 import { useRecoilState } from "recoil";
 
 export default function useReservations() {
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const [searchingActiveReservation, setSearchingActiveReservation] = useState(false);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
     const [creatingReservation, setCreatingReservation] = useState(false)
-
+    const [creatingMultipleReservations, setCreatingMultipleReservations] = useState(false)
 
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
@@ -60,7 +60,7 @@ export default function useReservations() {
         }
     }
 
-    const createReservation = async (startsAt: Date, endsAt: Date) => {
+    const createReservation = async (startsAt: string, endsAt: string) => {
         setCreatingReservation(true);
         try {
             const { data } = await axios.post('/reservations', {
@@ -69,6 +69,7 @@ export default function useReservations() {
             if (data.success) {
                 mutate();
                 toast.success("reservation created successfully!");
+                updateUser(data.user);
             } else {
                 console.log(data);
                 toast.error("something went wrong while creating reservation!");
@@ -81,6 +82,30 @@ export default function useReservations() {
         }
     }
 
+    const createMultipleReservations = async (reservations: { startsAt: string, endsAt: string }[], minutes: number) => {
+        setCreatingMultipleReservations(true);
+        try {
+            const { data } = await axios.post('/reservations/multiple', {
+                reservations, userId: user ? user._id : localstorageUser._id,
+                minutes
+            });
+            if (data.success) {
+                mutate();
+                toast.success("reservations created successfully!");
+                updateUser(data.user);
+            } else {
+                console.log(data);
+                toast.error("something went wrong while creating reservations!");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("something went wrong while creating reservations!");
+        } finally {
+            setCreatingMultipleReservations(false);
+        }
+    }
+
+
     return {
         reservations,
         fetchingReservations: !reservations && !error,
@@ -89,7 +114,9 @@ export default function useReservations() {
         gettingReservationsForHour,
         getReservationsForHour,
         createReservation,
-        creatingReservation
+        creatingReservation,
+        creatingMultipleReservations,
+        createMultipleReservations
     }
 
 }

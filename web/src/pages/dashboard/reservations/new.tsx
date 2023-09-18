@@ -33,18 +33,38 @@ const formatTimeRangeToHour = (timeRange: string): string => {
 
 
 export default function NewReservation() {
-    const { creatingReservation, createReservation, getReservationsForHour } = useReservations();
+    const { creatingReservation, createReservation, getReservationsForHour, createMultipleReservations, creatingMultipleReservations } = useReservations();
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
-    const { user } = useAuth();
+    const { user, updateUser } = useAuth();
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [timeRange, setTimeRange] = useState('0:00 AM - 1:00 AM');
     // available slots
     const [availableSlots, setAvailableSlots] = useState<ISlot[]>([]);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
 
+    const handleSubmit = () => {
+
+        if (selectedSlots.length === 0) {
+            toast.error("You haven't selected any slot");
+            return;
+        }
+
+        const minutes = selectedSlots.length * 15;
+        if (minutes > user!.availableTime) {
+            toast.error("You don't have enough time to reserve this slot");
+            return;
+        }
+
+        const slots = selectedSlots.map(slot => {
+            const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
+            return {
+                startsAt: startsAt.toISOString(),
+                endsAt: endsAt.toISOString()
+            }
+        });
+
+        createMultipleReservations(slots, minutes);
     }
 
     useEffect(() => {
@@ -129,8 +149,7 @@ export default function NewReservation() {
                 </div>
             </header>
             <main className="w-full mt-10 flex min-h-[60vh]">
-                <form
-                    onSubmit={(e) => handleSubmit(e)}
+                <div
                     className="px-4 space-y-6 w-1/2 border-r-2"
                 >
                     <SelectField
@@ -162,7 +181,7 @@ export default function NewReservation() {
                             const range = i < 12 ? `${i}:00 AM - ${i + 1}:00 AM` : `${i - 12}:00 PM - ${(i + 1) - 12}:00 PM`;
                             return <option key={i} value={range}>{range}</option>
                         })}
-                       
+
                     </SelectField>
 
                     <div className='col-span-full '>
@@ -209,7 +228,7 @@ export default function NewReservation() {
                             gettingReservationsForHour && <LoadingState message={`getting time available timeslots between ${timeRange} `} />
                         }
                     </div>
-                </form>
+                </div>
                 <div className="w-1/2 h-full space-y-5  px-4">
                     <h1 className="text-xl font-semibold leading-6 text-gray-700 capitalize">
                         selected slots
@@ -236,7 +255,10 @@ export default function NewReservation() {
                         </div>
                     }
                     {
-                        selectedSlots.length > 0 && <Button variant="solid" color="blue">
+                        selectedSlots.length > 0 && <Button
+                            type="button"
+                            onClick={handleSubmit}
+                            variant="solid" color="blue">
                             <span>Confirm Reservation{selectedSlots.length > 1 && "s"}</span>
                         </Button>
                     }
