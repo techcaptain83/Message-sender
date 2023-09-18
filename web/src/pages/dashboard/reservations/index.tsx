@@ -1,10 +1,10 @@
 import { Button } from '@/components/Button';
-import EmptyState from '@/components/states/EmptyState';
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
+import EmptyState from '@/components/states/EmptyState';
 import LoadingState from '@/components/states/LoadingState';
 import useAuth from '@/hooks/useAuth';
 import useReservations from '@/hooks/useReservations';
-import { showCreateReservationModalAtom, showPurchaseMinutesModalAtom } from '@/store/atoms';
+import { showPurchaseMinutesModalAtom } from '@/store/atoms';
 import { IReservation } from '@/types';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import Head from 'next/head';
@@ -14,7 +14,7 @@ export default function Reservations() {
     const { user } = useAuth();
     const [_, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);
     const { reservations, fetchingReservations } = useReservations();
-    const [__, setShowCreateReservation] = useRecoilState(showCreateReservationModalAtom);
+
 
     return (
         <UserDashboardLayout>

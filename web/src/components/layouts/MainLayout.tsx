@@ -1,27 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateReservationModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import PrePageLoader from '../LargeLoader';
+import AddApiCredentials from '../modals/AddApiCredentails';
 import AnswerTicket from '../modals/AnswerTicket';
+import ConnectPhone from '../modals/ConnectPhone';
 import CreateDeposit from '../modals/CreateDeposit';
-import CreateReservation from '../modals/CreateReservation';
 import CreateTicket from '../modals/CreateTicket';
 import DeleteFile from '../modals/DeleteFile';
 import DeleteLog from '../modals/DeleteLog';
+import NoApi from '../modals/NoApi';
+import NoReservation from '../modals/NoReservation';
+import PurchaseMinutes from '../modals/PurchaseMinutes';
 import ScanCode from '../modals/ScanCode';
 import TicketDetails from '../modals/TicketDetails';
 import UpgradeToPremium from '../modals/UpgradeToPremium';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
-import AddApiCredentials from '../modals/AddApiCredentails';
-import ConnectPhone from '../modals/ConnectPhone';
-import NoReservation from '../modals/NoReservation';
-import NoApi from '../modals/NoApi';
-import PurchaseMinutes from '../modals/PurchaseMinutes';
 
 interface Props {
     children: React.ReactNode
@@ -40,7 +39,6 @@ export default function MainLayout({ children }: Props) {
     const showTicketDetails = useRecoilValue(showTicketDetailsModalAtom);
     const showAnswerTicket = useRecoilValue(showAnswerTicketModalAtom);
     const showCreateDeposit = useRecoilValue(showNewDepositModalAtom);
-    const showCreateReservation = useRecoilValue(showCreateReservationModalAtom);
     const showAddCredentials = useRecoilValue(showAddCredentialsModalAtom);
     const showConnectPhone = useRecoilValue(showConnectPhoneModalAtom);
     const showNoReservation = useRecoilValue(showNoReservationModalAtom);
@@ -73,7 +71,6 @@ export default function MainLayout({ children }: Props) {
                             {showAnswerTicket?.show && <AnswerTicket />}
                             {showDeleteLog && <DeleteLog />}
                             {showCreateDeposit && <CreateDeposit />}
-                            {showCreateReservation && <CreateReservation />}
                             {showAddCredentials.show && <AddApiCredentials />}
                             {children}
                             {showNoReservation && <NoReservation />}
