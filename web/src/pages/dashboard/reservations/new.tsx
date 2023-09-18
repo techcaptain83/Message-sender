@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/Button";
 import EmptyState from "@/components/states/EmptyState";
 import { SelectField } from "@/components/Fields";
@@ -6,8 +7,9 @@ import LoadingState from "@/components/states/LoadingState";
 import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
 import Head from "next/head";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { FiAlertTriangle } from "react-icons/fi";
+import { generateStartsAndEndsAtDate } from "@/utils/date";
 
 interface ISlot {
     date: string//format : YYYY-MM-DD
@@ -18,18 +20,67 @@ interface ISlot {
     }
 }
 
+// hour : HH format
+const formatTimeRangeToHour = (timeRange: string): string => {
+    const starts = timeRange.split('-')[0].trim();
+    return starts.split(':')[0];
+}
+
+
 export default function NewReservation() {
-    const { creatingReservation, createReservation, gettingReservationsForHour, getReservationsForHour } = useReservations();
+    const { creatingReservation, createReservation, getReservationsForHour } = useReservations();
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
     const { user } = useAuth();
-
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [timeRange, setTimeRange] = useState('0:00 AM - 1:00 AM');
+    // available slots
+    const [availableSlots, setAvailableSlots] = useState<ISlot[]>([]);
+    const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
     }
+
+    useEffect(() => {
+        const hour = formatTimeRangeToHour(timeRange);
+        const chechAvailableSlots = async () => {
+            setGettingReservationsForHour(true);
+            // get reserved slots first
+
+            /*
+            export interface IReservation {
+                _id: string;
+                createdBy: IAuthUser;
+                startsAt: string;
+                endsAt: string;
+            }
+            */
+            const reservedSlots = await getReservationsForHour(date, hour);
+
+            // set available slots as 4 slots of 15 minutes each (0-15, 15-30, 30-45, 45-60) but remove the reserved slots
+            const availableSlots = [...Array(4)].map((_, i) => {
+                const slot = {
+                    date,
+                    hour,
+                    slot: {
+                        starts: i * 15,
+                        ends: (i + 1) * 15
+                    }
+                }
+                return slot;
+            }).filter(slot => {
+                const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
+                return !reservedSlots?.find(reservedSlot => {
+                    reservedSlot.startsAt === startsAt.toISOString() && reservedSlot.endsAt === endsAt.toISOString();
+                })
+            });
+
+            setAvailableSlots(availableSlots);
+            setGettingReservationsForHour(false);
+        }
+        chechAvailableSlots();
+    }, [date, timeRange])
     return (
         <UserDashboardLayout>
             <Head>
@@ -116,10 +167,17 @@ export default function NewReservation() {
                     }
                     {
                         selectedSlots.length > 0 && <div className="grid grid-cols-2 gap-4 w-full ">
-                            
+                            {
+                                selectedSlots.map((slot, i) => (
+                                    <div key={i} className="bg-gray-50 p-2 rounded-md shadow-md flex flex-col gap-1">
+                                        <p>Date : ${slot.date}</p>
+                                        <p>Time : ${slot.hour}</p>
+                                        <p>Minutes : ${slot.slot.ends - slot.slot.starts}</p>
+                                    </div>
+                                ))
+                            }
                         </div>
                     }
-
                     {
                         selectedSlots.length > 0 && <Button variant="solid" color="blue">
                             <span>Confirm Reservation{selectedSlots.length > 1 && "s"}</span>
