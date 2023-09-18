@@ -5,9 +5,10 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import useAuth from "./useAuth";
-import { useRecoilState } from "recoil";
+import { useRouter } from "next/router";
 
 export default function useReservations() {
+    const router = useRouter();
     const { user, updateUser } = useAuth();
     const [searchingActiveReservation, setSearchingActiveReservation] = useState(false);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
@@ -70,6 +71,7 @@ export default function useReservations() {
                 mutate();
                 toast.success("reservation created successfully!");
                 updateUser(data.user);
+
             } else {
                 console.log(data);
                 toast.error("something went wrong while creating reservation!");
@@ -93,6 +95,7 @@ export default function useReservations() {
                 mutate();
                 toast.success("reservations created successfully!");
                 updateUser(data.user);
+                router.push("/reservations");
             } else {
                 console.log(data);
                 toast.error("something went wrong while creating reservations!");

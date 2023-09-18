@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/Button";
 import { SelectField } from "@/components/Fields";
+import Loader from "@/components/Loader";
 import UserDashboardLayout from "@/components/layouts/UserDashboardLayout";
 import EmptyState from "@/components/states/EmptyState";
 import LoadingState from "@/components/states/LoadingState";
@@ -258,8 +259,10 @@ export default function NewReservation() {
                         selectedSlots.length > 0 && <Button
                             type="button"
                             onClick={handleSubmit}
+                            disabled={creatingMultipleReservations}
+
                             variant="solid" color="blue">
-                            <span>Confirm Reservation{selectedSlots.length > 1 && "s"}</span>
+                            {creatingMultipleReservations ? <Loader /> : <span>Confirm Reservation{selectedSlots.length > 1 && "s"}</span>}
                         </Button>
                     }
                 </div>
