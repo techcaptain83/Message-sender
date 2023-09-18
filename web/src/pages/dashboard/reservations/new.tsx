@@ -8,7 +8,7 @@ import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
 import Head from "next/head";
 import { FormEvent, useEffect, useState } from "react";
-import { FiAlertTriangle } from "react-icons/fi";
+import { FiAlertTriangle, FiX } from "react-icons/fi";
 import { generateStartsAndEndsAtDate } from "@/utils/date";
 
 interface ISlot {
@@ -23,7 +23,11 @@ interface ISlot {
 // hour : HH format
 const formatTimeRangeToHour = (timeRange: string): string => {
     const starts = timeRange.split('-')[0].trim();
-    return starts.split(':')[0];
+    let hour = starts.split(':')[0];
+    if (hour.length === 1) {
+        hour = `0${hour}`;
+    }
+    return hour;
 }
 
 
@@ -80,7 +84,13 @@ export default function NewReservation() {
             setGettingReservationsForHour(false);
         }
         chechAvailableSlots();
-    }, [date, timeRange])
+    }, [date, timeRange]);
+    
+
+    useEffect(() => {
+        console.log("selectedSlots", selectedSlots);
+        console.log("availableSlots", availableSlots);
+    }, [selectedSlots, availableSlots]);
     return (
         <UserDashboardLayout>
             <Head>
@@ -138,27 +148,45 @@ export default function NewReservation() {
 
                     <div className='col-span-full '>
                         <p className="mb-3 block text-sm font-medium text-gray-700"> Available Time Slots</p>
-                        <div className="grid grid-cols-2 gap-4 w-full ">
-                            {[...Array(4)].map((_, i) => {
-                                const timeSlot = `${i * 15} - ${(i + 1) * 15} minutes`;
+                        {(availableSlots.length > 0 && !gettingReservationsForHour) && <div className="grid grid-cols-2 gap-4 w-full ">
+                            {availableSlots.map((slot, i) => {
+                                const timeSlot = `${slot.slot.starts}-${slot.slot.ends}`;
                                 return (
-                                    <div key={i} className="flex justify-between items-center border border-gray-200 p-2 text-sm rounded">
+                                    <div key={i} className={`flex justify-between items-center border border-gray-200 p-2 text-sm rounded ${selectedSlots.includes(slot) ? "bg-blue-100" : ""
+                                        }`}>
                                         <span>{timeSlot}</span>
-                                        <button className="bg-blue-500 text-white rounded-full p-1">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                                            </svg>
+                                        <button className={`${selectedSlots.includes(slot) ? "bg-red-400" : "bg-blue-500"} text-white rounded-full p-1`}
+                                            onClick={() => {
+                                                if (selectedSlots.includes(slot)) {
+                                                    const newSelectedSlots = selectedSlots.filter(selectedSlot => selectedSlot !== slot);
+                                                    setSelectedSlots(newSelectedSlots);
+                                                    return;
+                                                }
+                                                setSelectedSlots([...selectedSlots, slot]);
+
+                                            }}
+                                        >
+                                            {selectedSlots.includes(slot) ?
+                                                <FiX className="h-6 w-6" />
+                                                : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                                </svg>
+
+                                            }
                                         </button>
                                     </div>
                                 )
                             })}
-                        </div>
+                        </div>}
+                        {
+                            (availableSlots.length === 0 && !gettingReservationsForHour) && <EmptyState minHeight="min-h-[10vh]" message={`no available slots between ${timeRange} `} />
+                        }
                         {
                             gettingReservationsForHour && <LoadingState message={`getting time available timeslots between ${timeRange} `} />
                         }
                     </div>
                 </form>
-                <div className="w-1/2 h-full  px-4">
+                <div className="w-1/2 h-full space-y-5  px-4">
                     <h1 className="text-xl font-semibold leading-6 text-gray-700 capitalize">
                         selected slots
                     </h1>
@@ -170,9 +198,10 @@ export default function NewReservation() {
                             {
                                 selectedSlots.map((slot, i) => (
                                     <div key={i} className="bg-gray-50 p-2 rounded-md shadow-md flex flex-col gap-1">
-                                        <p>Date : ${slot.date}</p>
-                                        <p>Time : ${slot.hour}</p>
-                                        <p>Minutes : ${slot.slot.ends - slot.slot.starts}</p>
+                                        <p>Date : {slot.date}</p>
+
+                                        <p>Time : {slot.hour} {Number(slot.hour) > 12 ? "PM " : "AM"}</p>
+                                        <p>Minutes : {slot.slot.starts + "-" + slot.slot.ends}</p>
                                     </div>
                                 ))
                             }
