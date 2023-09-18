@@ -1,10 +1,13 @@
 import { Button } from "@/components/Button";
+import EmptyState from "@/components/states/EmptyState";
 import { SelectField } from "@/components/Fields";
 import UserDashboardLayout from "@/components/layouts/UserDashboardLayout";
 import LoadingState from "@/components/states/LoadingState";
+import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
+import { FiAlertTriangle } from "react-icons/fi";
 
 interface ISlot {
     date: string//format : YYYY-MM-DD
@@ -18,6 +21,7 @@ interface ISlot {
 export default function NewReservation() {
     const { creatingReservation, createReservation, gettingReservationsForHour, getReservationsForHour } = useReservations();
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
+    const { user } = useAuth();
 
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [timeRange, setTimeRange] = useState('0:00 AM - 1:00 AM');
@@ -39,12 +43,16 @@ export default function NewReservation() {
                     <p className="text-sm leading-6 text-gray-600 max-w-2xl">
                         You can reserve one or more 15-minutes slots from here.
                     </p>
+                    <div className="flex items-center gap-2 text-gray-500">
+                        <FiAlertTriangle className="text-red-500" />
+                        <p>Note that you have <span className="font-semibold">{user?.availableTime} minutes</span></p>
+                    </div>
                 </div>
             </header>
             <main className="w-full mt-10 flex min-h-[60vh]">
                 <form
                     onSubmit={(e) => handleSubmit(e)}
-                    className="px-4 space-y-6 max-w-2xl border-r-2"
+                    className="px-4 space-y-6 w-1/2 border-r-2"
                 >
                     <SelectField
                         className="col-span-full"
@@ -79,7 +87,7 @@ export default function NewReservation() {
 
                     <div className='col-span-full '>
                         <p className="mb-3 block text-sm font-medium text-gray-700"> Available Time Slots</p>
-                        <div className="grid grid-cols-4 gap-4 w-full ">
+                        <div className="grid grid-cols-2 gap-4 w-full ">
                             {[...Array(4)].map((_, i) => {
                                 const timeSlot = `${i * 15} - ${(i + 1) * 15} minutes`;
                                 return (
@@ -98,23 +106,26 @@ export default function NewReservation() {
                             gettingReservationsForHour && <LoadingState message={`getting time available timeslots between ${timeRange} `} />
                         }
                     </div>
-
-                    <div className="col-span-full">
-                        <Button
-                            disabled={creatingReservation}
-                            type="submit"
-                            variant="solid"
-                            color="blue"
-                            className="w-full"
-                        >
-                            {creatingReservation ?
-                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" /> :
-                                <span>
-                                    Proceed <span aria-hidden="true">&rarr;</span>
-                                </span>}
-                        </Button>
-                    </div>
                 </form>
+                <div className="w-1/2 h-full  px-4">
+                    <h1 className="text-xl font-semibold leading-6 text-gray-700 capitalize">
+                        selected slots
+                    </h1>
+                    {
+                        selectedSlots.length === 0 && <EmptyState minHeight="min-h-[15vh]" message="you haven't selected any slot" />
+                    }
+                    {
+                        selectedSlots.length > 0 && <div className="grid grid-cols-2 gap-4 w-full ">
+                            
+                        </div>
+                    }
+
+                    {
+                        selectedSlots.length > 0 && <Button variant="solid" color="blue">
+                            <span>Confirm Reservation{selectedSlots.length > 1 && "s"}</span>
+                        </Button>
+                    }
+                </div>
             </main>
         </UserDashboardLayout>
     )

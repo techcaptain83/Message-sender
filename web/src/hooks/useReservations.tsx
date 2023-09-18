@@ -6,15 +6,13 @@ import toast from "react-hot-toast";
 import useSWR from "swr";
 import useAuth from "./useAuth";
 import { useRecoilState } from "recoil";
-import { showCreateReservationModalAtom } from "@/store/atoms";
-
 
 export default function useReservations() {
     const { user } = useAuth();
     const [searchingActiveReservation, setSearchingActiveReservation] = useState(false);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
     const [creatingReservation, setCreatingReservation] = useState(false)
-    const [_, setShowCreateReservation] = useRecoilState(showCreateReservationModalAtom);
+
 
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
@@ -71,7 +69,6 @@ export default function useReservations() {
             if (data.success) {
                 mutate();
                 toast.success("reservation created successfully!");
-                setShowCreateReservation(false);
             } else {
                 console.log(data);
                 toast.error("something went wrong while creating reservation!");
