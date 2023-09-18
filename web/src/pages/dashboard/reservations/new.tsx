@@ -8,8 +8,9 @@ import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
 import Head from "next/head";
 import { FormEvent, useEffect, useState } from "react";
-import { FiAlertTriangle, FiX } from "react-icons/fi";
+import { FiAlertTriangle, FiDelete, FiX } from "react-icons/fi";
 import { generateStartsAndEndsAtDate } from "@/utils/date";
+import toast from "react-hot-toast";
 
 interface ISlot {
     date: string//format : YYYY-MM-DD
@@ -85,12 +86,29 @@ export default function NewReservation() {
         }
         chechAvailableSlots();
     }, [date, timeRange]);
-    
 
-    useEffect(() => {
-        console.log("selectedSlots", selectedSlots);
-        console.log("availableSlots", availableSlots);
-    }, [selectedSlots, availableSlots]);
+
+    const checkSlotsEquality = (slot1: ISlot, slot2: ISlot) => {
+        const { startsAt: startsAt1, endsAt: endsAt1 } = generateStartsAndEndsAtDate(slot1.date, slot1.hour, slot1.slot);
+        const { startsAt: startsAt2, endsAt: endsAt2 } = generateStartsAndEndsAtDate(slot2.date, slot2.hour, slot2.slot);
+        return startsAt1.toISOString() === startsAt2.toISOString() && endsAt1.toISOString() === endsAt2.toISOString();
+    }
+
+    const selectSlot = (slot: ISlot) => {
+        const minutes = selectedSlots.length * 15 + 15;
+        if (minutes > user!.availableTime) {
+            toast.error("You don't have enough time to reserve this slot");
+            return;
+        }
+        if (selectedSlots.find(selectedSlot => {
+            return checkSlotsEquality(selectedSlot, slot);
+        })) {
+            toast.error("You have already selected this slot");
+            return;
+        }
+        setSelectedSlots([...selectedSlots, slot]);
+    }
+
     return (
         <UserDashboardLayout>
             <Head>
@@ -138,12 +156,13 @@ export default function NewReservation() {
                         name="timeRange"
                         value={timeRange}
                         required
+                        onChange={(e) => setTimeRange(e.target.value)}
                     >
                         {[...Array(24)].map((_, i) => {
                             const range = i < 12 ? `${i}:00 AM - ${i + 1}:00 AM` : `${i - 12}:00 PM - ${(i + 1) - 12}:00 PM`;
                             return <option key={i} value={range}>{range}</option>
                         })}
-                        onChange={(e) => setTimeRange(e.target.value)}
+                       
                     </SelectField>
 
                     <div className='col-span-full '>
@@ -151,27 +170,32 @@ export default function NewReservation() {
                         {(availableSlots.length > 0 && !gettingReservationsForHour) && <div className="grid grid-cols-2 gap-4 w-full ">
                             {availableSlots.map((slot, i) => {
                                 const timeSlot = `${slot.slot.starts}-${slot.slot.ends}`;
+                                const isSelected = selectedSlots.find(selectedSlot => {
+                                    return checkSlotsEquality(selectedSlot, slot);
+                                });
+
                                 return (
-                                    <div key={i} className={`flex justify-between items-center border border-gray-200 p-2 text-sm rounded ${selectedSlots.includes(slot) ? "bg-blue-100" : ""
+                                    <div key={i} className={`flex justify-between items-center border border-gray-200 p-2 text-sm rounded ${isSelected ? "bg-blue-100" : ""
                                         }`}>
                                         <span>{timeSlot}</span>
-                                        <button className={`${selectedSlots.includes(slot) ? "bg-red-400" : "bg-blue-500"} text-white rounded-full p-1`}
+                                        <button className={`${isSelected ? "bg-red-400" : "bg-blue-500"} text-white rounded-full p-1`}
                                             onClick={() => {
-                                                if (selectedSlots.includes(slot)) {
-                                                    const newSelectedSlots = selectedSlots.filter(selectedSlot => selectedSlot !== slot);
+                                                if (isSelected) {
+                                                    const newSelectedSlots = selectedSlots.filter(selectedSlot => {
+                                                        return !checkSlotsEquality(selectedSlot, slot);
+                                                    });
+                                                    console.log(newSelectedSlots);
                                                     setSelectedSlots(newSelectedSlots);
                                                     return;
                                                 }
-                                                setSelectedSlots([...selectedSlots, slot]);
-
+                                                selectSlot(slot);
                                             }}
                                         >
-                                            {selectedSlots.includes(slot) ?
+                                            {isSelected ?
                                                 <FiX className="h-6 w-6" />
                                                 : <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="h-6 w-6">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                                                 </svg>
-
                                             }
                                         </button>
                                     </div>
@@ -197,11 +221,15 @@ export default function NewReservation() {
                         selectedSlots.length > 0 && <div className="grid grid-cols-2 gap-4 w-full ">
                             {
                                 selectedSlots.map((slot, i) => (
-                                    <div key={i} className="bg-gray-50 p-2 rounded-md shadow-md flex flex-col gap-1">
+                                    <div key={i} className="bg-gray-50 p-2 rounded-md shadow-md relative flex flex-col gap-1">
                                         <p>Date : {slot.date}</p>
 
                                         <p>Time : {slot.hour} {Number(slot.hour) > 12 ? "PM " : "AM"}</p>
                                         <p>Minutes : {slot.slot.starts + "-" + slot.slot.ends}</p>
+                                        <FiDelete className="text-red-400 hover:text-red-500 cursor-pointer absolute top-2 right-2 w-7 h-7" onClick={() => {
+                                            const newSelectedSlots = selectedSlots.filter(selectedSlot => selectedSlot !== slot);
+                                            setSelectedSlots(newSelectedSlots);
+                                        }} />
                                     </div>
                                 ))
                             }
