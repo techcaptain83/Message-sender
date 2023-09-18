@@ -95,7 +95,7 @@ export default function useReservations() {
                 mutate();
                 toast.success("reservations created successfully!");
                 updateUser(data.user);
-                router.push("/reservations");
+                router.push("/dashboard/reservations");
             } else {
                 console.log(data);
                 toast.error("something went wrong while creating reservations!");

@@ -35,7 +35,7 @@ export default function Reservations() {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <p>Available minutes : <span className='bg-green-100 text-green-500 p-1 rounded-md text-sm font-medium'>
-                                { user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
+                                {user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
                             </span></p>
                             {user?.plan !== "enterprise" && <Button
                                 onClick={() => setShowModal(true)}
@@ -53,11 +53,13 @@ export default function Reservations() {
                         </div>
                         :
                         <div className='space-y-3'>
-                            <div className='space-y-2'>
+                            <div className='space-y-4'>
                                 <h2 className='text-lg font-semibold leading-6 text-gray-700'>Your Active Reservations (reservations that haven&apos;t expired)</h2>
                                 {fetchingReservations && <LoadingState message='loading reservations ...' minHeight='min-h-[20vh]' />}
                                 {(!fetchingReservations && reservations?.length === 0) && <EmptyState message="you don't have any upcoming reservations!" minHeight='min-h-[20vh]' />}
-                                {(!fetchingReservations && reservations && reservations.length > 0) && reservations?.map(reservation => <Reservation key={reservation._id} {...reservation} />)}
+                                {(!fetchingReservations && reservations && reservations.length > 0) && <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5'>
+                                    {reservations?.map(reservation => <Reservation key={reservation._id} {...reservation} />)}
+                                </div>}
                             </div>
 
                             <Button
@@ -78,11 +80,11 @@ export default function Reservations() {
 const Reservation = ({ startsAt, endsAt }: IReservation) => {
     return (
         <div className='flex items-center justify-between bg-white rounded-md px-4 py-2 shadow-md'>
-            <div className='flex flex-col'>
-                <p className='text-gray-600'>Starts at : {startsAt}</p>
-                <p className='text-gray-600'>Ends at : {endsAt}</p>
+            <div className='flex flex-col gap-2'>
+                <p className='text-gray-600'>Starts at : {new Date(startsAt).toLocaleString()}</p>
+                <p className='text-gray-600'>Ends at : {new Date(endsAt).toLocaleString()}</p>
             </div>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-2'>
                 <p className='text-gray-600'>Minutes : 15</p>
                 {/* <p className='text-gray-600'>Price : $1</p> */}
             </div>
