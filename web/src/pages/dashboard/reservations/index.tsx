@@ -35,7 +35,7 @@ export default function Reservations() {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <p>Available minutes : <span className='bg-green-100 text-green-500 p-1 rounded-md text-sm font-medium'>
-                                {user?.plan === "free" ? '15 minutes' : user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
+                                { user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
                             </span></p>
                             {user?.plan !== "enterprise" && <Button
                                 onClick={() => setShowModal(true)}

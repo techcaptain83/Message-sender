@@ -9,7 +9,7 @@ import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
 import { generateStartsAndEndsAtDate } from "@/utils/date";
 import Head from "next/head";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiAlertTriangle, FiDelete, FiX } from "react-icons/fi";
 
@@ -72,19 +72,8 @@ export default function NewReservation() {
         const hour = formatTimeRangeToHour(timeRange);
         const chechAvailableSlots = async () => {
             setGettingReservationsForHour(true);
-            // get reserved slots first
-
-            /*
-            export interface IReservation {
-                _id: string;
-                createdBy: IAuthUser;
-                startsAt: string;
-                endsAt: string;
-            }
-            */
             const reservedSlots = await getReservationsForHour(date, hour);
-
-            // set available slots as 4 slots of 15 minutes each (0-15, 15-30, 30-45, 45-60) but remove the reserved slots
+            console.log("reserved slots", reservedSlots);
             const availableSlots = [...Array(4)].map((_, i) => {
                 const slot = {
                     date,
@@ -97,9 +86,10 @@ export default function NewReservation() {
                 return slot;
             }).filter(slot => {
                 const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
-                return !reservedSlots?.find(reservedSlot => {
-                    reservedSlot.startsAt === startsAt.toISOString() && reservedSlot.endsAt === endsAt.toISOString();
-                })
+                console.log(startsAt.toISOString(), endsAt.toISOString());
+                return !reservedSlots?.find(reservedSlot => (
+                    reservedSlot.startsAt === startsAt.toISOString() && reservedSlot.endsAt === endsAt.toISOString()
+                ));
             });
 
             setAvailableSlots(availableSlots);
