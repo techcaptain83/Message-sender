@@ -1,16 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@/components/Button";
-import EmptyState from "@/components/states/EmptyState";
 import { SelectField } from "@/components/Fields";
 import UserDashboardLayout from "@/components/layouts/UserDashboardLayout";
+import EmptyState from "@/components/states/EmptyState";
 import LoadingState from "@/components/states/LoadingState";
 import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
+import { generateStartsAndEndsAtDate } from "@/utils/date";
 import Head from "next/head";
 import { FormEvent, useEffect, useState } from "react";
-import { FiAlertTriangle, FiDelete, FiX } from "react-icons/fi";
-import { generateStartsAndEndsAtDate } from "@/utils/date";
 import toast from "react-hot-toast";
+import { FiAlertTriangle, FiDelete, FiX } from "react-icons/fi";
 
 interface ISlot {
     date: string//format : YYYY-MM-DD
