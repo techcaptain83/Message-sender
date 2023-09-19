@@ -132,6 +132,7 @@ export default function UsersTable() {
 
   // check if the reservation has expired and then logout 
   useEffect(() => {
+    if (user?.plan === "enterprise") return;
     if (activeReservation) {
       const interval = setInterval(async () => {
         const now = new Date();
@@ -151,7 +152,7 @@ export default function UsersTable() {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [activeReservation]);
+  }, [activeReservation, user]);
 
   return (
     <div className="pt-4">
