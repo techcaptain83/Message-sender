@@ -20,19 +20,25 @@ export default function ScanCode() {
 
     const getQr = async () => {
         setLoadingCode(true);
-        const data = await getQRCode();
-        console.log("data from getting qrcode : ", data);
-        if (data?.qrCode) {
-            setQrcode(data.qrCode);
-            setLoadingCode(false);
-        } else {
-            const logoutData = await logout();
-            // if (logoutData.success === "done") {
-            const qrData = await getQRCode();
-            if (qrData.qrCode) {
-                setQrcode(qrData.qrCode);
+        try {
+            const data = await getQRCode();
+            console.log("data from getting qrcode : ", data);
+            if (data?.qrCode) {
+                setQrcode(data.qrCode);
+                setLoadingCode(false);
+            } else {
+                const logoutData = await logout();
+                if (logoutData.success === "done") {
+                    const qrData = await getQRCode();
+                    if (qrData.qrCode) {
+                        setQrcode(qrData.qrCode);
+                    }
+                }
             }
-            // }
+
+        } catch (error) {
+            console.log(error);
+            // toast.error("something went wrong! try again later");
         }
     }
 

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { activeUsersState, phoneConnectedState, selectedFileState, selectedUsersState, showScanCodeState, showUploadFileState } from "@/atoms";
 import axios from "@/axios.config";
-import { IUser } from "@/types";
+import { IReservation, IUser } from "@/types";
 import { getDecodedFileData, getUsersFromFileContent, removeDuplicates } from "@/utils/files";
 import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -42,6 +42,7 @@ export default function UsersTable() {
   const [loggingOut, setLoggingOut] = useState(false);
   const { logout: whatsappLogout } = useWhatsappAPI();
   const { searchingActiveReservation, searchForActiveReservation } = useReservations();
+  const [activeReservation, setActiveReservation] = useState<IReservation | null>(null)
   const [_ss, setShowNoReservation] = useRecoilState(showNoReservationModalAtom);
   const [__, setShowNoApi] = useRecoilState(showNoApiModalAtom);
 
@@ -116,7 +117,7 @@ export default function UsersTable() {
 
   }, [filter]);
 
-  const logout = async () => {
+  const logout = async (forced?: boolean) => {
     setLoggingOut(true);
     const data = await whatsappLogout();
     if (data.success === "done") {
@@ -124,10 +125,33 @@ export default function UsersTable() {
       setPhoneConnected(false);
       setLoggingOut(false);
     } else {
-      toast.error("An error occured while logging out! try again later");
+      !forced && toast.error("An error occured while logging out! try again later");
       setLoggingOut(false);
     }
   }
+
+  // check if the reservation has expired and then logout 
+  useEffect(() => {
+    if (activeReservation) {
+      const interval = setInterval(async () => {
+        const now = new Date();
+        const endsAt = new Date(activeReservation.endsAt);
+        if (now > endsAt) {
+          const reservation = await searchForActiveReservation();
+          if (reservation) {
+            toast.success("Your phone has been connected again since you have an active reservation");
+            setActiveReservation(reservation);
+          } else {
+            toast.error("Your Phone is going to be disconnected since you don't have any active reservations");
+            logout(true);
+            setActiveReservation(null);
+            clearInterval(interval);
+          }
+        }
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [activeReservation]);
 
   return (
     <div className="pt-4">
@@ -144,6 +168,15 @@ export default function UsersTable() {
             placeholder="Filter by name, phone number,country code..."
             className="border-2 py-1 px-5 w-2/4 focus:ring-1 ring-blue-600 focus:outline-none"
           />
+          {
+            (user?.plan !== "enterprise" && phoneConnected && activeReservation) && (
+              // countdown showing when the phone will be disconnected
+              <div>
+                <p className="text-sm text-gray-600">Your phone will be disconnected in <span className="text-red-600 font-semibold"> {new Date(activeReservation!.endsAt).getMinutes() - new Date().getMinutes()} minutes</span></p>
+              </div>
+            )
+          }
+
           <div className="mt-4 sm:ml-16 sm:mt-0 flex gap-2">
             {
               !phoneConnected ? (
@@ -155,6 +188,7 @@ export default function UsersTable() {
                       const reservation = await searchForActiveReservation();
                       if (reservation) {
                         setShowScanCode(true);
+                        setActiveReservation(reservation);
                       } else {
                         setShowNoReservation(true);
                       }
@@ -167,7 +201,7 @@ export default function UsersTable() {
                 </button>
               ) :
                 <button
-                  onClick={logout}
+                  onClick={() => logout()}
                   type="button"
                   className="block rounded-md  bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 capitalize"
                 >
