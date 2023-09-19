@@ -7,7 +7,7 @@ import EmptyState from "@/components/states/EmptyState";
 import LoadingState from "@/components/states/LoadingState";
 import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
-import { generateStartsAndEndsAtDate } from "@/utils/date";
+import { generateStartsAndEndsAtDate, generateStartsAndEndsAtDateWithOffset } from "@/utils/date";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -58,7 +58,7 @@ export default function NewReservation() {
         }
 
         const slots = selectedSlots.map(slot => {
-            const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
+            const { startsAt, endsAt } = generateStartsAndEndsAtDateWithOffset(slot.date, slot.hour, slot.slot);
             return {
                 startsAt: startsAt.toISOString(),
                 endsAt: endsAt.toISOString()
@@ -86,7 +86,7 @@ export default function NewReservation() {
                 return slot;
             }).filter(slot => {
                 const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
-                console.log(startsAt.toISOString(), endsAt.toISOString());
+
                 return !reservedSlots?.find(reservedSlot => (
                     reservedSlot.startsAt === startsAt.toISOString() && reservedSlot.endsAt === endsAt.toISOString()
                 ));
