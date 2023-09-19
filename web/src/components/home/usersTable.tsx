@@ -142,6 +142,7 @@ export default function UsersTable() {
           if (reservation) {
             toast.success("Your phone has been connected again since you have an active reservation");
             setActiveReservation(reservation);
+            
           } else {
             toast.error("Your Phone is going to be disconnected since you don't have any active reservations");
             logout(true);
