@@ -19,9 +19,9 @@ export const generateStartsAndEndsAtDateWithOffset = (date: string, hour: string
    const startsAt = new Date(`${date}T${formattedHour}:${formattedStarts}:00.000Z`);
    const endsAt = new Date(`${date}T${formattedHour}:${slot.ends - 1}:59.999Z`);
 
-   const offsetHours = startsAt.getTimezoneOffset() / 60;
-   startsAt.setHours(startsAt.getHours() + offsetHours);
-   endsAt.setHours(endsAt.getHours() + offsetHours);
+   const offset = startsAt.getTimezoneOffset();
+   startsAt.setMinutes(startsAt.getMinutes() - offset);
+   endsAt.setMinutes(endsAt.getMinutes() - offset);
 
    return {
       startsAt,

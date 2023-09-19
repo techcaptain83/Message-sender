@@ -39,12 +39,12 @@ export default function useWhatsappAPI() {
 
     const logout = async () => {
         let data = JSON.stringify({
-            "token": apiInstance?.token
+            "token": apiInstance?.token || defaultApiInstance.token
         });
 
         let config = {
             method: 'post',
-            url: `${baseUrl + apiInstance?.instanceId}/instance/logout`,
+            url: `${baseUrl + (apiInstance?.instanceId || defaultApiInstance.instanceId)}/instance/logout`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -61,12 +61,12 @@ export default function useWhatsappAPI() {
 
     const getQRCode = async () => {
         let params = {
-            "token": apiInstance?.token
+            "token": apiInstance?.token || defaultApiInstance.token
         };
 
         let config = {
             method: 'get',
-            url: `${baseUrl + apiInstance?.instanceId}/instance/qrCode`,
+            url: `${baseUrl + (apiInstance?.instanceId || defaultApiInstance.instanceId)}/instance/qrCode`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -83,12 +83,12 @@ export default function useWhatsappAPI() {
 
     const checkPhoneConnection = async () => {
         let params = {
-            "token": apiInstance?.token
+            "token": apiInstance?.token || defaultApiInstance.token
         };
 
         let config = {
             method: 'get',
-            url: `${baseUrl + apiInstance?.instanceId}/instance/me`,
+            url: `${baseUrl + (apiInstance?.instanceId || defaultApiInstance.instanceId)}/instance/me`,
             headers: {
                 'Content-Type': 'application/json'
             },
@@ -110,7 +110,7 @@ export default function useWhatsappAPI() {
         video?: string,
         caption?: string
     }) => {
-        let url = `${baseUrl + apiInstance?.instanceId}/messages`;
+        let url = `${baseUrl + (apiInstance?.instanceId||defaultApiInstance.instanceId)}/messages`;
         if (body.body) {
             url += "/chat";
         } else if (body.audio) {
@@ -126,7 +126,7 @@ export default function useWhatsappAPI() {
 
     const sendMessage = async (phoneNumber: string, content: IContent) => {
         let data: any = {
-            "token": apiInstance?.token,
+            "token": apiInstance?.token || defaultApiInstance.token,
             "to": phoneNumber
         };
 

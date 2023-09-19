@@ -7,7 +7,7 @@ import EmptyState from "@/components/states/EmptyState";
 import LoadingState from "@/components/states/LoadingState";
 import useAuth from "@/hooks/useAuth";
 import useReservations from "@/hooks/useReservations";
-import { generateStartsAndEndsAtDate, generateStartsAndEndsAtDateWithOffset } from "@/utils/date";
+import { generateStartsAndEndsAtDate } from "@/utils/date";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -24,6 +24,7 @@ interface ISlot {
 
 // hour : HH format
 const formatTimeRangeToHour = (timeRange: string): string => {
+
     const starts = timeRange.split('-')[0].trim();
     let hour = starts.split(':')[0];
     if (hour.length === 1) {
@@ -58,7 +59,7 @@ export default function NewReservation() {
         }
 
         const slots = selectedSlots.map(slot => {
-            const { startsAt, endsAt } = generateStartsAndEndsAtDateWithOffset(slot.date, slot.hour, slot.slot);
+            const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
             return {
                 startsAt: startsAt.toISOString(),
                 endsAt: endsAt.toISOString()
@@ -70,6 +71,7 @@ export default function NewReservation() {
 
     useEffect(() => {
         const hour = formatTimeRangeToHour(timeRange);
+
         const chechAvailableSlots = async () => {
             setGettingReservationsForHour(true);
             const reservedSlots = await getReservationsForHour(date, hour);
@@ -145,7 +147,7 @@ export default function NewReservation() {
                 >
                     <SelectField
                         className="col-span-full"
-                        label="Select Date"
+                        label="Select Date (GMT + 0)"
                         id="date"
                         name="date"
                         value={date}
@@ -161,7 +163,7 @@ export default function NewReservation() {
 
                     <SelectField
                         className="col-span-full"
-                        label="Select Time Range"
+                        label="Select Time Range (GMT + 0)"
                         id="timeRange"
                         name="timeRange"
                         value={timeRange}
@@ -232,10 +234,10 @@ export default function NewReservation() {
                             {
                                 selectedSlots.map((slot, i) => (
                                     <div key={i} className="bg-gray-50 p-2 rounded-md shadow-md relative flex flex-col gap-1">
-                                        <p>Date : {slot.date}</p>
+                                        <p>Date : {slot.date} (GMT + 0)</p>
 
-                                        <p>Time : {slot.hour} {Number(slot.hour) > 12 ? "PM " : "AM"}</p>
-                                        <p>Minutes : {slot.slot.starts + "-" + slot.slot.ends}</p>
+                                        <p>Time : {slot.hour} {Number(slot.hour) > 12 ? "PM " : "AM"} (GMT + 0)</p>
+                                        <p>Minutes : {slot.slot.starts + "-" + slot.slot.ends} (GMT + 0)</p>
                                         <FiDelete className="text-red-400 hover:text-red-500 cursor-pointer absolute top-2 right-2 w-7 h-7" onClick={() => {
                                             const newSelectedSlots = selectedSlots.filter(selectedSlot => selectedSlot !== slot);
                                             setSelectedSlots(newSelectedSlots);

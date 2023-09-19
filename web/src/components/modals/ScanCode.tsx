@@ -27,12 +27,12 @@ export default function ScanCode() {
             setLoadingCode(false);
         } else {
             const logoutData = await logout();
-            if (logoutData.success === "done") {
-                const qrData = await getQRCode();
-                if (qrData.qrCode) {
-                    setQrcode(qrData.qrCode);
-                }
+            // if (logoutData.success === "done") {
+            const qrData = await getQRCode();
+            if (qrData.qrCode) {
+                setQrcode(qrData.qrCode);
             }
+            // }
         }
     }
 
