@@ -151,3 +151,9 @@ export const showNoApiModalAtom = atom({
     default: false
 });
 
+
+
+export const showCreateCardModalAtom = atom({
+    key: "showCreateCardModal",
+    default: false
+});

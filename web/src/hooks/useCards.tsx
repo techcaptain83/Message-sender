@@ -5,10 +5,13 @@ import { IAuthUser, ICard } from "@/types";
 import toast from "react-hot-toast";
 import { UIDHASH } from "@/utils/constants";
 import { useState } from "react";
+import { useRecoilState } from "recoil";
+import { showCreateCardModalAtom } from "@/store/atoms";
 
 export default function useCards() {
     const { user } = useAuth();
     const [creatingCard, setCreatingCard] = useState(false);
+    const [_show, setShow] = useRecoilState(showCreateCardModalAtom);
 
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
@@ -28,13 +31,17 @@ export default function useCards() {
     });
 
 
-    const createCard = async (card: ICard) => {
+    /*
+ 
+    */
+    const createCard = async (card: ICard, closeModal?: boolean) => {
         try {
             setCreatingCard(true);
             const { data } = await axios.post(`/cards/${user ? user._id : localstorageUser._id}`, card);
             if (data.success) {
                 mutate();
                 toast.success("card created successfully!");
+                closeModal && setShow(false);
                 return data.card as ICard;
             }
             toast.error("something went wrong!");
