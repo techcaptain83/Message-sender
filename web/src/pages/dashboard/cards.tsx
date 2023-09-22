@@ -18,7 +18,7 @@ export default function Cards() {
     return (
         <UserDashboardLayout>
             <Head>
-                <title>Chat maid | your cards</title>
+                <title>Chatmaid | your cards</title>
             </Head>
             <main className='space-y-4 px-6'>
                 <header>
@@ -49,7 +49,7 @@ export default function Cards() {
                         ))
                     }
                 </div>)}
-                {(cards?.length === 0 && !fetchingCards) && <EmptyState message="You haven't deposited any money to your account yet!" />}
+                {(cards?.length === 0 && !fetchingCards) && <EmptyState message="There are no cards associated with your accout!" />}
                 {fetchingCards && <LoadingState message="Fetching your cards ..." />}
             </main>
         </UserDashboardLayout>
@@ -61,7 +61,7 @@ const Card = ({ cvv, cardNumber, cardType, expMonth, expYear }: ICard) => {
     return (
         <div className='bg-white shadow rounded-md p-4 flex flex-col gap-2'>
             <div className='flex items-center gap-2'>
-                <img src={`/${cardType.toLowerCase()}.svg`} alt="" className='w-8 h-8' />
+                <img src={`/${cardType.toLowerCase()}.svg`} alt="" className='w-16 h-16' />
                 <span className='text-gray-500 text-sm'>{cardType}</span>
             </div>
             <div className='text-gray-500 text-sm'>

@@ -6,7 +6,7 @@ import { FormEvent, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
-import { TextField } from '../Fields'
+import { SelectField, TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
 
 export default function CreateCard() {
@@ -38,6 +38,9 @@ export default function CreateCard() {
             toast.error("Expiration Year must be 2 digits");
             return;
         }
+        if (parseInt(formData.expYear) < parseInt(new Date().getFullYear().toString().slice(2))) {
+            toast.error("Please enter a valid year");
+        }
         createCard(formData, true);
     }
 
@@ -55,45 +58,65 @@ export default function CreateCard() {
             >
                 <TextField
                     label="Card Number"
+                    className='col-span-full'
                     value={formData.cardNumber}
-                    onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, cardNumber: e.target.value.trim() })}
                     id="cardNumber"
                     name="cardNumber"
-                    type="text"
+                    placeholder="1234 1234 1234 1234"
+                    length={16}
+                    type="number"
                     required
                 />
 
                 <TextField
                     label="CVV"
                     value={formData.cvv}
-                    onChange={(e) => setFormData({ ...formData, cvv: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, cvv: e.target.value.toString().trim() })}
                     id="cvv"
+                    placeholder="123"
                     name="cvv"
-                    type="text"
+                    length={3}
+                    type="number"
                     required
                 />
 
                 <TextField
                     label="Expiration Month"
                     value={formData.expMonth}
-                    onChange={(e) => setFormData({ ...formData, expMonth: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, expMonth: e.target.value.toString().trim() })}
                     id="expMonth"
                     name="expMonth"
-                    type="text"
+                    placeholder={"MM"}
+                    type="number"
+                    length={2}
                     required
+                /
+                >
 
-                />
 
                 <TextField
                     label="Expiration Year"
                     value={formData.expYear}
                     onChange={(e) => setFormData({ ...formData, expYear: e.target.value })}
                     id="expYear"
+                    placeholder={"YY"}
                     name="expYear"
                     type="text"
+                    length={2}
                     required
                 />
 
+                <SelectField
+                    label={"Card Type"}
+                    id={'cardType'}
+                    name={"cardType"}
+                    value={formData.cardType}
+                    onChange={(e) => setFormData({ ...formData, cardType: e.target.value })}
+                >
+                    <option value={'VISA'}>VISA</option>
+                    <option value={'MASTERCARD'}>MASTERCARD</option>
+                </SelectField>
 
                 <div className="col-span-full">
                     <Button
