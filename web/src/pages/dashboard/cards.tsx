@@ -29,7 +29,7 @@ export default function Cards() {
                                 Your Cards
                             </h1>
                             <p className="text-sm leading-6 text-gray-600 max-w-2xl">
-                                Here, you will find history of the deposits you&apos;ve made to your account.
+                                Here, you will find all the cards you&apos;ve added to your account.
                             </p>
                         </div>
                         <Button
