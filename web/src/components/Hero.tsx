@@ -1,9 +1,6 @@
 
 import { Button } from '@/components/Button';
 import { Container } from '@/components/Container';
-import ApppleLogo from '@/images/logos/apple.png';
-import WindowsLogo from '@/images/logos/windows.svg';
-import Image from 'next/image';
 
 export function Hero() {
   return (
@@ -34,7 +31,7 @@ export function Hero() {
         <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
           <Image src={WindowsLogo} alt="mac" width={50} height={50} />
           <Button href='/register?os=win'>download for windows</Button>
-        </div>
+        </div> 
       </div> */}
       <div className="mt-10 flex justify-center items-end gap-x-6">
         <div className='flex items-center flex-col gap-3' >

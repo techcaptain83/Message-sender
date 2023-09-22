@@ -13,7 +13,7 @@ export default function UserSidebar() {
         { label: "Messaging History", href: "/dashboard/history" },
         { label: "Reservations", href: "/dashboard/reservations" },
         { label: "Deposits", href: "/dashboard/deposits" },
-        // { label: "Profile", href: "/dashboard/profile" },
+        { label: "Cards", href: "/dashboard/cards" },
         { label: "Support", href: "/dashboard/support" },
     ]
 
