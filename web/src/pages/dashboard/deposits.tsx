@@ -9,10 +9,16 @@ import Head from 'next/head';
 import React from 'react'
 import { useRecoilState } from 'recoil';
 import DepositsTable from '@/components/deposits/DepositsTable';
+import useCards from '@/hooks/useCards';
+import Loader from '@/components/Loader';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/router';
 
 export default function Deposits() {
-    const { userDeposits, userDepositsError, fetchingUserDeposits } = useDeposits();
+    const { userDeposits, fetchingUserDeposits } = useDeposits();
     const [_showModal, setShowModal] = useRecoilState(showNewDepositModalAtom);
+    const { cards, fetchingCards } = useCards();
+    const router = useRouter();
 
     return (
         <UserDashboardLayout>
@@ -32,9 +38,19 @@ export default function Deposits() {
                             </p>
                         </div>
                         <Button
-                            onClick={() => setShowModal(true)}
+                            disabled={fetchingCards}
+                            onClick={() => {
+                                if (cards?.length === 0) {
+                                    toast.error("you haven't added any cards to use in payment! please add card first");
+                                    setTimeout(() => {
+                                        router.push('/dashboard/cards');
+                                    }, 1000);
+                                } else {
+                                    setShowModal(true);
+                                }
+                            }}
                             variant='solid' color='blue' className='rounded-md'>
-                            <span>New Deposit</span>
+                            {fetchingCards ? <Loader /> : <span>New Deposit</span>}
                             <PlusIcon className='w-6 h-6' />
                         </Button>
                     </div>

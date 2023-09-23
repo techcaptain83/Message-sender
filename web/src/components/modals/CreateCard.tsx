@@ -12,7 +12,7 @@ import ModalLayout from '../layouts/ModalLayout'
 export default function CreateCard() {
     const [showModal, setShowModal] = useRecoilState(showCreateCardModalAtom);
     const { creatingCard, createCard } = useCards();
-    const [formData, setFormData] = useState<ICard>({
+    const [formData, setFormData] = useState<Omit<ICard, "_id">>({
         cvv: '',
         cardNumber: '',
         expMonth: '',

@@ -12,6 +12,10 @@ export default function useCards() {
     const { user } = useAuth();
     const [creatingCard, setCreatingCard] = useState(false);
     const [_show, setShow] = useRecoilState(showCreateCardModalAtom);
+    const [deletingCard, setDeletingCard] = useState<{
+        cardId?: string,
+        deleting: boolean
+    } | null>(null);
 
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
@@ -34,7 +38,7 @@ export default function useCards() {
     /*
  
     */
-    const createCard = async (card: ICard, closeModal?: boolean) => {
+    const createCard = async (card: Omit<ICard, "_id">, closeModal?: boolean) => {
         try {
             setCreatingCard(true);
             const { data } = await axios.post(`/cards/${user ? user._id : localstorageUser._id}`, card);
@@ -54,11 +58,31 @@ export default function useCards() {
         }
     }
 
+    const deleteCard = async (cardId: string) => {
+        try {
+            setDeletingCard({ cardId: cardId, deleting: true });
+            const { data } = await axios.delete(`/cards/${cardId}`);
+
+            if (data.success) {
+                toast.success("card removed successfully!");
+                mutate();
+            } else {
+                toast.error("error deleting card! try again later");
+                console.log(data);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("Error deleting card. try again later!");
+        } finally {
+            setDeletingCard(null)
+        }
+    }
 
     return {
         cards,
         fetchingCards: !cards && !error,
         creatingCard,
-        createCard
+        createCard,
+        deletingCard, deleteCard
     }
 }

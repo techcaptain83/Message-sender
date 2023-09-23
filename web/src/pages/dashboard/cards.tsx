@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import { Button } from '@/components/Button'
+import Loader from '@/components/Loader'
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
 import EmptyState from '@/components/states/EmptyState'
 import LoadingState from '@/components/states/LoadingState'
@@ -9,11 +10,12 @@ import { ICard } from '@/types'
 import { PlusIcon } from '@heroicons/react/20/solid'
 import Head from 'next/head'
 import React from 'react'
+import { FiDelete } from 'react-icons/fi'
 import { useRecoilState } from 'recoil'
 
 export default function Cards() {
     const [_show, setShowModal] = useRecoilState(showCreateCardModalAtom);
-    const { fetchingCards, cards } = useCards();
+    const { fetchingCards, cards, deletingCard, deleteCard } = useCards();
 
     return (
         <UserDashboardLayout>
@@ -45,7 +47,7 @@ export default function Cards() {
                 >
                     {
                         cards.map((card, index) => (
-                            <Card key={index} {...card} />
+                            <Card key={index} {...card} loading={deletingCard?.cardId === card._id} deleteCard={deleteCard} />
                         ))
                     }
                 </div>)}
@@ -57,25 +59,41 @@ export default function Cards() {
 }
 
 
-const Card = ({ cvv, cardNumber, cardType, expMonth, expYear }: ICard) => {
+interface ICardProps extends ICard {
+    loading: boolean,
+    deleteCard: (cardId: string) => void
+}
+
+const Card = ({ _id, cvv, cardNumber, cardType, expMonth, expYear, loading, deleteCard }: ICardProps) => {
     return (
-        <div className='bg-white shadow rounded-md p-4 flex flex-col gap-2'>
-            <div className='flex items-center gap-2'>
-                <img src={`/${cardType.toLowerCase()}.svg`} alt="" className='w-16 h-16' />
-                <span className='text-gray-500 text-sm'>{cardType}</span>
+        <div className='bg-white shadow  flex relative'>
+            <div className='rounded-md p-4 flex flex-col gap-2'>
+                <div className='flex items-center gap-2'>
+                    <img src={`/${cardType.toLowerCase()}.svg`} alt="" className='w-16 h-16' />
+                    <span className='text-gray-500 text-sm'>{cardType}</span>
+                </div>
+                <div className='text-gray-500 text-sm'>
+                    <span>Card Number : </span>
+                    <span>{cardNumber}</span>
+                </div>
+                <div className='text-gray-500 text-sm'>
+                    <span>Expiration Date : </span>
+                    <span>{expMonth}/{expYear}</span>
+                </div>
+                <div className='text-gray-500 text-sm'>
+                    <span>CVV : </span>
+                    <span>{cvv}</span>
+                </div>
             </div>
-            <div className='text-gray-500 text-sm'>
-                <span>Card Number : </span>
-                <span>{cardNumber}</span>
-            </div>
-            <div className='text-gray-500 text-sm'>
-                <span>Expiration Date : </span>
-                <span>{expMonth}/{expYear}</span>
-            </div>
-            <div className='text-gray-500 text-sm'>
-                <span>CVV : </span>
-                <span>{cvv}</span>
-            </div>
+            <button
+                disabled={loading}
+                onClick={() => deleteCard(_id)}
+                className='p-2 h-max absolute top-2 right-2'
+            >
+                {loading ? <Loader /> :
+                    <FiDelete  className='h-7 w-7'/>
+                }
+            </button>
         </div>
     )
 }

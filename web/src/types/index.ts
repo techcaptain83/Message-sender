@@ -118,6 +118,7 @@ export interface IReservation {
 }
 
 export interface ICard {
+    _id:string;
     cardNumber: string,
     expMonth: string,
     expYear: string,
