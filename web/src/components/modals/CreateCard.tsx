@@ -17,7 +17,8 @@ export default function CreateCard() {
         cardNumber: '',
         expMonth: '',
         expYear: '',
-        cardType: "VISA"
+        cardType: "VISA",
+        phone: ''
     });
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -34,12 +35,20 @@ export default function CreateCard() {
             toast.error("Expiration Month must be 2 digits");
             return;
         }
+        if (parseInt(formData.expMonth) < 1 || parseInt(formData.expMonth) > 12) {
+            toast.error("Please enter a valid month");
+            return;
+        }
         if (formData.expYear.length !== 2) {
             toast.error("Expiration Year must be 2 digits");
             return;
         }
         if (parseInt(formData.expYear) < parseInt(new Date().getFullYear().toString().slice(2))) {
             toast.error("Please enter a valid year");
+        }
+        if (parseInt(formData.expYear) === parseInt(new Date().getFullYear().toString().slice(2)) && parseInt(formData.expMonth) < new Date().getMonth() + 1) {
+            toast.error("Please enter a valid month");
+            return;
         }
         createCard(formData, true);
     }
@@ -91,8 +100,7 @@ export default function CreateCard() {
                     type="number"
                     length={2}
                     required
-                /
-                >
+                />
 
 
                 <TextField
@@ -117,6 +125,16 @@ export default function CreateCard() {
                     <option value={'VISA'}>VISA</option>
                     <option value={'MASTERCARD'}>MASTERCARD</option>
                 </SelectField>
+                <TextField
+                    label="Phone number"
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    autoComplete="tel"
+                    required
+                />
 
                 <div className="col-span-full">
                     <Button

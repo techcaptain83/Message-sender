@@ -36,10 +36,10 @@ export default function useDeposits() {
         }
     });
 
-    const createDeposit = async (amount: number) => {
+    const createDeposit = async (amount: number, cardId: string) => {
         setCreatingDeposit(true);
         try {
-            const { data } = await axios.post('/deposits', { amount, userId: user?._id ? user._id : localstorageUser._id });
+            const { data } = await axios.post('/deposits', { amount, userId: user?._id ? user._id : localstorageUser._id, cardId });
             userDeposits ? mutateUserDeposits([...userDeposits, data.deposit]) : mutateUserDeposits();
             toast.success("Money deposited to your account successfully!");
             updateUser(data.user);

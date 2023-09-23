@@ -118,10 +118,11 @@ export interface IReservation {
 }
 
 export interface ICard {
-    _id:string;
+    _id: string;
     cardNumber: string,
     expMonth: string,
     expYear: string,
+    phone: string,
     cvv: string,
     cardType: 'VISA' | 'MASTERCARD'
 }

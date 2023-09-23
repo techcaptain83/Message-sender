@@ -3,14 +3,17 @@ import { FormEvent, useState } from 'react'
 import { BiMoney } from 'react-icons/bi'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
-import { TextField } from '../Fields'
+import { SelectField, TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
 import useDeposits from '@/hooks/useDeposits'
 import toast from 'react-hot-toast'
+import useCards from '@/hooks/useCards'
 
 export default function CreateDeposit() {
     const [showModal, setShowModal] = useRecoilState(showNewDepositModalAtom);
     const { createDeposit, creatingDeposit } = useDeposits();
+    const [selectedCard, setSelectedCard] = useState<string | null>(null);
+    const { cards } = useCards();
     const [amount, setAmount] = useState(1);
 
 
@@ -20,7 +23,11 @@ export default function CreateDeposit() {
             toast.error("Amount must be greater than $1");
             return;
         }
-        createDeposit(amount);
+        if (!selectedCard) {
+            toast.error("Please select a card");
+            return;
+        }
+        createDeposit(amount, selectedCard);
     }
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >
@@ -45,6 +52,21 @@ export default function CreateDeposit() {
                     onChange={(e) => setAmount(e.target.value)}
                     required
                 />
+
+                <SelectField
+                    className="col-span-full"
+                    label="Select Card"
+                    id="card"
+                    name="card"
+                    value={selectedCard}
+                    onChange={(e) => setSelectedCard(e.target.value)}
+                    required
+                >
+                    <option value="" disabled>Select Card</option>
+                    {cards?.map((card, index) => (
+                        <option key={index} value={card._id}>{card.cardNumber} ({card.cardType})</option>
+                    ))}
+                </SelectField>
 
                 <div className="col-span-full">
                     <Button

@@ -88,10 +88,10 @@ const Card = ({ _id, cvv, cardNumber, cardType, expMonth, expYear, loading, dele
             <button
                 disabled={loading}
                 onClick={() => deleteCard(_id)}
-                className='p-2 h-max absolute top-2 right-2'
+                className='p-2 h-max absolute top-2 right-2 bg-red-400 text-white rounded-md'
             >
                 {loading ? <Loader /> :
-                    <FiDelete  className='h-7 w-7'/>
+                    <FiDelete  className='h-6 w-6'/>
                 }
             </button>
         </div>

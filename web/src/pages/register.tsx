@@ -37,6 +37,7 @@ export default function Register() {
     email: '',
     password: '',
     country: 'United Kingdom',
+    phone: '',
     referredBy: ''
   })
 
@@ -148,6 +149,17 @@ export default function Register() {
           value={formData.email}
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           autoComplete="email"
+          required
+        />
+        <TextField
+          className="col-span-full"
+          label="Phone number"
+          id="phone"
+          name="phone"
+          type="tel"
+          value={formData.phone}
+          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+          autoComplete="tel"
           required
         />
         <TextField
