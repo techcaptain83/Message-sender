@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { showNewDepositModalAtom } from '@/store/atoms'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { BiMoney } from 'react-icons/bi'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
@@ -29,6 +30,13 @@ export default function CreateDeposit() {
         }
         createDeposit(amount, selectedCard);
     }
+
+    useEffect(() => {
+        if (cards?.length && !selectedCard) {
+            setSelectedCard(cards[0]._id);
+        }
+    }
+        , [cards])
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >
             <div className='w-full flex flex-col items-center gap-2'>
