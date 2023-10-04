@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
                             name: reason === "upgrade" ? `Upgrade to ${plan === "pro" ? "Premium Plan" : "Enterprise Plan"}` : 'Deposit To your account',
                         },
                         unit_amount: amount ?
-                            amount : plan === "pro" ? PREMIUM_PRICE : ENTERPRISE_PRICE, // in cents
+                            amount : plan === "pro" ? PREMIUM_PRICE * 100 : ENTERPRISE_PRICE * 100, // in cents
                     },
                     quantity: 1,
                 },

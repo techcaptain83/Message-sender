@@ -35,7 +35,7 @@ export default function Deposits() {
                             <p className="text-sm leading-6 text-gray-600 max-w-2xl">
                                 Here, you will find history of the deposits you&apos;ve made to your account.
                             </p>
-                        </div>
+                         </div>
                         <Button
                             onClick={() => setShowModal(true)}
                             variant='solid' color='blue'

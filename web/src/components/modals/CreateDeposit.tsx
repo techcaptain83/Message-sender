@@ -10,6 +10,9 @@ import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
 import normalAxios from 'axios'
+import useAuth from '@/hooks/useAuth'
+import { UIDHASH } from '@/utils/constants';
+import { IAuthUser } from '@/types'
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
@@ -17,6 +20,8 @@ export default function CreateDeposit() {
     const [showModal, setShowModal] = useRecoilState(showNewDepositModalAtom);
     const { createDeposit, creatingDeposit } = useDeposits();
     const [amount, setAmount] = useState(1);
+    const { user } = useAuth();
+    const localStorageUser = JSON.parse(localStorage.getItem(UIDHASH) || '{}') as IAuthUser;
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -25,7 +30,33 @@ export default function CreateDeposit() {
             return;
         }
 
-        const data = await createDeposit(amount);
+        const res = await createDeposit(amount);
+        if (res.success) {
+            try {
+                const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
+                    reason: "deposit",
+                    amount: amount * 100, // convert to cents
+                    user_id: user?._id ? user._id : localStorageUser._id,
+                    deposit_id: res.deposit?._id
+                });
+                if (data.sessionId) {
+                    const stripe = await stripePromise;
+                    if (stripe) {
+                        const { error } = await stripe.redirectToCheckout({
+                            sessionId: data.sessionId,
+                        });
+                        if (error) {
+                            toast.error(`Payment failed: ${error.message}`);
+                        }
+                    }
+                } else {
+                    toast.error('Unable to initiate payment. Please try again later.');
+                }
+            } catch (error) {
+                console.log(error);
+                toast.error('Unable to initiate payment. Please try again later.');
+            }
+        }
 
     }
 
