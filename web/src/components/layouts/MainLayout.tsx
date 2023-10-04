@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateCardModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -21,7 +21,6 @@ import TicketDetails from '../modals/TicketDetails';
 import UpgradeToPremium from '../modals/UpgradeToPremium';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
-import CreateCard from '../modals/CreateCard';
 
 interface Props {
     children: React.ReactNode
@@ -45,7 +44,7 @@ export default function MainLayout({ children }: Props) {
     const showNoReservation = useRecoilValue(showNoReservationModalAtom);
     const showNoApi = useRecoilValue(showNoApiModalAtom);
     const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
-    const showCreateCard = useRecoilValue(showCreateCardModalAtom);
+    // const showCreateCard = useRecoilValue(showCreateCardModalAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -78,7 +77,7 @@ export default function MainLayout({ children }: Props) {
                             {showNoReservation && <NoReservation />}
                             {showNoApi && <NoApi />}
                             {showPurchaseMinutes && <PurchaseMinutes />}
-                            {showCreateCard && <CreateCard />}
+                            {/* {showCreateCard && <CreateCard />} */}
                         </>
                     }
                 </main>

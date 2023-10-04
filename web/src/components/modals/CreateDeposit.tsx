@@ -1,42 +1,35 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import useDeposits from '@/hooks/useDeposits'
 import { showNewDepositModalAtom } from '@/store/atoms'
-import { FormEvent, useEffect, useState } from 'react'
+import { loadStripe } from '@stripe/stripe-js'
+import { FormEvent, useState } from 'react'
+import toast from 'react-hot-toast'
 import { BiMoney } from 'react-icons/bi'
 import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
-import { SelectField, TextField } from '../Fields'
+import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
-import useDeposits from '@/hooks/useDeposits'
-import toast from 'react-hot-toast'
-import useCards from '@/hooks/useCards'
+import normalAxios from 'axios'
+
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 export default function CreateDeposit() {
     const [showModal, setShowModal] = useRecoilState(showNewDepositModalAtom);
     const { createDeposit, creatingDeposit } = useDeposits();
-    const [selectedCard, setSelectedCard] = useState<string | null>(null);
-    const { cards } = useCards();
     const [amount, setAmount] = useState(1);
 
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (amount < 1) {
             toast.error("Amount must be greater than $1");
             return;
         }
-        if (!selectedCard) {
-            toast.error("Please select a card");
-            return;
-        }
-        createDeposit(amount, selectedCard);
+
+        const data = await createDeposit(amount);
+
     }
 
-    useEffect(() => {
-        if (cards?.length && !selectedCard) {
-            setSelectedCard(cards[0]._id);
-        }
-    }
-        , [cards])
+
     return (
         <ModalLayout open={showModal} setOpen={() => setShowModal(false)} >
             <div className='w-full flex flex-col items-center gap-2'>
@@ -61,21 +54,6 @@ export default function CreateDeposit() {
                     required
                 />
 
-                <SelectField
-                    className="col-span-full"
-                    label="Select Card"
-                    id="card"
-                    name="card"
-                    value={selectedCard}
-                    onChange={(e) => setSelectedCard(e.target.value)}
-                    required
-                >
-                    <option value="" disabled>Select Card</option>
-                    {cards?.map((card, index) => (
-                        <option key={index} value={card._id}>{card.cardNumber} ({card.cardType})</option>
-                    ))}
-                </SelectField>
-
                 <div className="col-span-full">
                     <Button
                         disabled={creatingDeposit}
@@ -87,7 +65,7 @@ export default function CreateDeposit() {
                         {creatingDeposit ?
                             <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-50" /> :
                             <span>
-                                Proceed <span aria-hidden="true">&rarr;</span>
+                                Proceed to payment <span aria-hidden="true">&rarr;</span>
                             </span>}
                     </Button>
                 </div>

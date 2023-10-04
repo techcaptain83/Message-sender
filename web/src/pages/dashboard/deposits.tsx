@@ -9,16 +9,15 @@ import Head from 'next/head';
 import React from 'react'
 import { useRecoilState } from 'recoil';
 import DepositsTable from '@/components/deposits/DepositsTable';
-import useCards from '@/hooks/useCards';
 import Loader from '@/components/Loader';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/router';
+import { loadStripe } from '@stripe/stripe-js';
 
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 export default function Deposits() {
     const { userDeposits, fetchingUserDeposits } = useDeposits();
-    const [_showModal, setShowModal] = useRecoilState(showNewDepositModalAtom);
-    const { cards, fetchingCards } = useCards();
-    const router = useRouter();
+    const [_, setShowModal] = useRecoilState(showNewDepositModalAtom);
 
     return (
         <UserDashboardLayout>
@@ -38,20 +37,12 @@ export default function Deposits() {
                             </p>
                         </div>
                         <Button
-                            disabled={fetchingCards}
-                            onClick={() => {
-                                if (cards?.length === 0) {
-                                    toast.error("you haven't added any cards to use in payment! please add card first");
-                                    setTimeout(() => {
-                                        router.push('/dashboard/cards');
-                                    }, 1000);
-                                } else {
-                                    setShowModal(true);
-                                }
-                            }}
-                            variant='solid' color='blue' className='rounded-md'>
-                            {fetchingCards ? <Loader /> : <span>New Deposit</span>}
-                            <PlusIcon className='w-6 h-6' />
+                            onClick={() => setShowModal(true)}
+                            variant='solid' color='blue'
+                            className='rounded-md w-max flex items-center gap-2'
+                        >
+                            <PlusIcon className='shrink-0 h-6 w-6' />
+                            <span className='shrink-0'>New Deposit</span>
                         </Button>
                     </div>
                 </header>

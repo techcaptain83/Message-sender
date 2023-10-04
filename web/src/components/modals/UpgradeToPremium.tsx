@@ -1,5 +1,6 @@
 import { showUpgradeToPremiumState } from '@/atoms';
 import axios from '@/axios.config';
+import normalAxios from "axios";
 import useAuth from '@/hooks/useAuth';
 import { IAuthUser } from '@/types';
 import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
@@ -12,8 +13,9 @@ import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
 import Loader from '../Loader';
 import ModalLayout from '../layouts/ModalLayout';
+import { loadStripe } from '@stripe/stripe-js';
 
-// const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
+const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 
 export default function UpgradeToPremium() {

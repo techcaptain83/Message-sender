@@ -36,17 +36,21 @@ export default function useDeposits() {
         }
     });
 
-    const createDeposit = async (amount: number, cardId: string) => {
+    const createDeposit = async (amount: number): Promise<{
+        success: boolean;
+        deposit?: IDeposit;
+    }> => {
         setCreatingDeposit(true);
         try {
-            const { data } = await axios.post('/deposits', { amount, userId: user?._id ? user._id : localstorageUser._id, cardId });
+            const { data } = await axios.post('/deposits', { amount, userId: user?._id ? user._id : localstorageUser._id });
             userDeposits ? mutateUserDeposits([...userDeposits, data.deposit]) : mutateUserDeposits();
             toast.success("Money deposited to your account successfully!");
-            updateUser(data.user);
             setShowDepositModal(false);
+            return { success: true, deposit: data.deposit };
         } catch (error) {
             console.log(error);
             toast.error("Error creating deposit! Please try again later.")
+            return { success: false };
         } finally {
             setCreatingDeposit(false);
         }
