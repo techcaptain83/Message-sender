@@ -28,7 +28,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (!["upgrade", "deposit"].includes(reason)) {
             return res.status(400).json({ message: "Invalid reason" });
         }
-        if (reason && (!plan || !["pro", "enterprise"].includes(plan))) {
+        if (!reason && (!plan || !["pro", "enterprise"].includes(plan))) {
             return res.status(400).json({ message: "Invalid plan" });
         }
         if (!amount && !plan) {
