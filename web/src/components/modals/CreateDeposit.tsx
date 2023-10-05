@@ -48,6 +48,8 @@ export default function CreateDeposit() {
                         if (error) {
                             toast.error(`Payment failed: ${error.message}`);
                         }
+                    } else {
+                        toast.error('Unable to initiate payment. Please try again later.');
                     }
                 } else {
                     toast.error('Unable to initiate payment. Please try again later.');

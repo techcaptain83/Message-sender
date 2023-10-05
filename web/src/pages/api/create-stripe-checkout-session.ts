@@ -18,7 +18,7 @@ const constructUrl = ({
     success: boolean;
     originUrl: string
 }): string => {
-    const url = `${originUrl}/payment?success=${success}&uid=${encryptText(user_id)}&reason=${reason}${reason === "upgrade" ? "&plan=" + plan:''}${reason === "deposit" && "&dep_id=" + deposit_id}`;
+    const url = `${originUrl}/payment?success=${success}&uid=${encryptText(user_id)}&reason=${reason}${reason === "upgrade" ? "&plan=" + plan:''}${reason === "deposit" ? "&dep_id=" + deposit_id:''}`;
     return url;
 }
 

@@ -33,14 +33,22 @@ export default function UpgradeToPremium() {
             setEnterpriseLoading(true);
         }
         try {
-            const { data } = await axios.put(`/users/upgrade-account/${user ? user._id : localstorageUser._id}`, { plan });
-            if (data.success) {
-                toast.success("Payment Successful!");
-                updateUser(data.user);
-                setShowUpgrade(false);
+            const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
+                reason: "upgrade",
+                plan: plan,
+                user_id: user?._id ? user._id : localstorageUser._id
+            });
+
+            if (data.sessionId) {
+                const stripe = await stripePromise;
+                if (stripe) {
+                    const { error } = await stripe.redirectToCheckout({
+                        sessionId: data.sessionId
+                    });
+                    if (error) toast.error(`Payment failed : ${error.message}`);
+                }
             } else {
-                console.log(data);
-                toast.error("Something went wrong! try again later.");
+                toast.error("Something went wrong! try again later.")
             }
         } catch (error) {
             console.log(error);

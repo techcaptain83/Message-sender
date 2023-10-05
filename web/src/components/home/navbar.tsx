@@ -20,15 +20,7 @@ export default function Navbar() {
                     <Logo className="h-10" />
                 </Link>
 
-                {/* {links.map(link => (
-                    <Link key={link.href} href={link.href}>
-                        <button className={`rounded-md text-gray-700 font-medium hover:text-blue-500  p-2 text-sm ${router.pathname === link.href && "bg-blue-500 text-white hover:text-white"}`} >{link.label}</button>
-                    </Link>
-                ))} */}
             </div>
-            {/* <div className='relative'>
-                <Bars4Icon width={20} className='hover:text-blue-500' />
-            </div> */}
             <div className='flex items-center gap-6'>
                 <div className='flex gap-3 items-center '>
                     <div className='w-10 h-10 rounded-full flex items-center bg-blue-500 justify-center font-medium text-white text-sm uppercase '>
@@ -45,7 +37,7 @@ export default function Navbar() {
                         <Button onClick={() => setShowUpgradeModal(true)} variant='solid' color='green'
                             className='rounded-md space-x-2 lg:text-base text-xs'>
                             {<>
-                                <span>Upgrade to premium</span>
+                                <span>Upgrade Your account</span>
                                 <FaCrown width={20} />
                             </>
                             }
