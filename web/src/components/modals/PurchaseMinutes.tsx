@@ -88,7 +88,7 @@ export default function PurchaseMinutes() {
                                 Pay with balance
                             </span>}
                     </Button>
-                    <Button
+                    {/* <Button
                         disabled={purchasingWithBalance || purchasingWithBank}
                         type="button"
                         variant="solid"
@@ -101,7 +101,7 @@ export default function PurchaseMinutes() {
                             <span>
                                 Pay with bank <span aria-hidden="true">&rarr;</span>
                             </span>}
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
         </ModalLayout>

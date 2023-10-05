@@ -70,7 +70,7 @@ function Plan({ name, price, description, href, featured = false }: {
         {description.map((line, i) => (
           <p key={i} className="flex items-center">
             <CheckIcon className="mr-2" />
-            {line}
+            <span>{line}</span>
           </p>
         ))
         }
@@ -110,7 +110,6 @@ export function Pricing() {
         </div>
         <div className='w-full flex items-center justify-center pt-4 gap-4'>
           <Plan
-            // featured
             name="Shared Premium"
             price="$79.99"
             description={[
