@@ -23,22 +23,15 @@ export function Hero() {
       <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
         The simple, friendly, and powerful solution for personalized Whatsapp messaging.
       </p>
-      {/* <div className="mt-10 flex justify-center items-end gap-x-6">
-        <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
-          <Image src={ApppleLogo} alt="mac" width={50} height={50} />
-          <Button href='/register?os=mac'>download for mac</Button>
-        </div>
-        <div className='flex items-center flex-col gap-3' suppressHydrationWarning>
-          <Image src={WindowsLogo} alt="mac" width={50} height={50} />
-          <Button href='/register?os=win'>download for windows</Button>
-        </div> 
-      </div> */}
       <div className="mt-10 flex justify-center items-end gap-x-6">
         <div className='flex items-center flex-col gap-3' >
           <Button href='/register?plan=free'>Try 7 days free trial</Button>
         </div>
         <div className='flex items-center flex-col gap-3'>
-          <Button href='/register?plan=premium'>Go straight to premium</Button>
+          <Button href='/register?plan=premium'>Shared Premium</Button>
+        </div>
+        <div className='flex items-center flex-col gap-3'>
+          <Button href='/register?plan=enterprise'>Exclusive Enterprise</Button>
         </div>
       </div>
     </Container>

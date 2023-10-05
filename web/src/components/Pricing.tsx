@@ -46,12 +46,18 @@ function CheckIcon({ className }) {
   )
 }
 
-function Plan({ name, price, description, href, featured = false }) {
+function Plan({ name, price, description, href, featured = false }: {
+  name: string,
+  price: string,
+  description: string[],
+  href: string,
+  featured?: boolean
+}) {
   return (
     <section
       className={clsx(
         'flex flex-col rounded-3xl px-6 sm:px-8',
-        featured ? 'order-first bg-blue-600 py-8 lg:order-none' : 'lg:py-8'
+        featured ? 'order-first bg-blue-600 py-8 lg:order-none' : 'lg:py-8 bg-black/75'
       )}
     >
       <h3 className="mt-5 font-display text-lg text-white">{name}</h3>
@@ -61,7 +67,13 @@ function Plan({ name, price, description, href, featured = false }) {
           featured ? 'text-white' : 'text-slate-400'
         )}
       >
-        {description}
+        {description.map((line, i) => (
+          <p key={i} className="flex items-center">
+            <CheckIcon className="mr-2" />
+            {line}
+          </p>
+        ))
+        }
       </p>
       <p className="order-first font-display text-5xl font-light tracking-tight text-white">
         {price}
@@ -95,18 +107,24 @@ export function Pricing() {
             </span>{' '}
             for everyone.
           </h2>
-          {/* <p className="mt-4 text-lg text-slate-400">
-            It doesn&apos;t matter what size your business is, our software won&apos;t
-            work well for you.
-          </p> */}
         </div>
-        <div className='w-full flex items-center justify-center pt-4'>
+        <div className='w-full flex items-center justify-center pt-4 gap-4'>
+          <Plan
+            // featured
+            name="Shared Premium"
+            price="$79.99"
+            description={[
+              'One time payment for 2 hours access per month.',
+              'for additional time, you just pay $2.5 for 15 mimutes.'
+            ]}
+            href="/register?plan=premium"
+          />
           <Plan
             featured
-            name="For everyone"
-            price="$79.99"
-            description="One time payment for lifetime access."
-            href="/register?plan=premium"
+            name="Exclusive Enterprise"
+            price="$99.99"
+            description={["One time payment for lifetime access."]}
+            href="/register?plan=enterprise"
           />
         </div>
       </Container>
