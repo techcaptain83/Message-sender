@@ -1,4 +1,5 @@
 import { Button } from '@/components/Button';
+import Loader from '@/components/Loader';
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
 import EmptyState from '@/components/states/EmptyState';
 import LoadingState from '@/components/states/LoadingState';
@@ -77,17 +78,29 @@ export default function Reservations() {
 }
 
 
-const Reservation = ({ startsAt, endsAt }: IReservation) => {
+const Reservation = ({ startsAt, endsAt, _id }: IReservation) => {
+    const { deleteReservation, deletingReservation } = useReservations();
     return (
-        <div className='flex items-center justify-between bg-white rounded-md px-4 py-2 shadow-md'>
-            <div className='flex flex-col gap-2'>
-                <p className='text-gray-600'>Starts at : {new Date(startsAt).toLocaleString()}</p>
-                <p className='text-gray-600'>Ends at : {new Date(endsAt).toLocaleString()}</p>
+        <div className='bg-white rounded-md px-4 py-2 shadow-md space-y-4'>
+            <div className='flex items-center justify-between '>
+                <div className='flex flex-col gap-2'>
+                    <p className='text-gray-600'>Starts at : {new Date(startsAt).toLocaleString()}</p>
+                    <p className='text-gray-600'>Ends at : {new Date(endsAt).toLocaleString()}</p>
+                </div>
+                <div className='flex flex-col gap-2'>
+                    <p className='text-gray-600'>Minutes : 15</p>
+                    {/* <p className='text-gray-600'>Price : $1</p> */}
+                </div>
+
             </div>
-            <div className='flex flex-col gap-2'>
-                <p className='text-gray-600'>Minutes : 15</p>
-                {/* <p className='text-gray-600'>Price : $1</p> */}
-            </div>
+            <Button
+                onClick={() => deleteReservation(_id)}
+                disabled={deletingReservation?.deleting && deletingReservation.reservationId === _id}
+                variant='solid' color='red' className='rounded-md'>
+                {(deletingReservation?.deleting && deletingReservation.reservationId === _id) ?
+                    <Loader /> :
+                    <span>Cancel</span>}
+            </Button>
         </div>
     )
 }

@@ -13,7 +13,11 @@ export default function useReservations() {
     const [searchingActiveReservation, setSearchingActiveReservation] = useState(false);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
     const [creatingReservation, setCreatingReservation] = useState(false)
-    const [creatingMultipleReservations, setCreatingMultipleReservations] = useState(false)
+    const [creatingMultipleReservations, setCreatingMultipleReservations] = useState(false);
+    const [deletingReservation, setDeletingReservation] = useState<{
+        deleting: boolean,
+        reservationId: string;
+    } | null>(null);
 
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
 
@@ -108,6 +112,28 @@ export default function useReservations() {
         }
     }
 
+    const deleteReservation = async (reservationId: string) => {
+        setDeletingReservation({
+            deleting: true,
+            reservationId
+        });
+        try {
+            const { data } = await axios.delete(`/reservations/${reservationId}`);
+            if (data.success) {
+                toast.success("reservation deleted successfully!");
+                updateUser(data.user);
+                mutate();
+            } else {
+                toast.error("something went wrong while deleting reservation!");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("something went wrong while deleting reservation!");
+        } finally {
+            setDeletingReservation(null);
+        }
+    }
+
 
     return {
         reservations,
@@ -119,7 +145,9 @@ export default function useReservations() {
         createReservation,
         creatingReservation,
         creatingMultipleReservations,
-        createMultipleReservations
+        createMultipleReservations,
+        deleteReservation,
+        deletingReservation
     }
 
 }
