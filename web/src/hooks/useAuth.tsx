@@ -44,10 +44,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [initialLoading, setInitialLoading] = useState(true);
 
     useEffect(() => {
-        if (router.pathname === "/payment") {
-            setInitialLoading(false);
-            return;
-        }
+        // if (router.pathname === "/payment") {
+        //     setInitialLoading(false);
+        //     return;
+        // }
         const user = localStorage.getItem(UIDHASH);
         if (user) {
             const parsedUser = JSON.parse(user) as IAuthUser;

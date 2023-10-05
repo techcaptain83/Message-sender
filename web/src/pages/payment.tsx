@@ -7,12 +7,16 @@ import axios from '@/axios.config';
 import toast from 'react-hot-toast';
 import { decryptText } from '@/utils';
 import useAuth from '@/hooks/useAuth';
+import { IDeposit } from '@/types';
 
 export default function Payment() {
     const router = useRouter();
     const [processing, setProcessing] = useState(true);
     const [upgradeSuccessful, setUpgradeSuccessful] = useState(false);
     const [depositSuccessful, setDepositSuccessful] = useState(false);
+    const [pln, setPlan] = useState("");
+    const [deposit, setDeposit] = useState<IDeposit | null>(null);
+
     const { updateUser } = useAuth();
 
     useEffect(() => {
@@ -21,11 +25,14 @@ export default function Payment() {
             try {
                 const { data } = await axios.post(`/deposits/validate/${dep_id}`);
                 if (data.success) {
+                    setDeposit(data.deposit);
+                    setDepositSuccessful(true);
+                    setProcessing(false);
                     updateUser(data.user);
                     toast.success("Payment successful.");
                     setTimeout(() => {
                         router.push("/dashboard/deposits")
-                    }, 600);
+                    }, 1000);
                 }
                 else {
                     console.log(data);
@@ -42,11 +49,14 @@ export default function Payment() {
                     plan
                 });
                 if (data.success) {
+                    setPlan(plan as string);
+                    setUpgradeSuccessful(true);
+                    setProcessing(false);
                     toast.success("Payment successful.");
                     updateUser(data.user);
                     setTimeout(() => {
                         router.push("/dashboard");
-                    }, 600);
+                    }, 1000);
                 } else {
                     toast.error("payment has already been validated, or invalid url!")
                     router.push("/dashboard");
@@ -84,6 +94,18 @@ export default function Payment() {
                     {
                         processing && <div className='w-full h-full flex items-center flex-col gap-4 justify-end'>
                             <PrePageLoader />
+                        </div>
+                    }
+                    {
+                        upgradeSuccessful && <div className='w-full h-full flex items-center flex-col gap-4 justify-end'>
+                            <h1 className='text-2xl font-semibold text-center'>Payment Successful!</h1>
+                            <p className='text-center'>You have successfully upgraded to {pln} plan.</p>
+                        </div>
+                    }
+                    {
+                        depositSuccessful && <div className='w-full h-full flex items-center flex-col gap-4 justify-end'>
+                            <h1 className='text-2xl font-semibold text-center'>Payment Successful!</h1>
+                            <p className='text-center'>You have successfully deposited (${deposit?.amount}) funds to your account.</p>
                         </div>
                     }
                 </div>
