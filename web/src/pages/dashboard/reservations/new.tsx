@@ -47,7 +47,7 @@ export default function NewReservation() {
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
 
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
 
         if (selectedSlots.length === 0) {
             toast.error("You haven't selected any slot");
@@ -72,8 +72,11 @@ export default function NewReservation() {
                 endsAt: utcTimes.endsAt.toISOString(),
             }
         });
-
-        createMultipleReservations(slots, minutes);
+        try {
+            await createMultipleReservations(slots, minutes);
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     useEffect(() => {
