@@ -52,6 +52,7 @@ export default function useReservations() {
 
 
     const getReservationsForHour = async (date: string, hour: string): Promise<IReservation[] | null> => {
+        console.log(date, hour);
         try {
             setGettingReservationsForHour(true);
             const { data } = await axios.get(`/reservations/hour/${date}/${hour}`);

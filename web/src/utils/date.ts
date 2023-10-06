@@ -44,18 +44,47 @@ export const convertToUserTimezone = (startsAt: Date, endsAt: Date): { startsAt:
  * @param data format: YYYY-MM-DD
  * @param hour format : HH
  */
-export const convertDateAndHourToUTC = (data: string, hour: string): {
+export const convertDateAndHourToUTC = (date: string, hour: string): {
    date: string, hour: string
 } => {
-   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-   const date = moment.tz(data, timezone).utc().format('YYYY-MM-DD');
-   const hourUTC = moment.tz(`${data} ${hour}`, timezone).utc().format('HH');
+   console.log("date and hour passed to the function : ");
+   console.log(date, hour);
+   const offsetHours = new Date().getTimezoneOffset() / 60;
+   const hoursWithOffset = parseInt(hour) + offsetHours;
+
+   const formattedHour = hoursWithOffset.toString().padStart(2, '0'); // Ensure two-digit format
+
+   // check if the hours are still in that date (after removing offset)
+   if (hoursWithOffset < 0) {
+      // if not, then the date is the previous day
+      const previousDay = new Date(date);
+      previousDay.setDate(previousDay.getDate() - 1);
+      const formattedDate = previousDay.toISOString().split('T')[0];
+      console.log("date and hour returned from the function : ");
+      console.log(formattedDate, formattedHour);
+      return {
+         date: formattedDate,
+         hour: formattedHour
+      }
+   } else if (hoursWithOffset > 23) {
+      // if not, then the date is the previous day
+      const nextDay = new Date(date);
+      nextDay.setDate(nextDay.getDate() + 1);
+      const formattedDate = nextDay.toISOString().split('T')[0];
+      console.log("date and hour returned from the function : ");
+      console.log(formattedDate, formattedHour);
+      return {
+         date: formattedDate,
+         hour: formattedHour
+      }
+   }
+   console.log("date and hour returned from the function : ");
+   console.log(date, formattedHour);
    return {
       date,
-      hour: hourUTC
+      hour: formattedHour
    }
 }
-
 
 export const getAvailableDates = (): Date[] => {
    const availableDates: Date[] = [];
