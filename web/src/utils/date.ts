@@ -15,10 +15,10 @@ export const generateStartsAndEndsAtDate = (date: string, hour: string, slot: { 
 
 
 export const convertToUTC = (startsAt: Date, endsAt: Date): { startsAt: Date, endsAt: Date } => {
-   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-   const startsAtUTC = moment.tz(startsAt, timeZone).utc().toDate();
-   const endsAtUTC = moment.tz(endsAt, timeZone).utc().toDate();
+   const offset = new Date().getTimezoneOffset();
+   const startsAtUTC = new Date(startsAt.getTime() + offset * 60 * 1000);
+   const endsAtUTC = new Date(endsAt.getTime() + offset * 60 * 1000);
 
    return {
       startsAt: startsAtUTC,
