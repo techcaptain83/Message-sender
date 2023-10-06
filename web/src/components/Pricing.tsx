@@ -121,8 +121,8 @@ export function Pricing() {
           <Plan
             featured
             name="Exclusive Enterprise"
-            price="$99.99"
-            description={["One time payment for lifetime access."]}
+            price="$99.99/month"
+            description={["You have 24/7 access to the system."]}
             href="/register?plan=enterprise"
           />
         </div>
