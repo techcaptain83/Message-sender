@@ -43,6 +43,7 @@
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.2",
     "file-saver": "^2.0.5",
+    "moment-timezone": "^0.5.43",
     "prettier": "^2.8.7",
     "prettier-plugin-tailwindcss": "^0.2.6",
     "react-icons": "^4.10.1",
