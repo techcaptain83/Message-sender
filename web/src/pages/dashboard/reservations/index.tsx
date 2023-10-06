@@ -11,6 +11,7 @@ import { PlusIcon } from '@heroicons/react/20/solid';
 import Head from 'next/head';
 import { useRecoilState } from 'recoil';
 
+
 export default function Reservations() {
     const { user } = useAuth();
     const [_, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);

@@ -12,6 +12,8 @@ import Head from "next/head";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FiAlertTriangle, FiDelete, FiX } from "react-icons/fi";
+import { convertToUTC, userTimeZone, getAvailableDates, getAvailableTimeRanges, convertDateAndHourToUTC } from "@/utils/date";
+import moment from "moment-timezone";
 
 interface ISlot {
     date: string//format : YYYY-MM-DD
@@ -58,11 +60,16 @@ export default function NewReservation() {
             return;
         }
 
+        /*
+            slots are in users time, so, we have to convert them into UTC+0 time before saving them into db.
+        */
         const slots = selectedSlots.map(slot => {
             const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
+            const utcTimes = convertToUTC(startsAt, endsAt);
+
             return {
-                startsAt: startsAt.toISOString(),
-                endsAt: endsAt.toISOString()
+                startsAt: utcTimes.startsAt.toISOString(),
+                endsAt: utcTimes.endsAt.toISOString(),
             }
         });
 
@@ -70,12 +77,18 @@ export default function NewReservation() {
     }
 
     useEffect(() => {
-        const hour = formatTimeRangeToHour(timeRange);
+        const hour = formatTimeRangeToHour(timeRange)
 
         const chechAvailableSlots = async () => {
             setGettingReservationsForHour(true);
-            const reservedSlots = await getReservationsForHour(date, hour);
+            const { date: dateUTC, hour: hourUTC } = convertDateAndHourToUTC(date, hour);
+
+            // get reserved slots in the slected date and hour in UTC+0
+            const reservedSlots = await getReservationsForHour(dateUTC, hourUTC);
+
             console.log("reserved slots", reservedSlots);
+
+            // generate 4 slots in the selected hour and date
             const availableSlots = [...Array(4)].map((_, i) => {
                 const slot = {
                     date,
@@ -89,8 +102,10 @@ export default function NewReservation() {
             }).filter(slot => {
                 const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
 
+                const { startsAt: startsAtUTC, endsAt: endsAtUTC } = convertToUTC(startsAt, endsAt);
+
                 return !reservedSlots?.find(reservedSlot => (
-                    reservedSlot.startsAt === startsAt.toISOString() && reservedSlot.endsAt === endsAt.toISOString()
+                    reservedSlot.startsAt === startsAtUTC.toISOString() && reservedSlot.endsAt === endsAtUTC.toISOString()
                 ));
             });
 
@@ -147,34 +162,31 @@ export default function NewReservation() {
                 >
                     <SelectField
                         className="col-span-full"
-                        label="Select Date (GMT + 0)"
+                        label="Select Date"
                         id="date"
                         name="date"
                         value={date}
                         required
                         onChange={(e) => setDate(e.target.value)}
                     >
-                        {[...Array(30)].map((_, i) => {
-                            const date = new Date();
-                            date.setDate(date.getDate() + i);
-                            return <option key={i} value={date.toISOString().split('T')[0]}>{date.toISOString().split('T')[0]}</option>
+                        {getAvailableDates().map((date, i) => {
+                            const formattedDate = moment.tz(date, userTimeZone).format('YYYY-MM-DD');
+                            return <option key={i} value={formattedDate}>{formattedDate}</option>
                         })}
                     </SelectField>
 
                     <SelectField
                         className="col-span-full"
-                        label="Select Time Range (GMT + 0)"
+                        label="Select Time Range"
                         id="timeRange"
                         name="timeRange"
                         value={timeRange}
                         required
                         onChange={(e) => setTimeRange(e.target.value)}
                     >
-                        {[...Array(24)].map((_, i) => {
-                            const range = i < 12 ? `${i}:00 AM - ${i + 1}:00 AM` : `${i - 12}:00 PM - ${(i + 1) - 12}:00 PM`;
+                        {getAvailableTimeRanges(new Date(date)).map((range, i) => {
                             return <option key={i} value={range}>{range}</option>
                         })}
-
                     </SelectField>
 
                     <div className='col-span-full '>

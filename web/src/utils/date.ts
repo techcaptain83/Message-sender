@@ -38,3 +38,52 @@ export const convertToUserTimezone = (startsAt: Date, endsAt: Date): { startsAt:
       endsAt: endsAtLocal
    }
 }
+
+/**
+ * 
+ * @param data format: YYYY-MM-DD
+ * @param hour format : HH
+ */
+export const convertDateAndHourToUTC = (data: string, hour: string): {
+   date: string, hour: string
+} => {
+   const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+   const date = moment.tz(data, timezone).utc().format('YYYY-MM-DD');
+   const hourUTC = moment.tz(`${data} ${hour}`, timezone).utc().format('HH');
+   return {
+      date,
+      hour: hourUTC
+   }
+}
+
+
+export const getAvailableDates = (): Date[] => {
+   const availableDates: Date[] = [];
+   for (let i = 0; i < 30; i++) {
+      const date = new Date();
+      date.setDate(date.getDate() + i);
+      const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate(), 23, 59, 59);
+      const endOfDayUTC = moment.tz(endOfDay, 'UTC').toDate();
+      if (endOfDayUTC > new Date()) {
+         availableDates.push(date);
+      }
+   }
+   return availableDates;
+}
+
+
+export const getAvailableTimeRanges = (date: Date): string[] => {
+   const availableTimeRanges: string[] = [];
+   for (let i = 0; i < 24; i++) {
+      const startsAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), i);
+      const endsAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), i + 1);
+      const endsAtUTC = moment.tz(endsAt, 'UTC').toDate();
+      if (endsAtUTC > new Date()) {
+         const range = i < 12 ? `${i}:00 AM - ${i + 1}:00 AM` : `${i - 12}:00 PM - ${(i + 1) - 12}:00 PM`;
+         availableTimeRanges.push(range);
+      }
+   }
+   return availableTimeRanges;
+}
+
+export const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
