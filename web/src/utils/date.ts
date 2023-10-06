@@ -56,26 +56,31 @@ export const convertDateAndHourToUTC = (date: string, hour: string): {
 
    // check if the hours are still in that date (after removing offset)
    if (hoursWithOffset < 0) {
-      // if not, then the date is the previous day
       const previousDay = new Date(date);
       previousDay.setDate(previousDay.getDate() - 1);
       const formattedDate = previousDay.toISOString().split('T')[0];
+
+      // hours in the previous day in UTC
+      const hours = (24 + hoursWithOffset).toString().padStart(2, '0');
       console.log("date and hour returned from the function : ");
-      console.log(formattedDate, formattedHour);
+      console.log(formattedDate, hours);
+
       return {
          date: formattedDate,
-         hour: formattedHour
+         hour: hours
       }
    } else if (hoursWithOffset > 23) {
-      // if not, then the date is the previous day
       const nextDay = new Date(date);
       nextDay.setDate(nextDay.getDate() + 1);
       const formattedDate = nextDay.toISOString().split('T')[0];
+
+      // hours in the next day in UTC time.
+      const hours = (hoursWithOffset - 24).toString().padStart(2, '0');
       console.log("date and hour returned from the function : ");
-      console.log(formattedDate, formattedHour);
+      console.log(formattedDate, hours);
       return {
          date: formattedDate,
-         hour: formattedHour
+         hour: hours
       }
    }
    console.log("date and hour returned from the function : ");
@@ -104,11 +109,10 @@ export const getAvailableDates = (): Date[] => {
 export const getAvailableTimeRanges = (date: Date): string[] => {
    const availableTimeRanges: string[] = [];
    for (let i = 0; i < 24; i++) {
-      const startsAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), i);
       const endsAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), i + 1);
       const endsAtUTC = moment.tz(endsAt, 'UTC').toDate();
       if (endsAtUTC > new Date()) {
-         const range = i < 12 ? `${i}:00 AM - ${i + 1}:00 AM` : `${i - 12}:00 PM - ${(i + 1) - 12}:00 PM`;
+         const range = i < 12 ? `${i}:00 - ${i + 1}:00` : `${i}:00 - ${(i + 1)}:00`;
          availableTimeRanges.push(range);
       }
    }

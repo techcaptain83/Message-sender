@@ -41,7 +41,7 @@ export default function NewReservation() {
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
     const { user, updateUser } = useAuth();
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [timeRange, setTimeRange] = useState('0:00 AM - 1:00 AM');
+    const [timeRange, setTimeRange] = useState('0:00 - 1:00');
     // available slots
     const [availableSlots, setAvailableSlots] = useState<ISlot[]>([]);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
@@ -115,6 +115,12 @@ export default function NewReservation() {
         chechAvailableSlots();
     }, [date, timeRange]);
 
+    useEffect(() => {
+        const timeranges = getAvailableTimeRanges(new Date(date));
+        if (!timeranges.includes(timeRange)) {
+            setTimeRange(timeranges[0]);
+        }
+    }, [])
 
     const checkSlotsEquality = (slot1: ISlot, slot2: ISlot) => {
         const { startsAt: startsAt1, endsAt: endsAt1 } = generateStartsAndEndsAtDate(slot1.date, slot1.hour, slot1.slot);
@@ -246,10 +252,10 @@ export default function NewReservation() {
                             {
                                 selectedSlots.map((slot, i) => (
                                     <div key={i} className="bg-gray-50 p-2 rounded-md shadow-md relative flex flex-col gap-1">
-                                        <p>Date : {slot.date} (GMT + 0)</p>
+                                        <p>Date : {slot.date}</p>
 
-                                        <p>Time : {slot.hour} {Number(slot.hour) > 12 ? "PM " : "AM"} (GMT + 0)</p>
-                                        <p>Minutes : {slot.slot.starts + "-" + slot.slot.ends} (GMT + 0)</p>
+                                        <p>Time : {slot.hour} {Number(slot.hour) > 12 ? "PM " : "AM"} </p>
+                                        <p>Minutes : {slot.slot.starts + "-" + slot.slot.ends} </p>
                                         <FiDelete className="text-red-400 hover:text-red-500 cursor-pointer absolute top-2 right-2 w-7 h-7" onClick={() => {
                                             const newSelectedSlots = selectedSlots.filter(selectedSlot => selectedSlot !== slot);
                                             setSelectedSlots(newSelectedSlots);
