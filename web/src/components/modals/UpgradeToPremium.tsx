@@ -1,11 +1,11 @@
 import { showUpgradeToPremiumState } from '@/atoms';
 import axios from '@/axios.config';
-import normalAxios from "axios";
 import useAuth from '@/hooks/useAuth';
 import { IAuthUser } from '@/types';
 import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import { loadStripe } from '@stripe/stripe-js';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
@@ -13,7 +13,6 @@ import { useRecoilState } from 'recoil';
 import { Button } from '../Button';
 import Loader from '../Loader';
 import ModalLayout from '../layouts/ModalLayout';
-import { loadStripe } from '@stripe/stripe-js';
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
@@ -33,7 +32,7 @@ export default function UpgradeToPremium() {
             setEnterpriseLoading(true);
         }
         try {
-            const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
+            const { data } = await axios.post('/payment/create-session', {
                 reason: "upgrade",
                 plan: plan,
                 user_id: user?._id ? user._id : localstorageUser._id

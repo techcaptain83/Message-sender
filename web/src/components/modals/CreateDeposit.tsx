@@ -1,6 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import axios from '@/axios.config'
+import useAuth from '@/hooks/useAuth'
 import useDeposits from '@/hooks/useDeposits'
 import { showNewDepositModalAtom } from '@/store/atoms'
+import { IAuthUser } from '@/types'
+import { UIDHASH } from '@/utils/constants'
 import { loadStripe } from '@stripe/stripe-js'
 import { FormEvent, useState } from 'react'
 import toast from 'react-hot-toast'
@@ -9,10 +13,6 @@ import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
-import normalAxios from 'axios'
-import useAuth from '@/hooks/useAuth'
-import { UIDHASH } from '@/utils/constants';
-import { IAuthUser } from '@/types'
 
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
@@ -33,7 +33,7 @@ export default function CreateDeposit() {
         const res = await createDeposit(amount);
         if (res.success) {
             try {
-                const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
+                const { data } = await axios.post('/payment/create-session', {
                     reason: "deposit",
                     amount: amount * 100, // convert to cents
                     user_id: user?._id ? user._id : localStorageUser._id,

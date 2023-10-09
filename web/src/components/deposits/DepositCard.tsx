@@ -3,10 +3,9 @@ import useAuth from '@/hooks/useAuth';
 import { IAuthUser, IDeposit } from '@/types';
 import { constructName } from '@/utils';
 import { UIDHASH } from '@/utils/constants';
-import normalAxios from "axios";
-import toast from 'react-hot-toast';
 import { loadStripe } from '@stripe/stripe-js';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import Loader from '../Loader';
 
 
@@ -21,7 +20,7 @@ export default function DepositCard({ _id, amount, depositedBy, createdAt, statu
     const continuePayment = async () => {
         setPaying(true);
         try {
-            const { data } = await normalAxios.post('/api/create-stripe-checkout-session', {
+            const { data } = await axios.post('/payment/create-session', {
                 reason: "deposit",
                 amount: amount * 100, // convert to cents
                 user_id: user?._id ? user._id : localStorageUser._id,
