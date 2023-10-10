@@ -1,6 +1,6 @@
-import useAuth from '@/hooks/useAuth'
-import { ITicket } from '@/types'
-import TicketCard from './TicketCard'
+import useAuth from '@/hooks/useAuth';
+import { ITicket } from '@/types';
+import TicketCard from './TicketCard';
 
 interface Props {
     tickets: ITicket[]

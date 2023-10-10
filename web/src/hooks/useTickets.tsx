@@ -1,11 +1,12 @@
 import axios from "@/axios.config";
-import { ITicket } from "@/types";
+import { IAuthUser, ITicket } from "@/types";
 import useSWR from "swr";
 import useAuth from "./useAuth";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { showAnswerTicketModalAtom, showCreateTicketModalAtom } from "@/store/atoms";
+import { UIDHASH } from "@/utils/constants";
 
 export default function useTickets() {
     const [_, setShowCreateTicketModal] = useRecoilState(showCreateTicketModalAtom);
@@ -20,15 +21,15 @@ export default function useTickets() {
     const { data, error, mutate } = useSWR("/tickets?pending=true", async (url) => {
         try {
             const { data } = await axios.get(url);
-            console.log(data)
             return data.tickets as ITicket[];
         } catch (error) {
             console.log(error);
             return [];
         }
     });
+    const localStorageUser = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem(UIDHASH) || '{}') as IAuthUser : {} as IAuthUser;
 
-    const { data: userTickets, error: userTicketsError, mutate: userTicketsMutate } = useSWR(`/tickets?user=${user?._id}`, async (url) => {
+    const { data: userTickets, error: userTicketsError, mutate: userTicketsMutate } = useSWR(`/tickets/user/${user ? user._id : localStorageUser._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);
             return data.tickets as ITicket[];
@@ -41,14 +42,13 @@ export default function useTickets() {
     const createTicket = async (title: string, body: string) => {
         setCreatingTicket(true)
         try {
-            const response = await axios.post(`/tickets?user=${user?._id}`, {
+            const response = await axios.post(`/tickets?user=${user ? user._id : localStorageUser._id}`, {
                 title,
                 body,
             });
             if (response.status === 201) {
                 toast.success("Ticket created successfully!")
                 setShowCreateTicketModal(false);
-                // mutate();
                 userTicketsMutate();
             } else {
                 toast.error("Error creating ticket! Please try again later.");
