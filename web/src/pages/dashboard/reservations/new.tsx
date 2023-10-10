@@ -92,27 +92,28 @@ export default function NewReservation() {
             console.log("reserved slots", reservedSlots);
 
             // generate 4 slots in the selected hour and date
-            const availableSlots = [...Array(4)].map((_, i) => {
-                const slot = {
-                    date,
-                    hour,
-                    slot: {
-                        starts: i * 15,
-                        ends: (i + 1) * 15
-                    }
-                }
-                return slot;
-            }).filter(slot => {
-                const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
+            // const availableSlots = [...Array(4)].map((_, i) => {
+            //     const slot = {
+            //         date,
+            //         hour,
+            //         slot: {
+            //             starts: i * 15,
+            //             ends: (i + 1) * 15
+            //         }
+            //     }
+            //     return slot;
+            // }).filter(slot => {
+            //     const { startsAt, endsAt } = generateStartsAndEndsAtDate(slot.date, slot.hour, slot.slot);
 
-                const { startsAt: startsAtUTC, endsAt: endsAtUTC } = convertToUTC(startsAt, endsAt);
+            //     const { startsAt: startsAtUTC, endsAt: endsAtUTC } = convertToUTC(startsAt, endsAt);
 
-                return !reservedSlots?.find(reservedSlot => (
-                    reservedSlot.startsAt === startsAtUTC.toISOString() && reservedSlot.endsAt === endsAtUTC.toISOString()
-                ));
-            });
+            //     return !reservedSlots?.find(reservedSlot => (
+            //         reservedSlot.startsAt === startsAtUTC.toISOString() && reservedSlot.endsAt === endsAtUTC.toISOString()
+            //     ));
+            // });
 
-            setAvailableSlots(availableSlots);
+            // setAvailableSlots(availableSlots);
+            setAvailableSlots([]);
             setGettingReservationsForHour(false);
         }
         chechAvailableSlots();
