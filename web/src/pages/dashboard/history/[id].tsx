@@ -18,9 +18,14 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
     }
     try {
         const { data } = await axios.get(`/logs/${id}`);
+        if (!data.log) {
+            return {
+                notFound: true,
+            };
+        }
         return {
             props: {
-                log: data.logn as ILog,
+                log: data.log as ILog,
             },
         };
     } catch (error) {
@@ -31,7 +36,6 @@ export const getServerSideProps: GetServerSideProps<Props> = async (context) => 
 };
 
 export default function LogView({ log }: Props) {
-
 
     const downloadLogs = () => {
         const headers = ['First Name', 'Last Name', 'Phone Number', 'Status'];
