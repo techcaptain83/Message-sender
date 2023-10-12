@@ -15,7 +15,10 @@ export default function useUsers() {
         deleting: boolean;
         userId: string
     } | null>(null);
-    const [accountBeingUpgraded, setAccountBeingUpgraded] = useState<string | null>(null);
+    const [accountBeingUpgraded, setAccountBeingUpgraded] = useState<{
+        _id: string,
+        plan: "pro" | "enterprise"
+    } | null>(null);
     const { data, error, mutate } = useSWR("/users", async (url) => {
         try {
             const { data } = await axios.get(url);
@@ -26,12 +29,17 @@ export default function useUsers() {
         }
     });
 
-    const releasePremiumVersion = async (userId: string) => {
+    const manualUpgrade = async (userId: string, plan: "pro" | "enterprise") => {
         setIsUpgrading(true);
-        setAccountBeingUpgraded(userId);
+        setAccountBeingUpgraded({
+            _id: userId,
+            plan
+        });
         try {
-            const { data } = await axios.put(`/users/upgrade-to-pro/${userId}?manual=true`);
-            if (data.message === "success") {
+            const { data } = await axios.put(`/users/upgrade-account/${userId}`, {
+                plan, manual: true
+            });
+            if (data.success) {
                 toast.success("This account have been upgraded successfuly!");
                 mutate();
             } else {
@@ -91,7 +99,7 @@ export default function useUsers() {
         users: data,
         isLoading: !error && !data,
         isUpgrading,
-        releasePremiumVersion,
+        manualUpgrade,
         accountBeingUpgraded,
         deletingUser,
         deleteAccount,

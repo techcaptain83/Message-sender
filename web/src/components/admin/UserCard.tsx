@@ -6,9 +6,9 @@ import Loader from '../Loader';
 import { useRecoilState } from 'recoil';
 import { showAddCredentialsModalAtom } from '@/store/atoms';
 
-export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan, api,...user }: IAuthUser) {
-    const { isUpgrading, accountBeingUpgraded, releasePremiumVersion, deleteAccount, deletingUser } = useUsers();
-    const [_,setShowAddCredentials]=useRecoilState(showAddCredentialsModalAtom)
+export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan, api, ...user }: IAuthUser) {
+    const { isUpgrading, accountBeingUpgraded, manualUpgrade, deleteAccount, deletingUser } = useUsers();
+    const [_, setShowAddCredentials] = useRecoilState(showAddCredentialsModalAtom)
     return (
         <tr>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
@@ -40,20 +40,20 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
             {plan === "free" && <td className='pl-4'>
                 <div className='flex gap-2'>
                     <button
-                        disabled={isUpgrading && accountBeingUpgraded !== _id}
-                        onClick={() => releasePremiumVersion(_id)}
+                        disabled={isUpgrading && (accountBeingUpgraded?._id !== _id && accountBeingUpgraded?.plan === "pro")}
+                        onClick={() => manualUpgrade(_id, "pro")}
                         type="button"
                         className="inline-flex shrink-0  h-max items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
-                        {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : "Manual Release PV"}
+                        {(isUpgrading && (accountBeingUpgraded?._id === _id && accountBeingUpgraded.plan === "pro")) ? <Loader /> : "Manual Release PV"}
                     </button>
                     <button
-                        disabled={isUpgrading && accountBeingUpgraded !== _id}
-                        onClick={() => releasePremiumVersion(_id)}
+                        disabled={isUpgrading && (accountBeingUpgraded?._id !== _id && accountBeingUpgraded?.plan === "enterprise")}
+                        onClick={() => manualUpgrade(_id, "enterprise")}
                         type="button"
                         className="inline-flex shrink-0  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
-                        {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : "Manual Release EV"}
+                        {(isUpgrading && (accountBeingUpgraded?._id === _id && accountBeingUpgraded.plan === "enterprise")) ? <Loader /> : "Manual Release EV"}
                     </button>
                 </div>
             </td>}
@@ -63,16 +63,16 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
                         onClick={() => setShowAddCredentials({
                             show: true,
                             user: {
-                                email,_id
+                                email, _id
                             }
                         })}
                         type="button"
                         className="inline-flex shrink-0  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
                     >
-                        {(isUpgrading && accountBeingUpgraded === _id) ? <Loader /> : api ? "Edit Api credentials " : "Add Api credentials"}
+                        {(isUpgrading && accountBeingUpgraded?._id === _id) ? <Loader /> : api ? "Edit Api credentials " : "Add Api credentials"}
                     </button>
                 </td>
             }
-        </tr>
+        </tr >
     )
 }
