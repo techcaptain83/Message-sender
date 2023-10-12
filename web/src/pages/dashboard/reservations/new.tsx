@@ -40,9 +40,9 @@ const formatTimeRangeToHour = (timeRange: string): string => {
 
 
 export default function NewReservation() {
-    const { creatingReservation, createReservation, getReservationsForHour, createMultipleReservations, creatingMultipleReservations } = useReservations();
+    const { getReservationsForHour, createMultipleReservations, creatingMultipleReservations } = useReservations();
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
-    const { user, updateUser } = useAuth();
+    const { user } = useAuth();
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
     const [timeRange, setTimeRange] = useState<string | null>(null);
     // available slots
@@ -84,12 +84,11 @@ export default function NewReservation() {
 
     useEffect(() => {
         if (!timeRange) {
-            console.log("there is no timerage ");
-            return;
+            setTimeRange(getAvailableTimeRanges(new Date(date))[0]);
         }
-        const hour = formatTimeRangeToHour(timeRange)
 
         const chechAvailableSlots = async () => {
+            const hour = formatTimeRangeToHour(timeRange!)
             setGettingReservationsForHour(true);
             const { date: dateUTC, hour: hourUTC } = convertDateAndHourToUTC(date, hour);
 
@@ -122,7 +121,7 @@ export default function NewReservation() {
             setAvailableSlots(availableSlots);
             setGettingReservationsForHour(false);
         }
-        chechAvailableSlots();
+        timeRange && chechAvailableSlots();
     }, [date, timeRange]);
 
     useEffect(() => {
