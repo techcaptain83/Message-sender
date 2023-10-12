@@ -1,37 +1,37 @@
-import LogsTable from '@/components/history/LogsTable';
-import { ILog } from '@/types';
 import axios from '@/axios.config';
-import { saveAs } from 'file-saver';
-import { GetStaticProps } from 'next';
-import Head from 'next/head';
+import LogsTable from '@/components/history/LogsTable';
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
+import { ILog } from '@/types';
+import { saveAs } from 'file-saver';
+import { GetServerSideProps } from 'next';
+import Head from 'next/head';
 interface Props {
     log: ILog
 }
 
-export const getStaticProps: GetStaticProps = async (context) => {
-    // @ts-ignore
-    const { id } = context.params;
-    const { data } = await axios.get(`/logs/${id}`);
-
-    return {
-        props: {
-            log: data.log
-        }
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+    const { id } = context.query;
+    if (typeof id !== 'string') {
+        return {
+            notFound: true,
+        };
     }
-}
-
-export async function getStaticPaths() {
-    const { data } = await axios.get('/logs');
-
-    const paths = data.logs.map((log: ILog) => ({
-        params: { id: log._id }
-    }));
-
-    return { paths, fallback: false }
-}
+    try {
+        const { data } = await axios.get(`/logs/${id}`);
+        return {
+            props: {
+                log: data.logn as ILog,
+            },
+        };
+    } catch (error) {
+        return {
+            notFound: true,
+        };
+    }
+};
 
 export default function LogView({ log }: Props) {
+
 
     const downloadLogs = () => {
         const headers = ['First Name', 'Last Name', 'Phone Number', 'Status'];
