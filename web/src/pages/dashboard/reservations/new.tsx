@@ -44,7 +44,7 @@ export default function NewReservation() {
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
     const { user, updateUser } = useAuth();
     const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-    const [timeRange, setTimeRange] = useState('0:00 - 1:00');
+    const [timeRange, setTimeRange] = useState<string | null>(null);
     // available slots
     const [availableSlots, setAvailableSlots] = useState<ISlot[]>([]);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
@@ -127,6 +127,10 @@ export default function NewReservation() {
 
     useEffect(() => {
         const timeranges = getAvailableTimeRanges(new Date(date));
+        if (!timeRange) {
+            setTimeRange(timeranges[0]);
+            return;
+        }
         if (!timeranges.includes(timeRange)) {
             setTimeRange(timeranges[0]);
         }
