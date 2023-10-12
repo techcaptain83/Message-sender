@@ -26,8 +26,11 @@ interface ISlot {
 
 // hour : HH format
 const formatTimeRangeToHour = (timeRange: string): string => {
-
+    console.log("passed timerage : ", timeRange);
+    if (typeof timeRange !== "string" || timeRange === undefined) return `00`;
+    if (typeof timeRange.split('-')[0] !== "string") return `00`;
     const starts = timeRange.split('-')[0].trim();
+    if (starts.length === 0 || typeof starts.split(':')[0] !== "string") return `00`;
     let hour = starts.split(':')[0];
     if (hour.length === 1) {
         hour = `0${hour}`;
@@ -80,6 +83,10 @@ export default function NewReservation() {
     }
 
     useEffect(() => {
+        if (!timeRange) {
+            console.log("there is no timerage ");
+            return;
+        }
         const hour = formatTimeRangeToHour(timeRange)
 
         const chechAvailableSlots = async () => {
@@ -123,7 +130,7 @@ export default function NewReservation() {
         if (!timeranges.includes(timeRange)) {
             setTimeRange(timeranges[0]);
         }
-    }, [])
+    }, []);
 
     const checkSlotsEquality = (slot1: ISlot, slot2: ISlot) => {
         const { startsAt: startsAt1, endsAt: endsAt1 } = generateStartsAndEndsAtDate(slot1.date, slot1.hour, slot1.slot);
