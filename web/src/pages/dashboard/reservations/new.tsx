@@ -43,9 +43,10 @@ export default function NewReservation() {
     const { getReservationsForHour, createMultipleReservations, creatingMultipleReservations } = useReservations();
     const [selectedSlots, setSelectedSlots] = useState<ISlot[]>([]);
     const { user } = useAuth();
-    const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
+    const [date, setDate] = useState<string | null>();
+    const [availableDates, setAvailableDates] = useState<string[]>([]);
     const [timeRange, setTimeRange] = useState<string | null>(null);
-    // available slots
+    const [availableTimeRanges, setAvailableTimeRanges] = useState<string[]>([]);
     const [availableSlots, setAvailableSlots] = useState<ISlot[]>([]);
     const [gettingReservationsForHour, setGettingReservationsForHour] = useState(false);
 
@@ -83,14 +84,11 @@ export default function NewReservation() {
     }
 
     useEffect(() => {
-        if (!timeRange) {
-            setTimeRange(getAvailableTimeRanges(new Date(date))[0]);
-        }
 
         const chechAvailableSlots = async () => {
             const hour = formatTimeRangeToHour(timeRange!)
             setGettingReservationsForHour(true);
-            const { date: dateUTC, hour: hourUTC } = convertDateAndHourToUTC(date, hour);
+            const { date: dateUTC, hour: hourUTC } = convertDateAndHourToUTC(date ? date : new Date().toISOString().split('T')[0], hour);
 
             // get reserved slots in the slected date and hour in UTC+0
             const reservedSlots = await getReservationsForHour(dateUTC, hourUTC);
@@ -100,7 +98,7 @@ export default function NewReservation() {
             // generate 4 slots in the selected hour and date
             const availableSlots = [...Array(4)].map((_, i) => {
                 const slot = {
-                    date,
+                    date: date ? date : new Date().toISOString().split('T')[0],
                     hour,
                     slot: {
                         starts: i * 15,
@@ -125,15 +123,30 @@ export default function NewReservation() {
     }, [date, timeRange]);
 
     useEffect(() => {
-        const timeranges = getAvailableTimeRanges(new Date(date));
-        if (!timeRange) {
-            setTimeRange(timeranges[0]);
-            return;
-        }
-        if (!timeranges.includes(timeRange)) {
-            setTimeRange(timeranges[0]);
-        }
+        const dates = getAvailableDates();
+        const formattedDates = dates.map(date => {
+            return moment(date, userTimeZone).format('YYYY-MM-DD');
+        });
+        setDate(formattedDates[0]);
+        setAvailableDates(formattedDates);
     }, []);
+
+    useEffect(() => {
+        if (date) {
+            if (date === new Date().toISOString().split('T')[0]) {
+                const timeranges = getAvailableTimeRanges(new Date());
+                setAvailableTimeRanges(timeranges);
+                setTimeRange(timeranges[0]);
+                return;
+            }
+            const timeranges = getAvailableTimeRanges(new Date(date));
+            setAvailableTimeRanges(timeranges);
+        } else {
+            const timeranges = getAvailableTimeRanges(new Date());
+            setAvailableTimeRanges(timeranges);
+            setTimeRange(timeranges[0]);
+        }
+    }, [date]);
 
     const checkSlotsEquality = (slot1: ISlot, slot2: ISlot) => {
         const { startsAt: startsAt1, endsAt: endsAt1 } = generateStartsAndEndsAtDate(slot1.date, slot1.hour, slot1.slot);
@@ -184,14 +197,15 @@ export default function NewReservation() {
                         label="Select Date"
                         id="date"
                         name="date"
-                        value={date}
+                        value={date ? date : new Date().toISOString().split('T')[0]}
                         required
                         onChange={(e) => setDate(e.target.value)}
                     >
-                        {getAvailableDates().map((date, i) => {
-                            const formattedDate = moment.tz(date, userTimeZone).format('YYYY-MM-DD');
-                            return <option key={i} value={formattedDate}>{formattedDate}</option>
-                        })}
+                        {
+                            availableDates.map((date, i) => {
+                                return <option key={i} value={date}>{date}</option>
+                            })
+                        }
                     </SelectField>
 
                     <SelectField
@@ -203,11 +217,11 @@ export default function NewReservation() {
                         required
                         onChange={(e) => setTimeRange(e.target.value)}
                     >
-                        {getAvailableTimeRanges(new Date(date)).map((range, i) => {
+                        {availableTimeRanges.map((range, i) => {
                             return <option key={i} value={range}>{range}</option>
                         })}
                     </SelectField>
-
+                    {/* available time slots */}
                     <div className='col-span-full '>
                         <p className="mb-3 block text-sm font-medium text-gray-700"> Available Time Slots</p>
                         {(availableSlots.length > 0 && !gettingReservationsForHour) && <div className="grid grid-cols-2 gap-4 w-full ">
@@ -253,6 +267,8 @@ export default function NewReservation() {
                         }
                     </div>
                 </div>
+
+                {/* selected slots */}
                 <div className="w-1/2 h-full space-y-5  px-4">
                     <h1 className="text-xl font-semibold leading-6 text-gray-700 capitalize">
                         selected slots

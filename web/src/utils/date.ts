@@ -107,6 +107,8 @@ export const getAvailableDates = (): Date[] => {
 
 
 export const getAvailableTimeRanges = (date: Date): string[] => {
+   console.log("input date ", date);
+
    const availableTimeRanges: string[] = [];
    for (let i = 0; i < 24; i++) {
       const endsAt = new Date(date.getFullYear(), date.getMonth(), date.getDate(), i + 1);

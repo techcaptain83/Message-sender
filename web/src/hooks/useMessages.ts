@@ -31,7 +31,7 @@ export default function useMessages() {
 
         for (let index = 0; index < contacts.length; index++) {
             const contact = contacts[index];
-            
+
             // check if there is a phone number in logContacts matching the current contact
             // if so, skip sending message to that number
             if (logContacts.find((logContact) => logContact.phoneNumber === `(${contact.countryCode}) ${contact.phoneNumber}`)) {
@@ -41,6 +41,8 @@ export default function useMessages() {
                 const { data } = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
                     displayName: contact.displayName, ...content
                 });
+                console.log("data from send message", data);
+                
                 if (data.message === "ok") {
                     toast.success("Message sent successfully to number : " + contact.phoneNumber);
                     sentCount++;
