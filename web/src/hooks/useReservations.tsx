@@ -91,8 +91,23 @@ export default function useReservations() {
     const createMultipleReservations = async (reservations: { startsAt: string, endsAt: string }[], minutes: number) => {
         setCreatingMultipleReservations(true);
         try {
+            // const testReservation = {
+            //     startsAt: "2023-10-05T01:45:00.000+00:00",
+            //     endsAt: "2023-10-05T01:59:59.999+00:00"
+            // }
+            // find duplicates
+            const duplicates = reservations.filter((reservation, index) => {
+                const firstIndex = reservations.findIndex(res => res.startsAt === reservation.startsAt && res.endsAt === reservation.endsAt);
+                return firstIndex !== index;
+            });
+            if (duplicates.length) {
+                toast.error("you can't create duplicate reservations!");
+                return;
+            }
+
             const { data } = await axios.post('/reservations/multiple', {
-                reservations, userId: user ? user._id : localstorageUser._id,
+                reservations,
+                userId: user ? user._id : localstorageUser._id,
                 minutes
             });
             if (data.success) {
@@ -104,9 +119,16 @@ export default function useReservations() {
                 console.log(data);
                 toast.error("something went wrong while creating reservations!");
             }
-        } catch (error) {
-            console.log(error);
-            toast.error("something went wrong while creating reservations!");
+        } catch ({ response }: any) {
+            console.log(response);
+            if (response?.data?.alreadyReserved) {
+                toast.error("one or more reservations are already taken!");
+                setTimeout(() => {
+                    toast.error(`taken reservation : ${new Date(response.data.reservation.startsAt).toLocaleString()} - ${new Date(response.data.reservation.endsAt).toLocaleString()}`)
+                }, 500)
+            } else {
+                toast.error("something went wrong while creating reservations!");
+            }
         } finally {
             setCreatingMultipleReservations(false);
         }
