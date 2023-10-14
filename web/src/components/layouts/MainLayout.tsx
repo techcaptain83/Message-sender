@@ -51,7 +51,7 @@ export default function MainLayout({ children }: Props) {
     }, [user, router.pathname])
 
     return (
-        <div className='min-w-full min-h-screen'>
+        <div className='min-w-full min-h-screen' suppressHydrationWarning>
             {(initialLoading && !['/register', '/login', '/'].includes(router.pathname)) ?
                 <div className='w-full h-full flex items-center justify-center'>
                     <PrePageLoader />
