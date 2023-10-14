@@ -38,7 +38,7 @@ export default function useMessages() {
                 continue;
             }
             try {
-                const { data } = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
+                const  data  = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
                     displayName: contact.displayName, ...content
                 });
                 console.log("data from send message", data);
