@@ -1,4 +1,3 @@
-import { IAuthUser } from "@/types";
 import { atom } from "recoil";
 
 export const showAddUserModalAtom = atom({
@@ -52,11 +51,6 @@ export const serialNumberEmailAtom = atom<{
 
 export const selectedOSAtom = atom<"win" | "mac" | null>({
     key: "selectedOS",
-    default: null
-});
-
-export const selectedPlanAtom = atom<"free" | "premium" | null>({
-    key: "selectedPlan",
     default: null
 });
 
@@ -152,8 +146,7 @@ export const showNoApiModalAtom = atom({
 });
 
 
-
-// export const showCreateCardModalAtom = atom({
-//     key: "showCreateCardModal",
-//     default: false
-// });
+export const selectedPlanAtom = atom<"pro" | "enterprise" | "yearlyEnterprise" | null>({
+    key: "selectedPlan",
+    default: null
+});

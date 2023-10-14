@@ -1,15 +1,16 @@
 import { showUpgradeToPremiumState } from '@/atoms';
 import axios from '@/axios.config';
 import useAuth from '@/hooks/useAuth';
+import { selectedPlanAtom } from '@/store/atoms';
 import { IAuthUser } from '@/types';
-import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH } from '@/utils/constants';
+import { ENTERPRISE_PRICE, PREMIUM_PRICE, UIDHASH, YEARLY_ENTERPRISE_PRICE } from '@/utils/constants';
 import { Dialog } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { loadStripe } from '@stripe/stripe-js';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { FaCrown } from 'react-icons/fa';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { Button } from '../Button';
 import Loader from '../Loader';
 import ModalLayout from '../layouts/ModalLayout';
@@ -19,22 +20,27 @@ const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 export default function UpgradeAccount() {
     const [showUpgrade, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
-    const { user, updateUser } = useAuth();
+    const { user } = useAuth();
     const [proLoading, setProLoading] = useState(false);
     const [enterpriseLoading, setEnterpriseLoading] = useState(false);
+    const [yearlyEnterpriseLoading, setYearlyEnterpriseLoading] = useState(false);
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || '{}') as IAuthUser;
+    const selectedPlan = useRecoilValue(selectedPlanAtom);
 
 
-    const handlePayment = async (plan: "pro" | "enterprise") => {
+    const handlePayment = async (plan: "pro" | "enterprise" | "yearlyEnterprise") => {
         if (plan === "pro") {
             setProLoading(true);
-        } else {
+        } else if (plan === "enterprise") {
             setEnterpriseLoading(true);
+        } else {
+            setYearlyEnterpriseLoading(true);
         }
         try {
             const { data } = await axios.post('/payment/create-session', {
                 reason: "upgrade",
-                plan: plan,
+                plan: plan === "yearlyEnterprise" ? "enterprise" : plan,
+                amount: plan === "yearlyEnterprise" ? YEARLY_ENTERPRISE_PRICE : undefined,
                 user_id: user?._id ? user._id : localstorageUser._id
             });
 
@@ -55,12 +61,14 @@ export default function UpgradeAccount() {
         } finally {
             if (plan === "pro") {
                 setProLoading(false);
-            } else {
+            } else if (plan === "enterprise") {
                 setEnterpriseLoading(false);
+            } else {
+                setYearlyEnterpriseLoading(false);
             }
         }
     }
-
+    
 
     return (
         <ModalLayout open={showUpgrade} setOpen={() => setShowUpgrade(false)}>
@@ -71,7 +79,7 @@ export default function UpgradeAccount() {
                     onClick={() => setShowUpgrade(false)}
                 >
                     <span className="sr-only">Cancel</span>
-                     <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
             </div>
             <div className="sm:flex sm:items-start">
@@ -89,7 +97,7 @@ export default function UpgradeAccount() {
                     your are going to be redirected to the payment portal where you can finish your payment.
                 </p>
             </div>
-            <div className="mt-4 flex w-full items-center justify-between gap-3">
+            {!selectedPlan ? <div className="mt-4 flex w-full items-center justify-between gap-3">
                 {user?.plan !== "pro" && <Button
                     onClick={() => handlePayment("pro")}
                     color='blue'
@@ -104,7 +112,27 @@ export default function UpgradeAccount() {
                 >
                     {enterpriseLoading ? <Loader /> : <span>Buy enterprise (${ENTERPRISE_PRICE})</span>}
                 </Button>
-            </div>
+            </div> :
+                <Button
+                    color='blue'
+                    className='rounded-md w-full'
+                    onClick={() => handlePayment(selectedPlan)}
+                >
+                    {
+                        (yearlyEnterpriseLoading || proLoading || enterpriseLoading) ? <Loader /> :
+                            <>
+                                {selectedPlan === "pro" ?
+                                    <span>Buy Shared premium (${PREMIUM_PRICE})</span> : selectedPlan === "enterprise" ?
+                                        <span>Buy enterprise (${ENTERPRISE_PRICE})</span> :
+                                        <span>
+                                            Pay ${YEARLY_ENTERPRISE_PRICE} for yearly enterprise
+                                        </span>
+                                }
+                            </>
+
+                    }
+                </Button>
+            }
 
         </ModalLayout>
     )

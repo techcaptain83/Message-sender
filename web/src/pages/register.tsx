@@ -1,35 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { showUpgradeToPremiumState } from '@/atoms'
 import axiosInstance from '@/axios.config'
 import { Button } from '@/components/Button'
 import { SelectField, TextField } from '@/components/Fields'
 import Loader from '@/components/Loader'
 import { Logo } from '@/components/Logo'
-import SelectPlan from '@/components/auth/SelectPlan'
-import UpgradeToPremium from '@/components/modals/UpgradeAccount'
 import useAuth from '@/hooks/useAuth'
-import { selectedPlanAtom, serialNumberEmailAtom, showPayAtom, showSelectPlanAtom, showSuccessfulSignupAtom } from '@/store/atoms'
+import { selectedPlanAtom } from '@/store/atoms'
 import { countries } from '@/store/countries'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import { useRecoilState } from 'recoil'
 
 
 export default function Register() {
-  // const [os, setOs] = useRecoilState(selectedOSAtom);
-  const [plan, setPlan] = useRecoilState(selectedPlanAtom);
   const { updateUser } = useAuth();
-  const [showPay, setShowPay] = useRecoilState(showPayAtom);
-  // const [showSelectOs, setShowSelectOs] = useRecoilState(showSelectOsAtom);
-  const [showSelectPlan, setShowSelectPlan] = useRecoilState(showSelectPlanAtom);
-
-
   const [loading, setLoading] = useState(false);
   const router = useRouter();
-  const [_, setShowSuccess] = useRecoilState(showSuccessfulSignupAtom);
-  const [_sn, setSerialNumberEmail] = useRecoilState(serialNumberEmailAtom);
+  const [_, setPlan] = useRecoilState(selectedPlanAtom);
+  const [_s, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -39,20 +32,7 @@ export default function Register() {
     country: 'United Kingdom',
     phone: '',
     referredBy: ''
-  })
-
-
-  useEffect(() => {
-    const { os, plan } = router.query;
-    // if (os && (os === "win" || os === "mac")) {
-    //   setOs(os);
-    // }
-    if (plan && (plan === "free" || plan === "premium")) {
-      setPlan(plan);
-    } else {
-      setPlan(null);
-    }
-  }, [router.query]);
+  });
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -72,20 +52,26 @@ export default function Register() {
         toast.error("Last name must be atleast 3 characters");
         return;
       }
-      // console.log(formData);
 
       const { data } = await axiosInstance.post('/auth/signup', formData);
       if (data.message === "success") {
+        const { plan, yearly } = router.query;
         toast.success("successfully registered");
         updateUser(data.user);
-        router.push("/dashboard");
-        // if (!plan) {
-        //   setShowSelectPlan(true);
-        // } else if (plan === "free") {
-        //   router.push("/dashboard");
-        // } else {
-        //   setShowPay(true);
-        // }
+
+        if (!plan || typeof plan !== "string" || plan === 'free' || ['pro', "enterprise"].indexOf(plan) == -1) {
+          router.push('/dashboard');
+          return;
+        }
+        else if (["pro", "enterprise"].indexOf(plan) !== -1 || yearly) {
+          if (yearly) {
+            setPlan("yearlyEnterprise");
+          } else {
+            setPlan(plan as "pro" | "enterprise");
+          }
+          setShowSuccess(true);
+          setShowUpgrade(true);
+        }
       } else {
         toast.error(data.message);
       }
@@ -115,108 +101,122 @@ export default function Register() {
           </Link>
         </p>
       </div>
-      {(!showSelectPlan && !showPay) && <form
-        onSubmit={handleSubmit}
-        className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
-      >
-        <TextField
-          label="First name"
-          id="first_name"
-          name="first_name"
-          type="text"
-          value={formData.firstName}
-          onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-          autoComplete="given-name"
-          required
-        />
-        <TextField
-          label="Last name"
-          id="last_name"
-          name="last_name"
-          type="text"
-          value={formData.lastName}
-          autoComplete="family-name"
-          required
-          onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-        />
-        <TextField
-          className="col-span-full"
-          label="Email address"
-          id="email"
-          name="email"
-          type="email"
-
-          value={formData.email}
-          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-          autoComplete="email"
-          required
-        />
-        <TextField
-          className="col-span-full"
-          label="Phone number"
-          id="phone"
-          name="phone"
-          type="tel"
-          value={formData.phone}
-          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-          autoComplete="tel"
-          required
-        />
-        <TextField
-          className="col-span-full"
-          label="Password"
-          id="password"
-          name="password"
-          type="password"
-          value={formData.password}
-          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-          autoComplete="email"
-          required
-        />
-        <SelectField
-          className="col-span-full"
-          label="Country"
-          onChange={(e) => setFormData({ ...formData, country: e.target.value })}
-          id="country"
-          value={formData.country}
-          name="country"
-          required
-        >
-          {
-            countries.map((country) => (
-              <option key={country} value={country}>{country}</option>
-            ))
-          }
-        </SelectField>
-        <TextField
-          className="col-span-full"
-          label="Referred by (email)"
-          id="referred_by"
-          name="referred_by"
-          type="email"
-          value={formData.referredBy}
-          onChange={(e) => setFormData({ ...formData, referredBy: e.target.value })}
-        // autoComplete="email"
-        // required
-        />
-        <div className="col-span-full">
-          <Button
-            disabled={loading}
-            type="submit"
-            variant="solid"
-            color="blue"
-            className="w-full"
+      {showSuccess ?
+        <div className='w-full shadow-md rounded-md p-4 space-y-4 flex flex-col items-center'>
+          <p>Your account has been created successfully!</p>
+          <Button color='blue' variant='solid'
+            href='/dashboard'
+            className='rounded-md w-full'
           >
-            {loading ? <Loader /> :
-              <span>
-                continue <span aria-hidden="true">&rarr;</span>
-              </span>}
+            Continue to dashboard
+          </Button>
+          <Button color='blue' variant='solid'
+            className='rounded-md w-full'
+            onClick={() => setShowUpgrade(true)}
+          >
+            proceed to payment
           </Button>
         </div>
-      </form>}
-      {/* {showSelectOs && <SelectOs />} */}
-      {showSelectPlan && <SelectPlan />}
-      {showPay && <UpgradeToPremium />}
+        : <form
+          onSubmit={handleSubmit}
+          className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2"
+        >
+          <TextField
+            label="First name"
+            id="first_name"
+            name="first_name"
+            type="text"
+            value={formData.firstName}
+            onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+            autoComplete="given-name"
+            required
+          />
+          <TextField
+            label="Last name"
+            id="last_name"
+            name="last_name"
+            type="text"
+            value={formData.lastName}
+            autoComplete="family-name"
+            required
+            onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+          />
+          <TextField
+            className="col-span-full"
+            label="Email address"
+            id="email"
+            name="email"
+            type="email"
+
+            value={formData.email}
+            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+            autoComplete="email"
+            required
+          />
+          <TextField
+            className="col-span-full"
+            label="Phone number"
+            id="phone"
+            name="phone"
+            type="tel"
+            value={formData.phone}
+            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+            autoComplete="tel"
+            required
+          />
+          <TextField
+            className="col-span-full"
+            label="Password"
+            id="password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+            autoComplete="email"
+            required
+          />
+          <SelectField
+            className="col-span-full"
+            label="Country"
+            onChange={(e) => setFormData({ ...formData, country: e.target.value })}
+            id="country"
+            value={formData.country}
+            name="country"
+            required
+          >
+            {
+              countries.map((country) => (
+                <option key={country} value={country}>{country}</option>
+              ))
+            }
+          </SelectField>
+          <TextField
+            className="col-span-full"
+            label="Referred by (email)"
+            id="referred_by"
+            name="referred_by"
+            type="email"
+            value={formData.referredBy}
+            onChange={(e) => setFormData({ ...formData, referredBy: e.target.value })}
+          // autoComplete="email"
+          // required
+          />
+          <div className="col-span-full">
+            <Button
+              disabled={loading}
+              type="submit"
+              variant="solid"
+              color="blue"
+              className="w-full"
+            >
+              {loading ? <Loader /> :
+                <span>
+                  continue <span aria-hidden="true">&rarr;</span>
+                </span>}
+            </Button>
+          </div>
+        </form>
+      }
     </>
   )
 }

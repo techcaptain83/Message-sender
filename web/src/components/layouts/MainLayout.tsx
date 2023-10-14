@@ -44,7 +44,6 @@ export default function MainLayout({ children }: Props) {
     const showNoReservation = useRecoilValue(showNoReservationModalAtom);
     const showNoApi = useRecoilValue(showNoApiModalAtom);
     const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
-    // const showCreateCard = useRecoilValue(showCreateCardModalAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -77,7 +76,6 @@ export default function MainLayout({ children }: Props) {
                             {showNoReservation && <NoReservation />}
                             {showNoApi && <NoApi />}
                             {showPurchaseMinutes && <PurchaseMinutes />}
-                            {/* {showCreateCard && <CreateCard />} */}
                         </>
                     }
                 </main>
