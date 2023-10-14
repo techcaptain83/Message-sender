@@ -10,8 +10,10 @@ import { useRecoilState } from 'recoil'
 import { Button } from '../Button'
 import { TextField } from '../Fields'
 import ModalLayout from '../layouts/ModalLayout'
+import { useRouter } from 'next/router'
 
 export default function PurchaseMinutes() {
+    const router = useRouter();
     const [showModal, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);
     const [slots, setSlots] = useState(1);
     const [purchasingWithBalance, setPurchasingWithBalance] = useState(false);
@@ -25,6 +27,9 @@ export default function PurchaseMinutes() {
     const purchase = async ({ withBalance }: { withBalance: boolean }) => {
         if (user!.balance < slots * SLOT_PRICE && withBalance) {
             toast.error("You don't have enough balance to purchase these slots");
+            setTimeout(() => {
+                router.push('/dashboard/deposits');
+            }, 700);
             return;
         }
         withBalance ? setPurchasingWithBalance(true) : setPurchasingWithBank(true);

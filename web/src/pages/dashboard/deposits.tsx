@@ -1,20 +1,15 @@
 import { Button } from '@/components/Button';
+import DepositsTable from '@/components/deposits/DepositsTable';
+import UserDashboardLayout from '@/components/layouts/UserDashboardLayout';
 import EmptyState from '@/components/states/EmptyState';
-import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
 import LoadingState from '@/components/states/LoadingState';
 import useDeposits from '@/hooks/useDeposits';
 import { showNewDepositModalAtom } from '@/store/atoms';
 import { PlusIcon } from '@heroicons/react/20/solid';
 import Head from 'next/head';
-import React from 'react'
 import { useRecoilState } from 'recoil';
-import DepositsTable from '@/components/deposits/DepositsTable';
-import Loader from '@/components/Loader';
-import toast from 'react-hot-toast';
-import { useRouter } from 'next/router';
-import { loadStripe } from '@stripe/stripe-js';
 
-const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
+
 export default function Deposits() {
     const { userDeposits, fetchingUserDeposits } = useDeposits();
     const [_, setShowModal] = useRecoilState(showNewDepositModalAtom);
