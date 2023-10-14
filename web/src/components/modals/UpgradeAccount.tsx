@@ -17,7 +17,7 @@ import ModalLayout from '../layouts/ModalLayout';
 const stripePromise = loadStripe(process.env.STRIPE_PUBLISHABLE_KEY!);
 
 
-export default function UpgradeToPremium() {
+export default function UpgradeAccount() {
     const [showUpgrade, setShowUpgrade] = useRecoilState(showUpgradeToPremiumState);
     const { user, updateUser } = useAuth();
     const [proLoading, setProLoading] = useState(false);
@@ -90,13 +90,13 @@ export default function UpgradeToPremium() {
                 </p>
             </div>
             <div className="mt-4 flex w-full items-center justify-between gap-3">
-                <Button
+                {user?.plan !== "pro" && <Button
                     onClick={() => handlePayment("pro")}
                     color='blue'
                     className='rounded-md w-full'
                 >
                     {proLoading ? <Loader /> : <span>Buy Shared premium (${PREMIUM_PRICE})</span>}
-                </Button>
+                </Button>}
                 <Button
                     onClick={() => handlePayment("enterprise")}
                     color='blue'

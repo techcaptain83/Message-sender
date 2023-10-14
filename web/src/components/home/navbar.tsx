@@ -51,7 +51,16 @@ export default function Navbar() {
                                 <span>Enterprise</span>
                                 <FaCrown width={20} />
                             </div>
-
+                }
+                {
+                    user?.plan === "pro" && <Button onClick={() => setShowUpgradeModal(true)} variant='solid' color='green'
+                        className='rounded-md space-x-2 lg:text-base text-xs'>
+                        {<>
+                            <span>Upgrade to enterprise</span>
+                            <FaCrown width={20} />
+                        </>
+                        }
+                    </Button>
                 }
 
             </div>

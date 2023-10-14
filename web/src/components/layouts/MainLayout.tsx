@@ -18,7 +18,7 @@ import NoReservation from '../modals/NoReservation';
 import PurchaseMinutes from '../modals/PurchaseMinutes';
 import ScanCode from '../modals/ScanCode';
 import TicketDetails from '../modals/TicketDetails';
-import UpgradeToPremium from '../modals/UpgradeToPremium';
+import UpgradeAccount from '../modals/UpgradeAccount';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
 
@@ -63,7 +63,7 @@ export default function MainLayout({ children }: Props) {
                         <>
                             {showDeleteFile && <DeleteFile />}
                             {showUploadFile && <UploadFile />}
-                            {showUpgrade && <UpgradeToPremium />}
+                            {showUpgrade && <UpgradeAccount />}
                             {showUploadMedia && <UploadMedia />}
                             {showScanCode && <ScanCode />}
                             {showCreateTicket && <CreateTicket />}
