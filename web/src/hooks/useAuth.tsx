@@ -43,12 +43,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
     const [initialLoading, setInitialLoading] = useState(true);
 
+    const verifyCurrentUser = async (userId: string) => {
+        try {
+            const { data } = await axios.get(`/auth/me/${userId}`);
+            if (data.user) {
+                updateUser(data.user);
+            }
+        } catch (error) {
+            console.log(error);
+            logout();
+        }
+    }
+
     useEffect(() => {
-        // if (router.pathname === "/payment") {
-        //     setInitialLoading(false);
-        //     return;
-        // }
         const user = localStorage.getItem(UIDHASH);
+        if (router.pathname === "/payment") {
+            setInitialLoading(false);
+            return;
+        }
         if (user) {
             const parsedUser = JSON.parse(user) as IAuthUser;
             setUser(parsedUser);
@@ -62,29 +74,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
             setTimeout(() => {
                 setInitialLoading(false);
             }, 200);
-            return;
-        }
-        const checkUser = async () => {
-            await axios.get('/auth/me').then((res) => {
-                switch (res.status) {
-                    case 200:
-                        setUser(res.data.user);
-                        localStorage.setItem(UIDHASH, JSON.stringify(res.data.user));
-                        (router.pathname === "/login" || router.pathname === "/" || router.pathname === "/register") && router.push("/dashboard");
-                        break;
-                    default:
-                        setUser(null);
-                        (!["/login", "/register", "/"].includes(router.pathname)) && router.push("/login");
-                        break;
-                }
-            }).catch((err) => {
-                setUser(null);
-                (!["/login", "/register", "/"].includes(router.pathname)) && router.push("/login");
-            }).finally(() => {
+            verifyCurrentUser(parsedUser._id);
+        } else {
+            if (['/', '/login', '/register'].indexOf(router.pathname) === -1) {
+                router.push("/login");
+            }
+            setTimeout(() => {
                 setInitialLoading(false);
-            })
+            }, 200);
         }
-        checkUser();
     }, []);
 
     const reloadProfile = async () => {

@@ -62,20 +62,25 @@ function Plan({ name, price, description, href, featured = false }: {
     >
       <h3 className="mt-5 font-display text-lg text-white">{name}</h3>
       <p
+        suppressHydrationWarning
         className={clsx(
           'mt-2 text-base',
           featured ? 'text-white' : 'text-slate-400'
         )}
       >
         {description.map((line, i) => (
-          <p key={i} className="flex items-center">
+          <p
+            suppressHydrationWarning
+            key={i} className="flex items-center">
             <CheckIcon className="mr-2" />
             <span>{line}</span>
           </p>
         ))
         }
       </p>
-      <p className="order-first font-display text-5xl font-light tracking-tight text-white">
+      <p
+        suppressHydrationWarning
+        className="order-first font-display text-5xl font-light tracking-tight text-white">
         {price}
       </p>
       <Button
