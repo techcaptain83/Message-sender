@@ -42,15 +42,17 @@ export default function Navbar() {
                             </>
                             }
                         </Button> :
-                        user?.plan === "pro" ?
-                            <div className='bg-blue-500 text-white p-2 rounded-md flex items-center gap-2 lg:text-base text-xs' >
-                                <span>Pro</span>
-                                <FaCrown width={20} />
-                            </div> :
-                            <div className='bg-yellow-500 text-white p-2 rounded-md flex items-center gap-2 lg:text-base text-xs' >
-                                <span>Enterprise</span>
-                                <FaCrown width={20} />
-                            </div>
+                        user?.plan === "pro" &&
+                        <div className='bg-blue-500 text-white p-2 rounded-md flex items-center gap-2 lg:text-base text-xs' >
+                            <span>Pro</span>
+                            <FaCrown width={20} />
+                        </div>}
+                {
+                    user?.plan === "enterprise" &&
+                    <div className='bg-yellow-500 text-white p-2 rounded-md flex items-center gap-2 lg:text-base text-xs' >
+                        <span>Enterprise</span>
+                        <FaCrown width={20} />
+                    </div>
                 }
                 {
                     user?.plan === "pro" && <Button onClick={() => setShowUpgradeModal(true)} variant='solid' color='green'
