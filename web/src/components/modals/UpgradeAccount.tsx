@@ -68,7 +68,7 @@ export default function UpgradeAccount() {
             }
         }
     }
-    
+
 
     return (
         <ModalLayout open={showUpgrade} setOpen={() => setShowUpgrade(false)}>
@@ -125,7 +125,7 @@ export default function UpgradeAccount() {
                                     <span>Buy Shared premium (${PREMIUM_PRICE})</span> : selectedPlan === "enterprise" ?
                                         <span>Buy enterprise (${ENTERPRISE_PRICE})</span> :
                                         <span>
-                                            Pay ${YEARLY_ENTERPRISE_PRICE} for yearly enterprise
+                                            Pay ${YEARLY_ENTERPRISE_PRICE / 100} for yearly enterprise
                                         </span>
                                 }
                             </>
