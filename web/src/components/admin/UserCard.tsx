@@ -6,9 +6,10 @@ import { useRecoilState } from 'recoil';
 import Loader from '../Loader';
 
 export default function AdminUserCard({ country, firstName, lastName, email, referredBy, createdAt, datePaid, updatedAt, _id, manual, verified, plan, api, ...user }: IAuthUser) {
-    const { isUpgrading, accountBeingUpgraded, manualUpgrade, deleteAccount, deletingUser } = useUsers();
+    const { isUpgrading, accountBeingUpgraded, manualUpgrade, deleteAccount, deletingUser, verifyUserManually, verifyingUserManually } = useUsers();
     const [_, setShowAddCredentials] = useRecoilState(showAddCredentialsModalAtom)
     const [_show, setShowAddMinutesManually] = useRecoilState(showAddMinutesManuallyAtom);
+
 
 
     return (
@@ -18,8 +19,23 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{firstName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{lastName}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{email}
-                {verified ? <span className='p-1 rounded-xl ml-2 bg-green-200'>Verified</span> : <span className='p-1 rounded-xl ml-2 bg-red-200'>Not Verified</span>}
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                <div className='flex gap-2 justify-between'>
+                    <div>
+                        <p>{email}</p>
+                        {verified ? <span className='p-1 rounded-md bg-green-200'>Verified</span> : <span className='p-1 rounded-md bg-red-200'>Not Verified</span>}
+                    </div>
+                    {!verified && <button
+                        disabled={verifyingUserManually?.verifying && verifyingUserManually.userId === _id}
+                        onClick={() => verifyUserManually(_id)}
+                        className='inline-flex w-max  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 h-fit'>
+                        {
+                            (verifyingUserManually?.verifying && verifyingUserManually.userId === _id) ?
+                                <Loader /> :
+                                <span>verify</span>
+                        }
+                    </button>}
+                </div>
             </td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{plan === "pro" ? "Premium" : plan}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(createdAt).toLocaleString()}</td>

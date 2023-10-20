@@ -12,6 +12,11 @@ export default function useUsers() {
     const [addingMinutesManually, setAddingMinutesManually] = useState(false);
     const [_, setShowAddCredentials] = useRecoilState(showAddCredentialsModalAtom);
     const [_s, setShowAddMinutesManually] = useRecoilState(showAddMinutesManuallyAtom);
+    const [verifyingUserManually, setVerifyingUserManually] = useState<{
+        verifying: boolean,
+        userId: string
+    } | null>(null);
+
 
 
     const [deletingUser, setDeletingUser] = useState<{
@@ -125,6 +130,28 @@ export default function useUsers() {
         }
     }
 
+    const verifyUserManually = async (userId: string) => {
+        setVerifyingUserManually({
+            verifying: true,
+            userId
+        })
+        try {
+            const { data } = await axios.put(`/users/manual-verification/${userId}`);
+            if (data.success) {
+                toast.success("user was verified successfully!");
+                mutate();
+            } else {
+                toast.error("Error verifying the user!");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("there was an error verifying this user! please try again later!");
+        }
+        finally {
+            setVerifyingUserManually(null);
+        }
+    }
+
     return {
         users: data,
         isLoading: !error && !data,
@@ -136,6 +163,8 @@ export default function useUsers() {
         addingCredentials,
         addApiCredentials,
         addingMinutesManually,
-        addMinutesManually
+        addMinutesManually,
+        verifyingUserManually,
+        verifyUserManually
     };
 }
