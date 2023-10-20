@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -21,6 +21,7 @@ import TicketDetails from '../modals/TicketDetails';
 import UpgradeAccount from '../modals/UpgradeAccount';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
+import AddMinutesManually from '../modals/AddMinutesManually';
 
 interface Props {
     children: React.ReactNode
@@ -44,6 +45,7 @@ export default function MainLayout({ children }: Props) {
     const showNoReservation = useRecoilValue(showNoReservationModalAtom);
     const showNoApi = useRecoilValue(showNoApiModalAtom);
     const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
+    const showAddMinutesManually = useRecoilValue(showAddMinutesManuallyAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -76,6 +78,7 @@ export default function MainLayout({ children }: Props) {
                             {showNoReservation && <NoReservation />}
                             {showNoApi && <NoApi />}
                             {showPurchaseMinutes && <PurchaseMinutes />}
+                            {showAddMinutesManually?.show && <AddMinutesManually />}
                         </>
                     }
                 </main>

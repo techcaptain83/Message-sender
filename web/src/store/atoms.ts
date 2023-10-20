@@ -150,3 +150,12 @@ export const selectedPlanAtom = atom<"pro" | "enterprise" | "yearlyEnterprise" |
     key: "selectedPlan",
     default: null
 });
+
+export const showAddMinutesManuallyAtom = atom<{
+    show: boolean,
+    userId: string,
+    email:string
+} | null>({
+    key: "showAddMinutesManually",
+    default: null
+});

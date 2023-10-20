@@ -1,5 +1,5 @@
 import axios from "@/axios.config";
-import { showAddCredentialsModalAtom } from "@/store/atoms";
+import { showAddCredentialsModalAtom, showAddMinutesManuallyAtom } from "@/store/atoms";
 import { IAuthUser } from "@/types";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -9,7 +9,10 @@ import useSWR from "swr";
 export default function useUsers() {
     const [isUpgrading, setIsUpgrading] = useState(false);
     const [addingCredentials, setAddingCredentials] = useState(false);
+    const [addingMinutesManually, setAddingMinutesManually] = useState(false);
     const [_, setShowAddCredentials] = useRecoilState(showAddCredentialsModalAtom);
+    const [_s, setShowAddMinutesManually] = useRecoilState(showAddMinutesManuallyAtom);
+
 
     const [deletingUser, setDeletingUser] = useState<{
         deleting: boolean;
@@ -95,6 +98,33 @@ export default function useUsers() {
         }
     }
 
+    /**
+     * 
+     * @param userId the id of the user you want to add minutes to
+     * @param minutes the number of minutes you want to add to the user
+     */
+
+    const addMinutesManually = async (userId: string, minutes: number) => {
+        setAddingMinutesManually(true);
+        try {
+            const { data } = await axios.put(`/users/add-minutes/${userId}`, {
+                minutes
+            });
+            if (data.success) {
+                toast.success("Minutes Added successfully!");
+                setShowAddMinutesManually(null);
+            } else {
+                console.log(data);
+                toast.error("There was a problem adding minutes to this user. please try again later!");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("There was a problem adding minutes to this user. please try again later!");
+        } finally {
+            setAddingMinutesManually(false);
+        }
+    }
+
     return {
         users: data,
         isLoading: !error && !data,
@@ -104,6 +134,8 @@ export default function useUsers() {
         deletingUser,
         deleteAccount,
         addingCredentials,
-        addApiCredentials
+        addApiCredentials,
+        addingMinutesManually,
+        addMinutesManually
     };
 }
