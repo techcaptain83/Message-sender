@@ -19,6 +19,7 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{email}
                 {verified ? <span className='p-1 rounded-xl ml-2 bg-green-200'>Verified</span> : <span className='p-1 rounded-xl ml-2 bg-red-200'>Not Verified</span>}
             </td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{plan === "pro" ? "Premium" : plan}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(createdAt).toLocaleString()}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{referredBy ? referredBy : "No One"}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{["pro", "enterprise"].includes(plan) ? manual ? "Cash" : "Stripe" : "None"}</td>
