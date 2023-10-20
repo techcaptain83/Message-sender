@@ -51,7 +51,7 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
                         disabled={isUpgrading && (accountBeingUpgraded?._id !== _id && accountBeingUpgraded?.plan === "enterprise")}
                         onClick={() => manualUpgrade(_id, "enterprise")}
                         type="button"
-                        className="inline-flex shrink-0  items-center rounded-md bg-blue-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+                        className="inline-flex shrink-0  items-center rounded-md bg-yellow-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
                     >
                         {(isUpgrading && (accountBeingUpgraded?._id === _id && accountBeingUpgraded.plan === "enterprise")) ? <Loader /> : "Manual Release EV"}
                     </button>
