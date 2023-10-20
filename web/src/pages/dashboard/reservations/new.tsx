@@ -213,7 +213,7 @@ export default function NewReservation() {
                         label="Select Time Range"
                         id="timeRange"
                         name="timeRange"
-                        value={timeRange}
+                        value={timeRange || ""}
                         required
                         onChange={(e) => setTimeRange(e.target.value)}
                     >

@@ -48,7 +48,6 @@ export default function CreateTicket() {
                     onChange={(e) => setFormData({ ...formData, body: e.target.value })}
                     id="last_name"
                     name="last_name"
-                    type="text"
                     required
                 />
 

@@ -72,7 +72,7 @@ export default function PurchaseMinutes() {
                     name="slots"
                     type="number"
                     min={1}
-                    onChange={(e) => setSlots(e.target.value)}
+                    onChange={(e) => setSlots(parseInt(e.target.value))}
                     required
                 />
                 <p className='text-center py-2 bg-gray-100 col-span-full rounded-sm'>Minutes : {slots * MINUTES_IN_SLOT}, Price : ${slots * SLOT_PRICE}</p>
