@@ -159,3 +159,8 @@ export const showAddMinutesManuallyAtom = atom<{
     key: "showAddMinutesManually",
     default: null
 });
+
+export const sendingMessagesAtom=atom({
+    key:"sendingMessages",
+    default:false
+});

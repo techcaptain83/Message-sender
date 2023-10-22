@@ -22,6 +22,8 @@ import UpgradeAccount from '../modals/UpgradeAccount';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
 import AddMinutesManually from '../modals/AddMinutesManually';
+import useMessages from '@/hooks/useMessages';
+import SendingMessages from '../modals/SendingMessages';
 
 interface Props {
     children: React.ReactNode
@@ -29,6 +31,7 @@ interface Props {
 
 export default function MainLayout({ children }: Props) {
     const { initialLoading, user } = useAuth();
+    const { sendingMessages } = useMessages();
     const router = useRouter();
     const showDeleteFile = useRecoilValue(showDeleteFileState);
     const showUploadFile = useRecoilValue(showUploadFileState);
@@ -73,12 +76,13 @@ export default function MainLayout({ children }: Props) {
                             {showAnswerTicket?.show && <AnswerTicket />}
                             {showDeleteLog && <DeleteLog />}
                             {showCreateDeposit && <CreateDeposit />}
-                            {showAddCredentials.show && <AddApiCredentials />}
+                            {showAddCredentials.show &&  <AddApiCredentials />}
                             {children}
                             {showNoReservation && <NoReservation />}
                             {showNoApi && <NoApi />}
                             {showPurchaseMinutes && <PurchaseMinutes />}
                             {showAddMinutesManually?.show && <AddMinutesManually />}
+                            <SendingMessages />
                         </>
                     }
                 </main>

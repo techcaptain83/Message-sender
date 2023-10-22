@@ -38,11 +38,11 @@ export default function useMessages() {
                 continue;
             }
             try {
-                const  data  = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
+                const data = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
                     displayName: contact.displayName, ...content
                 });
                 console.log("data from send message", data);
-                
+
                 if (data.message === "ok") {
                     toast.success("Message sent successfully to number : " + contact.phoneNumber);
                     sentCount++;
@@ -63,6 +63,7 @@ export default function useMessages() {
                         sent: false,
                     });
                 }
+                if (index === contacts.length - 1) setSendingMessages(false);
             } catch (error) {
                 toast.error("failed to send message to number : " + contact.phoneNumber);
                 failedCount++;
@@ -72,6 +73,7 @@ export default function useMessages() {
                     phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                     sent: false,
                 });
+                if (index === contacts.length - 1) setSendingMessages(false);
             } finally {
                 if (index === contacts.length - 1) {
                     setSendingMessages(false);

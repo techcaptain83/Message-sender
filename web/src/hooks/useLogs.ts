@@ -16,7 +16,7 @@ export default function useLogs() {
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
     const [_, setSelectedFile] = useRecoilState(selectedFileState)
 
-    const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
+    const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
     const [deletingLog, setDeletingLog] = useState(false);
     const { data, error, mutate } = useSWR(`/logs/user/${user?._id ? user._id : localstorageUser._id}`, async (url) => {
         try {
