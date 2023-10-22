@@ -1,12 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { sendingMessagesAtom, showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import PrePageLoader from '../LargeLoader';
 import AddApiCredentials from '../modals/AddApiCredentails';
+import AddMinutesManually from '../modals/AddMinutesManually';
 import AnswerTicket from '../modals/AnswerTicket';
 import ConnectPhone from '../modals/ConnectPhone';
 import CreateDeposit from '../modals/CreateDeposit';
@@ -17,13 +18,11 @@ import NoApi from '../modals/NoApi';
 import NoReservation from '../modals/NoReservation';
 import PurchaseMinutes from '../modals/PurchaseMinutes';
 import ScanCode from '../modals/ScanCode';
+import SendingMessages from '../modals/SendingMessages';
 import TicketDetails from '../modals/TicketDetails';
 import UpgradeAccount from '../modals/UpgradeAccount';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
-import AddMinutesManually from '../modals/AddMinutesManually';
-import useMessages from '@/hooks/useMessages';
-import SendingMessages from '../modals/SendingMessages';
 
 interface Props {
     children: React.ReactNode
@@ -31,7 +30,6 @@ interface Props {
 
 export default function MainLayout({ children }: Props) {
     const { initialLoading, user } = useAuth();
-    const { sendingMessages } = useMessages();
     const router = useRouter();
     const showDeleteFile = useRecoilValue(showDeleteFileState);
     const showUploadFile = useRecoilValue(showUploadFileState);
@@ -49,6 +47,7 @@ export default function MainLayout({ children }: Props) {
     const showNoApi = useRecoilValue(showNoApiModalAtom);
     const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
     const showAddMinutesManually = useRecoilValue(showAddMinutesManuallyAtom);
+    const sendingMessages = useRecoilValue(sendingMessagesAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -76,13 +75,13 @@ export default function MainLayout({ children }: Props) {
                             {showAnswerTicket?.show && <AnswerTicket />}
                             {showDeleteLog && <DeleteLog />}
                             {showCreateDeposit && <CreateDeposit />}
-                            {showAddCredentials.show &&  <AddApiCredentials />}
+                            {showAddCredentials.show && <AddApiCredentials />}
                             {children}
                             {showNoReservation && <NoReservation />}
                             {showNoApi && <NoApi />}
                             {showPurchaseMinutes && <PurchaseMinutes />}
                             {showAddMinutesManually?.show && <AddMinutesManually />}
-                            <SendingMessages />
+                            {sendingMessages && <SendingMessages />}
                         </>
                     }
                 </main>

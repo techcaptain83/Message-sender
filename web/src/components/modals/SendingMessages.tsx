@@ -7,7 +7,6 @@ export default function SendingMessages() {
             <Dialog
                 as="div"
                 className="relative z-50"
-                // initialFocus={cancelButtonRef}
                 onClose={() => { }}
             >
                 <Transition.Child

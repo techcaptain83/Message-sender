@@ -1,6 +1,7 @@
 import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import useMedia from '@/hooks/useMedia';
 import useMessages from '@/hooks/useMessages';
+import { sendingMessagesAtom } from '@/store/atoms';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -9,7 +10,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
     const { uploadMedia, uploadingAudio, uploadingImage, uploadingVideo } = useMedia();
-    const { sendingMessages, sendBulkMessages } = useMessages();
+    const { sendBulkMessages } = useMessages();
     const [value, setValue] = useState('');
     const [showUploadMedia, setShowUploadMedia] = useState(false);
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
@@ -17,6 +18,7 @@ export default function MesssageInput() {
     const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
     const uploadMediaRef = useRef<HTMLDivElement>(null);
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
+    const sendingMessages = useRecoilValue(sendingMessagesAtom);
 
     const handleSubmit = async () => {
         // const connectionData = await checkPhoneConnection();
@@ -30,7 +32,7 @@ export default function MesssageInput() {
                 setShowScanCode(true);
             }, 1000);
         }
-       
+
         else if (!uploadedFile) {
             sendBulkMessages(selectedUsers, {
                 body: value
