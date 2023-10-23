@@ -14,11 +14,12 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
 
     return (
         <tr>
+
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{firstName}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{lastName}</td>
             <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                 {country}
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{firstName}</td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{lastName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                 <div className='flex gap-2 justify-between'>
                     <div>
