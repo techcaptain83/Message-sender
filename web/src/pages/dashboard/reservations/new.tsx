@@ -26,7 +26,7 @@ interface ISlot {
 
 // hour : HH format
 const formatTimeRangeToHour = (timeRange: string): string => {
-    console.log("passed timerage : ", timeRange);
+    // console.log("passed timerage : ", timeRange);
     if (typeof timeRange !== "string" || timeRange === undefined) return `00`;
     if (typeof timeRange.split('-')[0] !== "string") return `00`;
     const starts = timeRange.split('-')[0].trim();
@@ -93,7 +93,7 @@ export default function NewReservation() {
             // get reserved slots in the slected date and hour in UTC+0
             const reservedSlots = await getReservationsForHour(dateUTC, hourUTC);
 
-            console.log("reserved slots", reservedSlots);
+            // console.log("reserved slots", reservedSlots);
 
             // generate 4 slots in the selected hour and date
             const availableSlots = [...Array(4)].map((_, i) => {
@@ -133,13 +133,16 @@ export default function NewReservation() {
 
     useEffect(() => {
         if (date) {
+            // console.log("there is a date")
             if (date === new Date().toISOString().split('T')[0]) {
                 const timeranges = getAvailableTimeRanges(new Date());
                 setAvailableTimeRanges(timeranges);
                 setTimeRange(timeranges[0]);
                 return;
             }
-            const timeranges = getAvailableTimeRanges(new Date(date));
+
+            const timeranges = getAvailableTimeRanges(moment.tz(date, userTimeZone).toDate());
+            // console.log("time ranges : ",timeranges);
             setAvailableTimeRanges(timeranges);
         } else {
             const timeranges = getAvailableTimeRanges(new Date());

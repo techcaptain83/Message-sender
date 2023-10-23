@@ -47,8 +47,8 @@ export const convertToUserTimezone = (startsAt: Date, endsAt: Date): { startsAt:
 export const convertDateAndHourToUTC = (date: string, hour: string): {
    date: string, hour: string
 } => {
-   console.log("date and hour passed to the function : ");
-   console.log(date, hour);
+   // console.log("date and hour passed to the function : ");
+   // console.log(date, hour);
    const offsetHours = new Date().getTimezoneOffset() / 60;
    const hoursWithOffset = parseInt(hour) + offsetHours;
 
@@ -62,8 +62,8 @@ export const convertDateAndHourToUTC = (date: string, hour: string): {
 
       // hours in the previous day in UTC
       const hours = (24 + hoursWithOffset).toString().padStart(2, '0');
-      console.log("date and hour returned from the function : ");
-      console.log(formattedDate, hours);
+      // console.log("date and hour returned from the function : ");
+      // console.log(formattedDate, hours);
 
       return {
          date: formattedDate,
@@ -76,15 +76,15 @@ export const convertDateAndHourToUTC = (date: string, hour: string): {
 
       // hours in the next day in UTC time.
       const hours = (hoursWithOffset - 24).toString().padStart(2, '0');
-      console.log("date and hour returned from the function : ");
-      console.log(formattedDate, hours);
+      // console.log("date and hour returned from the function : ");
+      // console.log(formattedDate, hours);
       return {
          date: formattedDate,
          hour: hours
       }
    }
-   console.log("date and hour returned from the function : ");
-   console.log(date, formattedHour);
+   // console.log("date and hour returned from the function : ");
+   // console.log(date, formattedHour);
    return {
       date,
       hour: formattedHour
@@ -102,12 +102,13 @@ export const getAvailableDates = (): Date[] => {
          availableDates.push(date);
       }
    }
+   console.log("available dates : ", availableDates);
    return availableDates;
 }
 
 
 export const getAvailableTimeRanges = (date: Date): string[] => {
-   console.log("input date ", date);
+   // console.log("input date ", date);
 
    const availableTimeRanges: string[] = [];
    for (let i = 0; i < 24; i++) {
