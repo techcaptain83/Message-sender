@@ -30,7 +30,7 @@ export default function Register() {
     email: '',
     password: '',
     country: 'United Kingdom',
-    phone: '',
+    // phone: '',
     referredBy: ''
   });
 
@@ -153,7 +153,7 @@ export default function Register() {
             autoComplete="email"
             required
           />
-          <TextField
+          {/* <TextField
             className="col-span-full"
             label="Phone number"
             id="phone"
@@ -163,7 +163,7 @@ export default function Register() {
             onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
             autoComplete="tel"
             required
-          />
+          /> */}
           <TextField
             className="col-span-full"
             label="Password"

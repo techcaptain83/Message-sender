@@ -28,12 +28,13 @@ export function TextField({
   id,
   label,
   type = 'text',
+  required = false,
   className = '',
   ...props
 }: TextFieldProps) {
   return (
     <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
+      {label && <Label id={id}>{label} {required && "*"}</Label>}
       <input id={id} type={type} {...props} className={formClasses} />
     </div>
   )
@@ -46,11 +47,11 @@ interface TextAreaFieldProps extends React.TextareaHTMLAttributes<HTMLTextAreaEl
 }
 
 export function TextAreaField({
-  id, label, className = '', ...props }: TextAreaFieldProps
+  id, label, className = '', required, ...props }: TextAreaFieldProps
 ) {
   return (
     <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
+      {label && <Label id={id}>{label} {required && "*"}</Label>}
       <textarea
         id={id}
         {...props}
@@ -67,11 +68,11 @@ interface SelectFieldProps extends React.SelectHTMLAttributes<HTMLSelectElement>
 }
 
 export function SelectField({
-  id, label, className = '', ...props }: SelectFieldProps
+  id, label, className = '', required, ...props }: SelectFieldProps
 ) {
   return (
     <div className={className}>
-      {label && <Label id={id}>{label}</Label>}
+      {label && <Label id={id}>{label} {required && "*"}</Label>}
       <select id={id} {...props} className={clsx(formClasses, 'pr-8')} />
     </div>
   )
