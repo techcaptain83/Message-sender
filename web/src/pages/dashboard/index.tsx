@@ -1,7 +1,7 @@
 import { selectedFileState } from '@/atoms'
 import EmptyState from '@/components/EmptyState'
 import Controls from '@/components/home/controls'
-import MesssageInput from '@/components/home/messsageInput'
+import MesssageInput from '@/components/home/messageInput'
 import { Sidebar } from '@/components/home/sidebar'
 import UsersTable from '@/components/home/usersTable'
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'

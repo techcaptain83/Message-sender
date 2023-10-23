@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { selectedFileState } from '@/atoms';
 import { IFile } from '@/types'
 import { DocumentTextIcon } from '@heroicons/react/20/solid'
@@ -16,7 +17,7 @@ export const Sidebar = ({ files }: IProps) => {
     if (!selectedFile && files.length > 0) {
       setSelectedFile(files[0])
     }
-  }, [selectedFile])
+  }, [selectedFile]);
 
   return (
     <div className='h-full shadow w-[28vw] pt-4 px-4 '>
