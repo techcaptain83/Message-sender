@@ -59,15 +59,15 @@ export default function Register() {
         toast.success("successfully registered");
         updateUser(data.user);
 
-        if (!plan || typeof plan !== "string" || plan === 'free' || ['pro', "enterprise"].indexOf(plan) == -1) {
+        if (!plan || typeof plan !== "string" || plan === 'free' || ['premium', "enterprise"].indexOf(plan) == -1) {
           router.push('/dashboard');
           return;
         }
-        else if (["pro", "enterprise"].indexOf(plan) !== -1 || yearly) {
+        else if (["premium", "enterprise"].indexOf(plan) !== -1 || yearly) {
           if (yearly) {
             setPlan("yearlyEnterprise");
           } else {
-            setPlan(plan as "pro" | "enterprise");
+            setPlan(plan as "premium" | "enterprise");
           }
           setShowSuccess(true);
           setShowUpgrade(true);

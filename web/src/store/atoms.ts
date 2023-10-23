@@ -146,7 +146,7 @@ export const showNoApiModalAtom = atom({
 });
 
 
-export const selectedPlanAtom = atom<"pro" | "enterprise" | "yearlyEnterprise" | null>({
+export const selectedPlanAtom = atom<"premium" | "enterprise" | "yearlyEnterprise" | null>({
     key: "selectedPlan",
     default: null
 });

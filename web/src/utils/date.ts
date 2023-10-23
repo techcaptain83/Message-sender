@@ -102,7 +102,7 @@ export const getAvailableDates = (): Date[] => {
          availableDates.push(date);
       }
    }
-   console.log("available dates : ", availableDates);
+   // console.log("available dates : ", availableDates);
    return availableDates;
 }
 

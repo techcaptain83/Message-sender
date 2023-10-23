@@ -116,12 +116,12 @@ export default function UpgradeAccount() {
                 <Button
                     color='blue'
                     className='rounded-md w-full'
-                    onClick={() => handlePayment(selectedPlan)}
+                    onClick={() => handlePayment(selectedPlan === "premium" ? "pro" : selectedPlan)}
                 >
                     {
                         (yearlyEnterpriseLoading || proLoading || enterpriseLoading) ? <Loader /> :
                             <>
-                                {selectedPlan === "pro" ?
+                                {selectedPlan === "premium" ?
                                     <span>Buy Shared premium (${PREMIUM_PRICE})</span> : selectedPlan === "enterprise" ?
                                         <span>Buy enterprise (${ENTERPRISE_PRICE})</span> :
                                         <span>

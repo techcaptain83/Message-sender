@@ -244,7 +244,6 @@ export default function NewReservation() {
                                                     const newSelectedSlots = selectedSlots.filter(selectedSlot => {
                                                         return !checkSlotsEquality(selectedSlot, slot);
                                                     });
-                                                    console.log(newSelectedSlots);
                                                     setSelectedSlots(newSelectedSlots);
                                                     return;
                                                 }
