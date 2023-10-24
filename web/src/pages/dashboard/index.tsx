@@ -3,7 +3,7 @@ import EmptyState from '@/components/EmptyState'
 import Controls from '@/components/home/controls'
 import MesssageInput from '@/components/home/messageInput'
 import { Sidebar } from '@/components/home/sidebar'
-import UsersTable from '@/components/home/usersTable'
+import ContactsTable from '@/components/home/contactsTable'
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
 import useFiles from '@/hooks/useFiles'
 import Head from 'next/head'
@@ -37,7 +37,7 @@ export default function Index() {
             </Head>
             <div className='w-full h-[91vh]  flex justify-between'>
                 <div className='w-full h-full justify-between flex flex-col'>
-                    {selectedFile ? <UsersTable /> :
+                    {selectedFile ? <ContactsTable /> :
                         <div className='w-full h-full flex items-center justify-center'>
                             <EmptyState title='no file selected' description='please select a file on right side or upload one.' />
                         </div>
