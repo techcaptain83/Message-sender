@@ -12,7 +12,7 @@ export default function Navbar() {
     const [_, setShowUpgradeModal] = useRecoilState(showUpgradeToPremiumState);
 
     return (
-        <div className='w-full fixed top-0  left-0  py-4 bg-gray-50/75 flex justify-between items-center  shadow px-8 h-[6.5vh]'>
+        <div className='w-full fixed top-0  left-0  py-4 bg-gray-50 flex justify-between items-center  shadow px-8 h-[6.5vh]'>
             <div className='flex items-center gap-3'>
                 <Link href={'/dashboard'}>
                     <Logo className="h-10" />
