@@ -1,9 +1,9 @@
 import { selectedFileState } from '@/atoms'
 import EmptyState from '@/components/EmptyState'
+import ContactsTable from '@/components/home/contactsTable'
 import Controls from '@/components/home/controls'
 import MesssageInput from '@/components/home/messageInput'
 import { Sidebar } from '@/components/home/sidebar'
-import ContactsTable from '@/components/home/contactsTable'
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
 import useFiles from '@/hooks/useFiles'
 import Head from 'next/head'
@@ -14,7 +14,7 @@ import { useRecoilValue } from 'recoil'
 
 
 export default function Index() {
-    const { isFetching, files, error, getFileData } = useFiles();
+    const { files } = useFiles();
 
 
     useEffect(() => {
@@ -35,14 +35,14 @@ export default function Index() {
             <Head>
                 <title>Your dashboard - Chatmaid</title>
             </Head>
-            <div className='w-full h-[91vh]  flex justify-between'>
+            <div className='w-full h-[93.5vh]  flex justify-between'>
                 <div className='w-full h-full justify-between flex flex-col'>
                     {selectedFile ? <ContactsTable /> :
                         <div className='w-full h-full flex items-center justify-center'>
                             <EmptyState title='no file selected' description='please select a file on right side or upload one.' />
                         </div>
                     }
-                    {selectedFile && <div className='w-full shadow-md  h-[24vh] px-6 bg-gray-50'>
+                    {selectedFile && <div className='w-full shadow-md  h-[18vh] px-6 bg-gray-50'>
                         <Controls />
                         <MesssageInput />
                     </div>}

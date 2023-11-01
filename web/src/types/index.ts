@@ -34,6 +34,7 @@ export interface IUser {
     lastName: string;
     phoneNumber: string;
     displayName: string;
+    displayText?: string;
     countryCode: string;
 }
 export interface IAuthUser {

@@ -14,6 +14,7 @@ import { useRecoilState, useRecoilValue } from 'recoil';
 import useAuth from './useAuth';
 import useReservations from './useReservations';
 import useWhatsappAPI from './useWhatsappApi';
+import { pageUsersState } from '@/store/contactsTableStates';
 
 export default function useContacts() {
     const selectedFile = useRecoilValue(selectedFileState);
@@ -30,7 +31,7 @@ export default function useContacts() {
     const [filter, setFilter] = useState('');
     const [filteredUsers, setFilteredUsers] = useState<IUser[]>([])
     const [checked, setChecked] = useState(false);
-    const [pageUsers, setPageUsers] = useState<IUser[]>([]);
+    const [pageUsers, setPageUsers] = useRecoilState(pageUsersState);
     const [currentPage, setCurrentPage] = useState(0);
     const pageStart = currentPage * rowsPerPage;
     const pageEnd = pageStart + rowsPerPage;
@@ -46,13 +47,10 @@ export default function useContacts() {
     };
 
     useEffect(() => {
-        if (filteredUsers.length > 0) {
-            const totalPages = Math.ceil(users.length / rowsPerPage);
-            setTotalPages(totalPages);
-            setPageUsers(filteredUsers.slice(pageStart, pageEnd));
-        } else {
-            setPageUsers([]);
-        }
+        const totalPages = Math.ceil(filteredUsers.length / rowsPerPage);
+        setTotalPages(totalPages);
+        setPageUsers(filteredUsers.slice(pageStart, pageEnd));
+
     }, [filteredUsers, currentPage, rowsPerPage]);
 
     const getFileData = async (fileId: string) => {
@@ -93,6 +91,7 @@ export default function useContacts() {
 
     useEffect(() => {
         if (filter === '') return setFilteredUsers(users);
+
         const filteredUsers = users.filter(user => {
             const { firstName, lastName, displayName, phoneNumber, id, countryCode } = user;
             const searchTerm = filter.toLowerCase();
@@ -106,6 +105,7 @@ export default function useContacts() {
                 ("+").concat(countryCode).toLowerCase().includes(searchTerm)
             );
         });
+        // console.log("filtred users : ", filteredUsers);
         setFilteredUsers(filteredUsers)
 
     }, [filter]);
@@ -147,6 +147,8 @@ export default function useContacts() {
             return () => clearInterval(interval);
         }
     }, [activeReservation, user]);
+
+
 
     return {
         filter,

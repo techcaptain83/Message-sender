@@ -10,7 +10,7 @@ export default function UserDashboardLayout({ children }: { children: React.Reac
                     <Navbar />
                     <div className=" flex w-full ">
                         <UserSidebar />
-                        <div className='w-[85vw]  mt-[11vh] ml-[15vw]'>
+                        <div className='w-[88vw]  mt-[8vh] ml-[12vw]'>
                             {children}
                         </div>
                     </div>

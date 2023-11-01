@@ -20,9 +20,9 @@ export const Sidebar = ({ files }: IProps) => {
   }, [selectedFile]);
 
   return (
-    <div className='h-full shadow w-[28vw] pt-4 px-4 '>
+    <div className='h-full shadow w-[14vw] pt-4'>
       <div className='p-2 space-y-4'>
-        <h2 className='text-lg text-gray-600'>
+        <h2 className='text-gray-600'>
           Recently uploaded files
         </h2>
         {files.length > 0 ? <div className='flex flex-col gap-5'>
@@ -31,12 +31,12 @@ export const Sidebar = ({ files }: IProps) => {
               <div
                 role='button'
                 onClick={() => setSelectedFile(file)}
-                key={index} className={`flex gap-2 hover:bg-gray-100 items-start ${selectedFile?._id === file._id && "bg-gray-100"}`}>
-                <DocumentTextIcon width={40} className='text-gray-500 shrink-0' />
+                key={index} className={`flex hover:bg-gray-100 items-start ${selectedFile?._id === file._id && "bg-gray-100"}`}>
+                <DocumentTextIcon width={30} className='text-gray-500 shrink-0 m-2' />
                 <div className=''>
-                  <p className='text-base'>{file?.filename}</p>
-                  <p className='text-gray-500 text-xs md:text-sm'><span>uploaded at : {new Date(file?.createdAt).toLocaleString()}</span>
-                    {/* <span className='px-1'>.</span> <span>12 people</span> */}
+                  <p className='text-sm'>{file?.filename}</p>
+                  <p className='text-gray-500 text-sm '>
+                    uploaded at : {new Date(file?.createdAt).toLocaleString()}
                   </p>
                 </div>
               </div>

@@ -24,19 +24,19 @@ export default function UserSidebar() {
     const [_, setShowModal] = useRecoilState(showPurchaseMinutesModalAtom);
 
     return (
-        <div className='w-[15vw] h-[91vh] fixed  shadow top-[9vh] left-0 p-2 pt-4 border-r border-gray-200 flex flex-col justify-between'>
+        <div className='w-[12vw] h-[95vh] fixed  shadow top-[6.5vh] left-0 p-2 pt-4 border-r border-gray-200 flex flex-col justify-between'>
             <ul>
                 {links.map((link, index) => (
                     <li key={index}>
                         <Link
                             href={link.href}
-                            className={`block py-2.5 px-4 rounded transition duration-200 ${router.pathname == link.href ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-gray-200'}`}>
+                            className={`block py-2.5 text-sm px-4 rounded transition duration-200 ${router.pathname == link.href ? 'bg-blue-500 text-white' : 'text-gray-500 hover:bg-gray-200'}`}>
                             {link.label}
                         </Link>
                     </li>
                 ))}
                 {
-                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6'
+                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6 text-xs'
                         href='/dashboard/reservations/new'
                     >
                         <span>Reserve a slot</span>
@@ -44,7 +44,7 @@ export default function UserSidebar() {
                     </Button>
                 }
                 {
-                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6'
+                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6 text-xs'
                         onClick={() => setShowModal(true)}
                     >
                         <span>get more minutes</span>
@@ -54,7 +54,7 @@ export default function UserSidebar() {
             </ul>
             <Button variant='solid'
                 onClick={logout}
-                className='rounded-md space-x-2 mb-12 opacity-75 lg:text-base text-xs'>
+                className='rounded-md space-x-2 mb-12 opacity-75 text-xs'>
                 {loading ? <Loader /> : <>
                     <span>Logout</span>
                     <ArrowRightOnRectangleIcon width={20} />
