@@ -4,7 +4,7 @@ import { IUser } from '@/types'
 import React, { useEffect, useState } from 'react'
 import { useRecoilState } from 'recoil'
 
-const UserCard = ({ id, displayName, firstName, lastName, phoneNumber, countryCode }: IUser) => {
+const UserCard = ({ id, displayName, displayText, firstName, lastName, phoneNumber, countryCode }: IUser) => {
     const [selectedUsers, setSelectedUsers] = useRecoilState(selectedUsersState);
     const [checked, setChecked] = useState(false);
 
@@ -43,6 +43,7 @@ const UserCard = ({ id, displayName, firstName, lastName, phoneNumber, countryCo
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{displayName}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500 font-medium pl-6">+{countryCode}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{phoneNumber}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{displayText ? displayText : "none"}</td>
         </tr>
     )
 }

@@ -28,6 +28,7 @@ export const getUsersFromFileContent = (fileContent: string): Promise<IUser[]> =
                 displayName: row.displayName,
                 phoneNumber: row.phoneNumber,
                 countryCode: row.countryCode,
+                displayText: row.displayText,
             };
 
             users.push(user);

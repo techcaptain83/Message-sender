@@ -71,14 +71,19 @@ export default function useContacts() {
                     setUsers(filteredUsers);
                     setFilteredUsers(filteredUsers)
                     setActiveUsers(filteredUsers);
+                    setTimeout(() => {
+                        setGettingFileData(false);
+                    }, 500);
                 };
                 fileReader.readAsText(decodedData);
+            } else {
+                toast.error("An error occured while fetching file data from server");
+                setGettingFileData(false);
             }
         } catch (error) {
             console.log("error occured while fetching from backend : ")
             console.log(error);
-        } finally {
-            setGettingFileData(false)
+            setGettingFileData(false);
         }
     }
 
@@ -171,6 +176,7 @@ export default function useContacts() {
         filteredUsers,
         setSelectedUsers,
         searchForActiveReservation,
-        setActiveReservation
+        setActiveReservation,
+        gettingFileData
     }
 }

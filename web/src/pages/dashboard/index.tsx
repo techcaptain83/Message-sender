@@ -5,6 +5,8 @@ import Controls from '@/components/home/controls'
 import MesssageInput from '@/components/home/messageInput'
 import { Sidebar } from '@/components/home/sidebar'
 import UserDashboardLayout from '@/components/layouts/UserDashboardLayout'
+import LoadingState from '@/components/states/LoadingState'
+import useContacts from '@/hooks/useContacts'
 import useFiles from '@/hooks/useFiles'
 import Head from 'next/head'
 import { useEffect } from 'react'
@@ -15,7 +17,7 @@ import { useRecoilValue } from 'recoil'
 
 export default function Index() {
     const { files } = useFiles();
-
+    const { gettingFileData } = useContacts();
 
     useEffect(() => {
         const hasUsedApp = localStorage.getItem('has-used-app')
@@ -29,7 +31,6 @@ export default function Index() {
     }, [])
 
     const selectedFile = useRecoilValue(selectedFileState);
-
     return (
         <UserDashboardLayout>
             <Head>
@@ -37,18 +38,27 @@ export default function Index() {
             </Head>
             <div className='w-full h-[93.5vh]  flex justify-between'>
                 <div className='w-full h-full justify-between flex flex-col'>
-                    {selectedFile ? <ContactsTable /> :
+                    {selectedFile ? <>
+                        {
+                            gettingFileData ?
+                                <div className='px-8 '>
+                                    <LoadingState message='Getting file data ...' minHeight='min-h-[70vh]' />
+                                </div>
+                                :
+                                <ContactsTable />
+                        }
+                    </> :
                         <div className='w-full h-full flex items-center justify-center'>
                             <EmptyState title='no file selected' description='please select a file on right side or upload one.' />
                         </div>
                     }
-                    {selectedFile && <div className='w-full shadow-md  h-[18vh] px-6 bg-gray-50'>
+                    {(selectedFile && !gettingFileData) && <div className='w-full shadow-md  h-[18vh] px-6 bg-gray-50'>
                         <Controls />
                         <MesssageInput />
                     </div>}
                 </div>
                 <Sidebar files={files || []} />
             </div>
-        </UserDashboardLayout>
+        </UserDashboardLayout >
     )
 }  
