@@ -9,7 +9,7 @@ import UserCard from "./userCard";
 
 
 export default function ContactsTable() {
-  const { currentPage, totalPages, rowsPerPage, setRowsPerPage, handlePageChange, allChecked, setAllChecked, setSelectedUsers, checked, setChecked, filteredUsers, gettingFileData } = useContacts();
+  const { currentPage, totalPages, rowsPerPage, setRowsPerPage, handlePageChange, allChecked, setAllChecked, setSelectedUsers, checked, setChecked, filteredUsers } = useContacts();
   const pageUsers = useRecoilValue(pageUsersState);
 
 

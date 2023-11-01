@@ -9,6 +9,7 @@ interface ApiInstance {
 
 interface IContent {
     displayName?: string,
+    displayText?: string,
     body?: string,
     audio?: string,
     image?: string,
@@ -110,7 +111,7 @@ export default function useWhatsappAPI() {
         video?: string,
         caption?: string
     }) => {
-        let url = `${baseUrl + (apiInstance?.instanceId||defaultApiInstance.instanceId)}/messages`;
+        let url = `${baseUrl + (apiInstance?.instanceId || defaultApiInstance.instanceId)}/messages`;
         if (body.body) {
             url += "/chat";
         } else if (body.audio) {
@@ -132,6 +133,7 @@ export default function useWhatsappAPI() {
 
         if (content.body) {
             data.body = content.body.replace(/\[name\]/g, content.displayName || "");
+            data.body = content.body.replace(/\[display_text\]/g, content.displayText || "")
         }
 
         if (content.audio) {

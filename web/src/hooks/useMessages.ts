@@ -42,7 +42,9 @@ export default function useMessages() {
 
             try {
                 const data = await sendMessage(`${contact.countryCode}${contact.phoneNumber}`.trim(), {
-                    displayName: contact.displayName, ...content
+                    displayName: contact.displayName,
+                    displayText: contact.displayText,
+                    ...content
                 });
 
                 console.log("data from send message", data);

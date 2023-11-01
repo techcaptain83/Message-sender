@@ -154,13 +154,18 @@ export const selectedPlanAtom = atom<"premium" | "enterprise" | "yearlyEnterpris
 export const showAddMinutesManuallyAtom = atom<{
     show: boolean,
     userId: string,
-    email:string
+    email: string
 } | null>({
     key: "showAddMinutesManually",
     default: null
 });
 
-export const sendingMessagesAtom=atom({
-    key:"sendingMessages",
-    default:false
+export const sendingMessagesAtom = atom({
+    key: "sendingMessages",
+    default: false
 });
+
+export const messageState = atom<string>({
+    key: "messageState",
+    default: ''
+})

@@ -88,6 +88,7 @@ export default function useContacts() {
     }
 
     useEffect(() => {
+        if (!selectedFile) return;
         const getFileContent = async () => {
             await getFileData(selectedFile!._id);
         }

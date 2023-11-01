@@ -1,7 +1,7 @@
 import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import useMedia from '@/hooks/useMedia';
 import useMessages from '@/hooks/useMessages';
-import { sendingMessagesAtom } from '@/store/atoms';
+import { messageState, sendingMessagesAtom } from '@/store/atoms';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -11,11 +11,11 @@ export default function MesssageInput() {
     const selectedUsers = useRecoilValue(selectedUsersState);
     const { uploadMedia, uploadingAudio, uploadingImage, uploadingVideo } = useMedia();
     const { sendBulkMessages } = useMessages();
-    const [value, setValue] = useState('');
+    const [message, setMessage] = useRecoilState(messageState);
     const [showUploadMedia, setShowUploadMedia] = useState(false);
     const [uploadedFile, setUploadedFile] = useRecoilState(uploadedFileState);
     const [showScanCode, setShowScanCode] = useRecoilState(showScanCodeState);
-    const [phoneConnected, setPhoneConnected] = useRecoilState(phoneConnectedState);
+    const phoneConnected = useRecoilValue(phoneConnectedState);
     const uploadMediaRef = useRef<HTMLDivElement>(null);
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
     const sendingMessages = useRecoilValue(sendingMessagesAtom);
@@ -35,28 +35,28 @@ export default function MesssageInput() {
 
         else if (!uploadedFile) {
             sendBulkMessages(selectedUsers, {
-                body: value
+                body: message
             });
-            setValue('');
+            setMessage(''); 
         } else if (uploadedFile.type.includes('image')) {
             sendBulkMessages(selectedUsers, {
                 image: uploadedFile?.fileUrl,
-                caption: value.trim().length > 0 ? value : undefined
+                caption: message.trim().length > 0 ? message : undefined
             });
-            setValue('');
+            setMessage('');
             setUploadedFile(null);
         } else if (uploadedFile.type.includes('video')) {
             sendBulkMessages(selectedUsers, {
                 video: uploadedFile?.fileUrl,
-                caption: value.trim().length > 0 ? value : undefined
+                caption: message.trim().length > 0 ? message : undefined
             })
-            setValue("");
+            setMessage("");
             setUploadedFile(null);
         } else if (uploadedFile.type.includes('audio')) {
             sendBulkMessages(selectedUsers, {
                 audio: uploadedFile?.fileUrl
             });
-            setValue("");
+            setMessage("");
             setUploadedFile(null);
         }
     }
@@ -141,26 +141,26 @@ export default function MesssageInput() {
                     </div>
                     {(uploadedFile.type.includes('image') || uploadedFile.type.includes('video')) &&
                         <textarea
-                            value={value}
-                            onChange={(e) => setValue(e.target.value)}
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
                             placeholder='Add Caption'
                             className=' w-full text-sm h-full bg-gray-50/75 border rounded px-4 py-2 outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100'
                         />}
                 </div> :
                 <textarea
-                    value={value}
-                    onChange={(e) => setValue(e.target.value)}
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
                     placeholder="Type a message"
                     className=' w-full text-sm h-full bg-gray-50/75 rounded px-4 py-2 outline-none focus:ring-1 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-100'
                 />}
             <button
-                disabled={(value.trim() === '' || sendingMessages) && !uploadedFile}
+                disabled={(message.trim() === '' || sendingMessages) && !uploadedFile}
                 className=' h-full p-2 bg-gray-50/75'>
                 {sendingMessages ?
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-600" >
                     </div> :
                     <PaperAirplaneIcon width={30} className={`text-gray-400
-                ${(value.trim() === '' && !uploadedFile) ? "hover:cursor-not-allowed" : "hover:text-gray-600"} `} onClick={handleSubmit} />}
+                ${(message.trim() === '' && !uploadedFile) ? "hover:cursor-not-allowed" : "hover:text-gray-600"} `} onClick={handleSubmit} />}
             </button>
         </div>
     )

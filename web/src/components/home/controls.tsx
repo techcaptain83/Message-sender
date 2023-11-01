@@ -5,11 +5,13 @@ import { BiImport } from 'react-icons/bi';
 import { FaFilter } from 'react-icons/fa';
 import { useRecoilState } from "recoil";
 import Loader from "../Loader";
+import { messageState } from "@/store/atoms";
 
 export default function Controls() {
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const { downloadingFile, downloadFile } = useFiles();
-    
+    const [message, setMessage] = useRecoilState(messageState);
+
     return (
         <div className="flex items-center w-full py-2 lg:py-4 justify-between lg:text-sm text-[9px]">
             <div className="flex flex-row gap-3">
@@ -32,6 +34,16 @@ export default function Controls() {
                             <p className='font-bold'>Export File</p>
                         </>
                     }
+                </button>
+                <button
+                    onClick={() => setMessage(message + '[name]')}
+                    className="px-4 py-2 text-white bg-green-500 rounded-md">
+                    <p className='font-bold'>Insert Display Name</p>
+                </button>
+                <button
+                    onClick={() => setMessage(message + '[display_text]')}
+                    className="px-4 py-2 text-white bg-green-500 rounded-md">
+                    <p className='font-bold'>Insert Display Text</p>
                 </button>
             </div>
             <div className="flex flex-row gap-4 items-center">
