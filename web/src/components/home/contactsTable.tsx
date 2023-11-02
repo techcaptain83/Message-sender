@@ -5,7 +5,7 @@ import { IUser } from "@/types";
 import { useRecoilValue } from "recoil";
 import Pagination from "../pagination";
 import ContactsTableHeader from "./contactsTableHeader";
-import UserCard from "./userCard";
+import ContactCard from "./contactCard";
 
 
 export default function ContactsTable() {
@@ -59,7 +59,7 @@ export default function ContactsTable() {
                       </div>
                     </div>
                     <tr>
-                      <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
+                      <th scope="col" className="py-3.5 pl-4 text-left text-sm font-semibold text-gray-900 sm:pl-3 flex gap-2">
                         <span>ID</span>
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
@@ -78,13 +78,13 @@ export default function ContactsTable() {
                         Phone Number
                       </th>
                       <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                        Display Test
+                        Display Text
                       </th>
                     </tr>
                   </thead>
                   <tbody className="bg-white">
                     {pageUsers.length > 0 && pageUsers.map((person: IUser) => (
-                      <UserCard key={person.id} {...person} />
+                      <ContactCard key={person.id} {...person} />
                     ))}
                   </tbody>
                 </table>
