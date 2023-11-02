@@ -90,11 +90,10 @@ export default function useReservations() {
 
     const createMultipleReservations = async (reservations: { startsAt: string, endsAt: string }[], minutes: number) => {
         setCreatingMultipleReservations(true);
+
+        console.log("reservations passed to the function : ", reservations);
         try {
-            // const testReservation = {
-            //     startsAt: "2023-10-05T01:45:00.000+00:00",
-            //     endsAt: "2023-10-05T01:59:59.999+00:00"
-            // }
+
             // find duplicates
             const duplicates = reservations.filter((reservation, index) => {
                 const firstIndex = reservations.findIndex(res => res.startsAt === reservation.startsAt && res.endsAt === reservation.endsAt);
@@ -104,6 +103,7 @@ export default function useReservations() {
                 toast.error("you can't create duplicate reservations!");
                 return;
             }
+
 
             const { data } = await axios.post('/reservations/multiple', {
                 reservations,
