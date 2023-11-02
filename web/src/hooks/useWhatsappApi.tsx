@@ -104,6 +104,33 @@ export default function useWhatsappAPI() {
         }
     }
 
+    const clearQueue = async () => {
+        let url = `${baseUrl + (apiInstance?.instanceId || defaultApiInstance.instanceId)}/messages/clear`;
+
+        let params = JSON.stringify({
+            "token": apiInstance?.token || defaultApiInstance.token,
+            "status": "queue"
+        })
+
+        let config = {
+            method: 'post',
+            url: url,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            data: params
+        };
+
+        try {
+
+            const response = await axios(config);
+            
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     const generateUrl = (body: {
         body?: string,
         audio?: string,
@@ -176,6 +203,7 @@ export default function useWhatsappAPI() {
         getQRCode,
         checkPhoneConnection,
         generateUrl,
-        sendMessage
+        sendMessage,
+        clearQueue
     }
 }

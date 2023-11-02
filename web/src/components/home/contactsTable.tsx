@@ -4,8 +4,8 @@ import { pageUsersState } from "@/store/contactsTableStates";
 import { IUser } from "@/types";
 import { useRecoilValue } from "recoil";
 import Pagination from "../pagination";
-import ContactsTableHeader from "./contactsTableHeader";
 import ContactCard from "./contactCard";
+import ContactsTableHeader from "./contactsTableHeader";
 
 
 export default function ContactsTable() {

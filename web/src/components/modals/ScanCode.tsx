@@ -22,7 +22,7 @@ export default function ScanCode() {
         setLoadingCode(true);
         try {
             const data = await getQRCode();
-            console.log("data from getting qrcode : ", data);
+            // console.log("data from getting qrcode : ", data);
             if (data?.qrCode) {
                 setQrcode(data.qrCode);
                 setLoadingCode(false);

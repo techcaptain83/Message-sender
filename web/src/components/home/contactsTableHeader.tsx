@@ -5,6 +5,7 @@ import React from 'react'
 import { useRecoilState } from 'recoil';
 import Loader from '../Loader';
 import useAuth from '@/hooks/useAuth';
+import useWhatsappAPI from '@/hooks/useWhatsappApi';
 
 export default function ContactsTableHeader() {
     const { filter, setFilter, phoneConnected, activeReservation, searchingActiveReservation, logout, loggingOut, setActiveReservation, searchForActiveReservation } = useContacts();
@@ -13,6 +14,8 @@ export default function ContactsTableHeader() {
     const [_ss, setShowNoReservation] = useRecoilState(showNoReservationModalAtom);
     const [__, setShowNoApi] = useRecoilState(showNoApiModalAtom);
     const { user } = useAuth();
+    const { clearQueue } = useWhatsappAPI();
+
 
     return (
         <div className="sm:flex sm:items-center justify-between">
@@ -45,8 +48,15 @@ export default function ContactsTableHeader() {
                                 } else {
                                     const reservation = await searchForActiveReservation();
                                     if (reservation) {
-                                        setShowScanCode(true);
-                                        setActiveReservation(reservation);
+                                        const data = await clearQueue();
+                                        if (data.success === "done") {
+                                            setShowScanCode(true);
+                                            setActiveReservation(reservation);
+                                        } else {
+                                            await clearQueue();
+                                            setShowScanCode(true);
+                                            setActiveReservation(reservation);
+                                        }
                                     } else {
                                         setShowNoReservation(true);
                                     }
