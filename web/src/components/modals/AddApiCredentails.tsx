@@ -43,8 +43,8 @@ export default function AddApiCredentials() {
                 <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
                     <CodeBracketIcon className="h-6 w-6 text-blue-600" aria-hidden="true" />
                 </div>
-                <p className='font-medium text-lg text-gray-600 w-full'>Add Api credentials to <span>{showModal.user?.email} </span></p>
-                <p>you can obtain those credentials from ultramsg.com by creating an instance.</p>
+                <p className='font-medium text-lg text-center text-gray-600 w-full'>Add Api credentials to <span>{showModal.user?.email} </span></p>
+                <p className='text-center'>you can obtain those credentials from ultramsg.com by creating an instance.</p>
             </div>
             <form
                 onSubmit={(e) => handleSubmit(e)}

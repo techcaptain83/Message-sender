@@ -1,5 +1,5 @@
 import { Dialog, Transition } from '@headlessui/react'
-import { Fragment, useRef } from 'react'
+import { ElementRef, Fragment, useRef } from 'react'
 
 interface ModalLayoutProps {
   children: React.ReactNode,
@@ -11,7 +11,7 @@ interface ModalLayoutProps {
 export default function ModalLayout({ children, open, setOpen, large }: ModalLayoutProps) {
 
 
-  const cancelButtonRef = useRef(null)
+  const cancelButtonRef = useRef<ElementRef<"div">>(null)
 
   return (
     <Transition.Root show={open} as={Fragment}>
@@ -19,7 +19,7 @@ export default function ModalLayout({ children, open, setOpen, large }: ModalLay
         as="div"
         className="relative z-50"
         initialFocus={cancelButtonRef}
-        onClose={() => setOpen(false)}
+        onClose={setOpen}
       >
         <Transition.Child
           as={Fragment}
