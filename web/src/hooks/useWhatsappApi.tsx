@@ -124,7 +124,7 @@ export default function useWhatsappAPI() {
         try {
 
             const response = await axios(config);
-            
+
             return response.data;
         } catch (error) {
             console.log(error);
@@ -159,8 +159,10 @@ export default function useWhatsappAPI() {
         };
 
         if (content.body) {
+            // replace [name] with displayName and [display_text] with displayText
             data.body = content.body.replace(/\[name\]/g, content.displayName || "");
-            data.body = content.body.replace(/\[display_text\]/g, content.displayText || "")
+            data.body = data.body.replace(/\[display_text\]/g, content.displayText || "");
+            
         }
 
         if (content.audio) {
