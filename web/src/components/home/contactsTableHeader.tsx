@@ -49,7 +49,7 @@ export default function ContactsTableHeader() {
                                     const reservation = await searchForActiveReservation();
                                     if (reservation) {
                                         const data = await clearQueue();
-                                        if (data.success === "done") {
+                                        if (data?.success === "done") {
                                             setShowScanCode(true);
                                             setActiveReservation(reservation);
                                         } else {

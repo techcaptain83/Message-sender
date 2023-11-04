@@ -8,7 +8,7 @@ import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import useSWR from "swr";
 import useAuth from "./useAuth";
-import { sendingMessagesAtom } from "@/store/atoms";
+import { registeringLogsState } from "@/store/atoms";
 
 
 export default function useLogs() {
@@ -16,7 +16,7 @@ export default function useLogs() {
     const [_showDeleteLog, setShowdeleteLog] = useRecoilState(showDeleteLogState);
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
     const [_, setSelectedFile] = useRecoilState(selectedFileState);
-    const [_sending, setSendingMessages] = useRecoilState(sendingMessagesAtom);
+    const [_r, setRegisteringLogs] = useRecoilState(registeringLogsState);
 
     const localstorageUser = typeof localStorage !== "undefined" ? JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser : {} as IAuthUser;
     const [deletingLog, setDeletingLog] = useState(false);
@@ -33,15 +33,20 @@ export default function useLogs() {
     });
 
     const createLog = async (log: Omit<ILog, "createdAt">) => {
-        setSendingMessages(false);
+        setRegisteringLogs(true);
         try {
-            const { data } = await axios.post(`/logs?user=${user?._id ? user._id : localstorageUser._id}`, log);
+            const { data } = await axios.post(`/logs?user=${user?._id ? user._id : localstorageUser._id}`, {
+                ...log
+            });
             if (data.message === "success") {
                 mutate();
             }
         } catch (error) {
             console.log("error occured while creating log");
             console.log(error);
+        }
+        finally {
+            setRegisteringLogs(false);
         }
     }
 

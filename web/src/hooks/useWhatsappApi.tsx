@@ -1,6 +1,8 @@
+import { sendingMessagesAtom } from "@/store/atoms";
 import useAuth from "./useAuth";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
 
 interface ApiInstance {
     instanceId: string;
@@ -25,7 +27,6 @@ const baseUrl = "https://api.ultramsg.com/"
 export default function useWhatsappAPI() {
     const { user } = useAuth();
     const [apiInstance, setApiInstance] = useState<ApiInstance | null>(user?.api || null);
-
 
     useEffect(() => {
         if (!user) {
@@ -101,6 +102,7 @@ export default function useWhatsappAPI() {
             return response.data;
         } catch (error) {
             console.log(error);
+            return error;
         }
     }
 
@@ -122,12 +124,11 @@ export default function useWhatsappAPI() {
         };
 
         try {
-
             const response = await axios(config);
-
             return response.data;
         } catch (error) {
             console.log(error);
+            return error;
         }
     }
 
@@ -159,10 +160,9 @@ export default function useWhatsappAPI() {
         };
 
         if (content.body) {
-            // replace [name] with displayName and [display_text] with displayText
             data.body = content.body.replace(/\[name\]/g, content.displayName || "");
             data.body = data.body.replace(/\[display_text\]/g, content.displayText || "");
-            
+
         }
 
         if (content.audio) {
@@ -196,6 +196,7 @@ export default function useWhatsappAPI() {
             return response.data;
         } catch (error) {
             console.log(error);
+            return error;
         }
     }
 

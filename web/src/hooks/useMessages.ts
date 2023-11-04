@@ -16,7 +16,7 @@ interface IContent {
 
 export default function useMessages() {
 
-    const [sendingMessages, setSendingMessages] = useRecoilState(sendingMessagesAtom);
+    const [_, setSendingMessages] = useRecoilState(sendingMessagesAtom);
     const selectedFile = useRecoilValue(selectedFileState);
     const { createLog } = useLogs();
     const { sendMessage } = useWhatsappAPI();
@@ -47,10 +47,8 @@ export default function useMessages() {
                     ...content
                 });
 
-                console.log("data from send message", data);
 
-                if (data.message === "ok") {
-                    // toast.success("Message sent successfully to number : " + contact.phoneNumber);
+                if (data?.message === "ok") {
                     sentCount++;
 
                     logContacts.push({
@@ -60,7 +58,6 @@ export default function useMessages() {
                         sent: true,
                     });
                 } else {
-                    // toast.error("failed to send message to number : " + contact.phoneNumber);
                     failedCount++;
                     logContacts.push({
                         firstName: contact.firstName,
@@ -69,8 +66,16 @@ export default function useMessages() {
                         sent: false,
                     });
                 }
+                if (index === contacts.length - 1) {
+                    setSendingMessages(false);
+                    await createLog({
+                        filename: selectedFile!.filename,
+                        sentCount,
+                        failedCount,
+                        contacts: logContacts,
+                    });
+                }
             } catch (error) {
-                // toast.error("failed to send message to number : " + contact.phoneNumber);
                 failedCount++;
                 logContacts.push({
                     firstName: contact.firstName,
@@ -78,8 +83,8 @@ export default function useMessages() {
                     phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                     sent: false,
                 });
-            } finally {
                 if (index === contacts.length - 1) {
+                    setSendingMessages(false);
                     await createLog({
                         filename: selectedFile!.filename,
                         sentCount,

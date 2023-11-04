@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { sendingMessagesAtom, showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { registeringLogsState, sendingMessagesAtom, showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
@@ -17,6 +17,7 @@ import DeleteLog from '../modals/DeleteLog';
 import NoApi from '../modals/NoApi';
 import NoReservation from '../modals/NoReservation';
 import PurchaseMinutes from '../modals/PurchaseMinutes';
+import RegisteringLogs from '../modals/RegisteringLogs';
 import ScanCode from '../modals/ScanCode';
 import SendingMessages from '../modals/SendingMessages';
 import TicketDetails from '../modals/TicketDetails';
@@ -48,6 +49,7 @@ export default function MainLayout({ children }: Props) {
     const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
     const showAddMinutesManually = useRecoilValue(showAddMinutesManuallyAtom);
     const sendingMessages = useRecoilValue(sendingMessagesAtom);
+    const registeringLogs = useRecoilValue(registeringLogsState);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
@@ -82,6 +84,7 @@ export default function MainLayout({ children }: Props) {
                             {showPurchaseMinutes && <PurchaseMinutes />}
                             {showAddMinutesManually?.show && <AddMinutesManually />}
                             {sendingMessages && <SendingMessages />}
+                            {registeringLogs && <RegisteringLogs />}
                         </>
                     }
                 </main>

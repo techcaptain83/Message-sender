@@ -168,4 +168,10 @@ export const sendingMessagesAtom = atom({
 export const messageState = atom<string>({
     key: "messageState",
     default: ''
-})
+});
+
+
+export const registeringLogsState = atom<boolean>({
+    key: "registeringLogsState",
+    default: false
+});

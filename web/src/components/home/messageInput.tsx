@@ -1,7 +1,7 @@
 import { phoneConnectedState, selectedUsersState, showScanCodeState, uploadedFileState } from '@/atoms';
 import useMedia from '@/hooks/useMedia';
 import useMessages from '@/hooks/useMessages';
-import { messageState, sendingMessagesAtom } from '@/store/atoms';
+import { messageState, registeringLogsState, sendingMessagesAtom } from '@/store/atoms';
 import { PaperAirplaneIcon, PaperClipIcon, PhotoIcon, SpeakerWaveIcon, VideoCameraIcon, XMarkIcon } from '@heroicons/react/20/solid';
 import { useEffect, useRef, useState } from 'react';
 import { toast } from 'react-hot-toast';
@@ -19,6 +19,7 @@ export default function MesssageInput() {
     const uploadMediaRef = useRef<HTMLDivElement>(null);
     const showUploadMediabuttonRef = useRef<HTMLButtonElement>(null);
     const sendingMessages = useRecoilValue(sendingMessagesAtom);
+    const registeringLogs = useRecoilValue(registeringLogsState);
 
     const handleSubmit = async () => {
         // const connectionData = await checkPhoneConnection();
@@ -37,7 +38,7 @@ export default function MesssageInput() {
             sendBulkMessages(selectedUsers, {
                 body: message
             });
-            setMessage(''); 
+            setMessage('');
         } else if (uploadedFile.type.includes('image')) {
             sendBulkMessages(selectedUsers, {
                 image: uploadedFile?.fileUrl,
@@ -156,7 +157,7 @@ export default function MesssageInput() {
             <button
                 disabled={(message.trim() === '' || sendingMessages) && !uploadedFile}
                 className=' h-full p-2 bg-gray-50/75'>
-                {sendingMessages ?
+                {(sendingMessages || registeringLogs) ?
                     <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-gray-600" >
                     </div> :
                     <PaperAirplaneIcon width={30} className={`text-gray-400
