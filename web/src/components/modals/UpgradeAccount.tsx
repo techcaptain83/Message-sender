@@ -39,8 +39,7 @@ export default function UpgradeAccount() {
         try {
             const { data } = await axios.post('/payment/create-session', {
                 reason: "upgrade",
-                plan: plan === "yearlyEnterprise" ? "enterprise" : plan,
-                amount: plan === "yearlyEnterprise" ? YEARLY_ENTERPRISE_PRICE : undefined,
+                plan: plan,
                 user_id: user?._id ? user._id : localstorageUser._id
             });
 
@@ -110,7 +109,14 @@ export default function UpgradeAccount() {
                     color='blue'
                     className='rounded-md w-full'
                 >
-                    {enterpriseLoading ? <Loader /> : <span>Buy enterprise (${ENTERPRISE_PRICE})</span>}
+                    {enterpriseLoading ? <Loader /> : <span>Buy Monthly enterprise (${ENTERPRISE_PRICE}/month)</span>}
+                </Button>
+                <Button
+                    onClick={() => handlePayment("yearlyEnterprise")}
+                    color='blue'
+                    className='rounded-md w-full'
+                >
+                    {yearlyEnterpriseLoading ? <Loader /> : <span>Buy Yearly enterprise ($999.9/year)</span>}
                 </Button>
             </div> :
                 <Button

@@ -153,17 +153,6 @@ export default function Register() {
             autoComplete="email"
             required
           />
-          {/* <TextField
-            className="col-span-full"
-            label="Phone number"
-            id="phone"
-            name="phone"
-            type="tel"
-            value={formData.phone}
-            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-            autoComplete="tel"
-            required
-          /> */}
           <TextField
             className="col-span-full"
             label="Password"

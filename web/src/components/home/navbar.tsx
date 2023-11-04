@@ -46,7 +46,7 @@ export default function Navbar() {
                             <FaCrown width={20} />
                         </div>}
                 {
-                    user?.plan === "enterprise" &&
+                    (user?.plan === "enterprise" || user?.plan === "yearlyEnterprise") &&
                     <div className='bg-yellow-500 text-white p-2 rounded-md flex items-center gap-2 lg:text-base text-xs' >
                         <span>Enterprise</span>
                         <FaCrown width={20} />

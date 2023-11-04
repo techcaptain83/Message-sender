@@ -17,7 +17,7 @@ export default function Payment() {
     const [pln, setPlan] = useState("");
     const [deposit, setDeposit] = useState<IDeposit | null>(null);
 
-    const { updateUser } = useAuth();
+    const { updateUser, reloadProfile } = useAuth();
 
     useEffect(() => {
         const { success, uid, reason, plan, dep_id } = router.query;
@@ -72,7 +72,7 @@ export default function Payment() {
         setProcessing(true);
         if (success === "false") {
             toast.error("Payment failed or have been cancelled. Please try again later.");
-            router.push("/dashboard");
+            reloadProfile(userId, true);
             return;
         }
 

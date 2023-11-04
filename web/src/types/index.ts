@@ -39,7 +39,7 @@ export interface IUser {
 }
 export interface IAuthUser {
     _id: string;
-    plan: "free" | "pro" | "enterprise"
+    plan: "free" | "pro" | "enterprise" | "yearlyEnterprise"
     isAdmin: boolean;
     firstName: string;
     manual: boolean;

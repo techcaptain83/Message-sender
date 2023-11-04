@@ -15,7 +15,7 @@ interface IAuth {
     signIn: (email: string, serialNumber: string) => Promise<void>
     logout: () => Promise<void>
     loading: boolean
-    reloadProfile: () => Promise<void>
+    reloadProfile: (userId: string, redirect?: boolean) => Promise<void>
 }
 
 
@@ -85,21 +85,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }, []);
 
-    const reloadProfile = async () => {
-        await axios.get('/auth/me').then((res) => {
-            switch (res.status) {
-                case 200:
-                    setUser(res.data.user);
-                    localStorage.setItem(UIDHASH, JSON.stringify(res.data.user));
-                    break;
-                default:
-                    setUser(null)
-                    break;
+    /**
+     * 
+     * @param userId the id of the user
+     * @param redirect whether you want to redirect or not
+     */
+    const reloadProfile = async (userId: string, redirect?: boolean) => {
+        try {
+            const { data } = await axios.get(`/auth/me/${userId}`);
+            if (data.user) {
+                updateUser(data.user);
+                if (redirect) {
+                    router.push("/dashboard");
+                }
             }
-        }).catch(({ response }) => {
-            // console.log("err", response);
-            setUser(null);
-        });
+        } catch (error) {
+            console.log(error);
+            logout();
+        }
     }
 
 
