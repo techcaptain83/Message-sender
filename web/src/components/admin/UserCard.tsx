@@ -38,7 +38,7 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
                     </button>}
                 </div>
             </td>
-            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{plan === "pro" ? "Premium" : plan}</td>
+            <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{plan === "pro" ? "Premium" : plan === "yearlyEnterprise" ? "Yearly Enterprise" : plan}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{new Date(createdAt).toLocaleString()}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{referredBy ? referredBy : "No One"}</td>
             <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{["pro", "enterprise"].includes(plan) ? manual ? "Cash" : "Stripe" : "None"}</td>
@@ -58,7 +58,7 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
                 </button>
 
             </td>
-            {plan !== "enterprise" && <td className='pl-4'>
+            {(plan !== "enterprise" && plan !== "yearlyEnterprise") && <td className='pl-4'>
                 <button
                     onClick={() => setShowAddMinutesManually({
                         show: true,
@@ -88,12 +88,12 @@ export default function AdminUserCard({ country, firstName, lastName, email, ref
                         type="button"
                         className="inline-flex shrink-0  items-center rounded-md bg-yellow-600 px-3 py-2 text-[13px] font-semibold text-white shadow-sm hover:bg-yellow-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-600"
                     >
-                        {(isUpgrading && (accountBeingUpgraded?._id === _id && accountBeingUpgraded.plan === "enterprise")) ? <Loader /> : "Manual Release EV"}
+                        {(isUpgrading && (accountBeingUpgraded?._id === _id && (accountBeingUpgraded.plan === "enterprise"))) ? <Loader /> : "Manual Release EV"}
                     </button>
                 </div>
             </td>}
             {
-                plan === "enterprise" && <td className='pl-4'>
+                (plan === "enterprise" || plan === "yearlyEnterprise") && <td className='pl-4'>
                     <button
                         onClick={() => setShowAddCredentials({
                             show: true,

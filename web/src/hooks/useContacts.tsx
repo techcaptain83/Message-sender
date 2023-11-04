@@ -131,7 +131,7 @@ export default function useContacts() {
 
     // check if the reservation has expired and then logout 
     useEffect(() => {
-        if (user?.plan === "enterprise") return;
+        if (user?.plan === "enterprise" || user?.plan === "yearlyEnterprise") return;
         if (activeReservation) {
             const interval = setInterval(async () => {
                 const now = new Date();

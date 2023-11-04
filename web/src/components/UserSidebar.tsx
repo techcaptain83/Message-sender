@@ -15,7 +15,6 @@ export default function UserSidebar() {
         { label: "Messaging History", href: "/dashboard/history" },
         { label: "Reservations", href: "/dashboard/reservations" },
         { label: "Deposits", href: "/dashboard/deposits" },
-        // { label: "Cards", href: "/dashboard/cards" },
         { label: "Support", href: "/dashboard/support" },
     ]
 
@@ -36,7 +35,7 @@ export default function UserSidebar() {
                     </li>
                 ))}
                 {
-                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6 text-xs'
+                    (user?.plan === "free" || user?.plan === "pro") && <Button variant='solid' className='rounded-md opacity-80 mt-6 text-xs'
                         href='/dashboard/reservations/new'
                     >
                         <span>Reserve a slot</span>
@@ -44,7 +43,7 @@ export default function UserSidebar() {
                     </Button>
                 }
                 {
-                    user?.plan !== "enterprise" && <Button variant='solid' className='rounded-md opacity-80 mt-6 text-xs'
+                    (user?.plan === "free" || user?.plan === "pro") && <Button variant='solid' className='rounded-md opacity-80 mt-6 text-xs'
                         onClick={() => setShowModal(true)}
                     >
                         <span>get more minutes</span>

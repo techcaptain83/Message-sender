@@ -50,7 +50,7 @@ export default function AdminUsersTable({ users, title }: IProps) {
     const exportUsers = () => {
         const header = "First Name,Last Name,Email,Country,Referred By,Plan,Date Paid,Date Joined\n";
         const csv = users.map((user) => {
-            return `${user.firstName},${user.lastName},${user.email},${user.country},${user.referredBy},${user.plan === "pro" ? "Premium" : user.plan === "enterprise" ? "Enterprise" : "Free"},${user.datePaid ? user.datePaid : "Not Paid yet!"},${new Date(user.createdAt).toLocaleString()}\n`;
+            return `${user.firstName},${user.lastName},${user.email},${user.country},${user.referredBy},${user.plan === "pro" ? "Premium" : user.plan === "enterprise" ? "Enterprise" : user.plan === "yearlyEnterprise" ? "Yearly Enterprise" : "Free"},${user.datePaid ? user.datePaid : "Not Paid yet!"},${new Date(user.createdAt).toLocaleString()}\n`;
         }).join('');
         const blob = new Blob([header, csv], { type: 'text/csv' });
         const url = window.URL.createObjectURL(blob);

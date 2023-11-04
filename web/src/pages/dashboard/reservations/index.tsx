@@ -37,9 +37,9 @@ export default function Reservations() {
                         </div>
                         <div className='flex flex-col gap-2'>
                             <p>Available minutes : <span className='bg-green-100 text-green-500 p-1 rounded-md text-sm font-medium'>
-                                {user?.plan === "enterprise" ? "Unlimited minutes" : user?.availableTime}
+                                {user?.plan === "enterprise" || user?.plan === "yearlyEnterprise" ? "Unlimited minutes" : user?.availableTime}
                             </span></p>
-                            {user?.plan !== "enterprise" && <Button
+                            {(user?.plan !== "enterprise" && user?.plan !== "yearlyEnterprise") && <Button
                                 onClick={() => setShowModal(true)}
                                 variant='solid' color='blue' className='rounded-md'>
                                 <span>Get more minutes</span>
@@ -49,7 +49,7 @@ export default function Reservations() {
                     </div>
                 </header>
                 {
-                    user?.plan === "enterprise" ?
+                    (user?.plan === "enterprise" || user?.plan === "yearlyEnterprise") ?
                         <div className='min-h-[60vh] bg-gray-100 rounded-lg mt-6 py-6 flex flex-col items-center justify-center gap-6'>
                             <h1 className='text-xl font-semibold text-gray-700'>You are on an enterprise plan, you can use the system without any restrictions.</h1>
                         </div>

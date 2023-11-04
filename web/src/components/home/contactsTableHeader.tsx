@@ -30,7 +30,7 @@ export default function ContactsTableHeader() {
                 className="border-2 placeholder:text-sm py-1 px-5 w-2/4 focus:ring-1 ring-blue-600 focus:outline-none"
             />
             {
-                (user?.plan !== "enterprise" && phoneConnected && activeReservation) && (
+                ((user?.plan !== "enterprise" && user?.plan !== "yearlyEnterprise") && phoneConnected && activeReservation) && (
                     // countdown showing when the phone will be disconnected
                     <div>
                         <p className="text-sm text-gray-600">Your phone will be disconnected in <span className="text-red-600 font-semibold"> {new Date(activeReservation!.endsAt).getMinutes() - new Date().getMinutes()} minutes</span></p>
@@ -43,7 +43,7 @@ export default function ContactsTableHeader() {
                     !phoneConnected ? (
                         <button
                             onClick={async () => {
-                                if (user?.plan === "enterprise") {
+                                if ((user?.plan === "enterprise" || user?.plan === "yearlyEnterprise")) {
                                     user?.api ? setShowScanCode(true) : setShowNoApi(true);
                                 } else {
                                     const reservation = await searchForActiveReservation();

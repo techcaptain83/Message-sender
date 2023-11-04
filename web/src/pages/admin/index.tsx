@@ -45,7 +45,7 @@ export default function AdminDashboard() {
                     {/* <StatsCard name='Account Balance' value={`$${users ? calculateAccountBalance(users) : undefined}`} Icon={ScaleIcon} /> */}
                     <StatsCard name='Total Users' value={users?.length} Icon={UserGroupIcon} />
                     <StatsCard name='Premium Users' value={users?.filter(user => user.plan === "pro").length} Icon={CheckBadgeIcon} />
-                    <StatsCard name='Enterprise Users' value={users?.filter(user => user.plan === "enterprise").length} Icon={CheckBadgeIcon} />
+                    <StatsCard name='Enterprise Users' value={users?.filter(user => ["enterprise", "yearlyEnterprise"].includes(user.plan)).length} Icon={CheckBadgeIcon} />
                     <StatsCard name='Free Trial Users' value={users?.filter(user => user.plan === "free").length} Icon={CheckBadgeIcon} />
                 </div>
             </div>
