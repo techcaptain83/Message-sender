@@ -33,6 +33,7 @@ export default function useLogs() {
     });
 
     const createLog = async (log: Omit<ILog, "createdAt">) => {
+        console.log("createLog was called");
         setRegisteringLogs(true);
         try {
             const { data } = await axios.post(`/logs?user=${user?._id ? user._id : localstorageUser._id}`, {

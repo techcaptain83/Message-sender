@@ -33,6 +33,11 @@ export default function useMessages() {
         for (let index = 0; index < contacts.length; index++) {
             const contact = contacts[index];
 
+            console.log("============================================");
+            console.log("now we are sending to the contact  number ", index + 1);
+            console.log("this is the last contact ? ", index === contacts.length - 1);
+            console.log("============================================");
+
             // check if there is a phone number in logContacts matching the current contact
             // if so, skip sending message to that number
 
@@ -47,6 +52,8 @@ export default function useMessages() {
                     ...content
                 });
 
+                console.log("data from sending a message : ", data);
+
 
                 if (data?.message === "ok") {
                     sentCount++;
@@ -57,6 +64,16 @@ export default function useMessages() {
                         phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                         sent: true,
                     });
+                    if (index === contacts.length - 1) {
+                        console.log("we are done sending messages");
+                        setSendingMessages(false);
+                        await createLog({
+                            filename: selectedFile!.filename,
+                            sentCount,
+                            failedCount,
+                            contacts: logContacts,
+                        });
+                    }
                 } else {
                     failedCount++;
                     logContacts.push({
@@ -65,16 +82,18 @@ export default function useMessages() {
                         phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                         sent: false,
                     });
+                    if (index === contacts.length - 1) {
+                        console.log("we are done sending messages");
+                        setSendingMessages(false);
+                        await createLog({
+                            filename: selectedFile!.filename,
+                            sentCount,
+                            failedCount,
+                            contacts: logContacts,
+                        });
+                    }
                 }
-                if (index === contacts.length - 1) {
-                    setSendingMessages(false);
-                    await createLog({
-                        filename: selectedFile!.filename,
-                        sentCount,
-                        failedCount,
-                        contacts: logContacts,
-                    });
-                }
+
             } catch (error) {
                 failedCount++;
                 logContacts.push({
@@ -84,6 +103,7 @@ export default function useMessages() {
                     sent: false,
                 });
                 if (index === contacts.length - 1) {
+                    console.log("we are done sending messages");
                     setSendingMessages(false);
                     await createLog({
                         filename: selectedFile!.filename,
