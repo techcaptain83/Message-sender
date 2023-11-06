@@ -23,6 +23,7 @@ export default function useReservations() {
 
     const { data: reservations, error, mutate } = useSWR(`/reservations/user/${user ? user._id : localstorageUser._id}?active=true`, async (url: string) => {
         try {
+            console.log("reservations were fetched!");
             const { data } = await axios.get(url);
             return data.reservations as IReservation[];
         } catch (error) {

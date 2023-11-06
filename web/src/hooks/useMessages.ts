@@ -6,7 +6,6 @@ import useLogs from './useLogs';
 import useWhatsappAPI from './useWhatsappApi';
 
 interface IContent {
-    displayName?: string,
     body?: string,
     audio?: string,
     image?: string,
@@ -33,10 +32,6 @@ export default function useMessages() {
         for (let index = 0; index < contacts.length; index++) {
             const contact = contacts[index];
 
-            console.log("============================================");
-            console.log("now we are sending to the contact  number ", index + 1);
-            console.log("this is the last contact ? ", index === contacts.length - 1);
-            console.log("============================================");
 
             // check if there is a phone number in logContacts matching the current contact
             // if so, skip sending message to that number
@@ -52,7 +47,6 @@ export default function useMessages() {
                     ...content
                 });
 
-                console.log("data from sending a message : ", data);
 
 
                 if (data?.message === "ok") {
@@ -65,7 +59,6 @@ export default function useMessages() {
                         sent: true,
                     });
                     if (index === contacts.length - 1) {
-                        console.log("we are done sending messages");
                         setSendingMessages(false);
                         await createLog({
                             filename: selectedFile!.filename,
@@ -83,7 +76,6 @@ export default function useMessages() {
                         sent: false,
                     });
                     if (index === contacts.length - 1) {
-                        console.log("we are done sending messages");
                         setSendingMessages(false);
                         await createLog({
                             filename: selectedFile!.filename,
@@ -103,7 +95,6 @@ export default function useMessages() {
                     sent: false,
                 });
                 if (index === contacts.length - 1) {
-                    console.log("we are done sending messages");
                     setSendingMessages(false);
                     await createLog({
                         filename: selectedFile!.filename,

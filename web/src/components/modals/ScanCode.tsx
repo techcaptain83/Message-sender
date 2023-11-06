@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { phoneConnectedState, showScanCodeState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
 import { Dialog } from '@headlessui/react';
