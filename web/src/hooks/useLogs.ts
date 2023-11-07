@@ -27,7 +27,7 @@ export default function useLogs() {
 
         } catch (error) {
             console.log(error);
-            toast.error("error fetching your history! try again later")
+            // toast.error("error fetching your history! try again later")
             return [];
         }
     });
