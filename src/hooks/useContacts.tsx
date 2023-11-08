@@ -15,8 +15,10 @@ import useAuth from './useAuth';
 import useReservations from './useReservations';
 import useWhatsappAPI from './useWhatsappApi';
 import { pageUsersState } from '@/store/contactsTableStates';
+import { useRouter } from 'next/router';
 
 export default function useContacts() {
+    const router = useRouter();
     const selectedFile = useRecoilValue(selectedFileState);
     const [gettingFileData, setGettingFileData] = useState(false);
 
@@ -77,7 +79,7 @@ export default function useContacts() {
                 };
                 fileReader.readAsText(decodedData);
             } else {
-                toast.error("An error occured while fetching file data from server");
+                (router.pathname === "/dashboard" && user) && toast.error("An error occured while fetching file data from server");
                 setGettingFileData(false);
             }
         } catch (error) {

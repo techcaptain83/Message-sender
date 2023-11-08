@@ -7,8 +7,10 @@ import toast from "react-hot-toast";
 import { useRecoilState } from "recoil";
 import { showAnswerTicketModalAtom, showCreateTicketModalAtom } from "@/store/atoms";
 import { UIDHASH } from "@/utils/constants";
+import { useRouter } from "next/router";
 
 export default function useTickets() {
+    const router = useRouter();
     const [_, setShowCreateTicketModal] = useRecoilState(showCreateTicketModalAtom);
     const { user } = useAuth();
     const [creatingTicket, setCreatingTicket] = useState(false);
@@ -34,6 +36,7 @@ export default function useTickets() {
             const { data } = await axios.get(url);
             return data.tickets as ITicket[];
         } catch (error) {
+            (router.pathname === "/dashboard/support" && user) && toast.error("There was an error fetching your tickets! Please try again later.");
             console.log(error);
             return [];
         }

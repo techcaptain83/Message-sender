@@ -7,9 +7,11 @@ import { IAuthUser, IDeposit } from "@/types";
 import { useState } from "react";
 import { useRecoilState } from "recoil";
 import { showNewDepositModalAtom } from "@/store/atoms";
+import { useRouter } from "next/router";
 
 export default function useDeposits() {
-    const { user, updateUser } = useAuth();
+    const router = useRouter();
+    const { user } = useAuth();
     const [creatingDeposit, setCreatingDeposit] = useState(false);
     const [_, setShowDepositModal] = useRecoilState(showNewDepositModalAtom);
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
@@ -31,7 +33,7 @@ export default function useDeposits() {
             return data.deposits as IDeposit[];
         } catch (error) {
             console.log(error);
-            toast.error("Error fetching your deposits! Please try again later.")
+            (router.pathname === "/dashboard/deposits" && user) &&  toast.error("Error fetching your deposits! Please try again later.")
             return [];
         }
     });

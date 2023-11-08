@@ -15,8 +15,7 @@ export default function useFiles() {
     const [deletingFile, setDeletingFile] = useState(false);
     const [uploadingFile, setUploadingFile] = useState(false);
     const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
-    const [showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
-    const [downloadingFile, setDownloadingFile] = useState(false);
+    const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
     const { user } = useAuth();
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
@@ -191,6 +190,5 @@ export default function useFiles() {
         uploadingFile,
         uploadFile,
         downloadFile,
-        downloadingFile
     };
 }
