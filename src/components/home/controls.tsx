@@ -9,7 +9,7 @@ import { messageState } from "@/store/atoms";
 
 export default function Controls() {
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
-    const { downloadingFile, downloadFile } = useFiles();
+    const {  downloadFile ,downloadingFile} = useFiles();
     const [message, setMessage] = useRecoilState(messageState);
 
     return (

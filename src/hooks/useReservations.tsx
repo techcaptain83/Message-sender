@@ -28,7 +28,7 @@ export default function useReservations() {
             return data.reservations as IReservation[];
         } catch (error) {
             console.log(error);
-            // toast.error("Something went wrong! try again later.");
+            (router.pathname === "/dashboard/reservations" && user) && toast.error("Something went wrong! try again later.");
             return [];
         }
     });

@@ -9,9 +9,11 @@ import { useRecoilState } from "recoil";
 import useSWR from "swr";
 import useAuth from "./useAuth";
 import { registeringLogsState } from "@/store/atoms";
+import { useRouter } from "next/router";
 
 
 export default function useLogs() {
+    const router = useRouter();
     const { user } = useAuth();
     const [_showDeleteLog, setShowdeleteLog] = useRecoilState(showDeleteLogState);
     const [_logToDelete, setLogToDelete] = useRecoilState(logToDeleteState);
@@ -27,7 +29,7 @@ export default function useLogs() {
 
         } catch (error) {
             console.log(error);
-            // toast.error("error fetching your history! try again later")
+            (router.pathname === "/dashboard/history" && user) && toast.error("error fetching your history! try again later")
             return [];
         }
     });
