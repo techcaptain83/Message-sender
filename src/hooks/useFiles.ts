@@ -13,13 +13,14 @@ import useAuth from "./useAuth";
 export default function useFiles() {
     const [gettingFileData, setGettingFileData] = useState(false);
     const [deletingFile, setDeletingFile] = useState(false);
+    const [downloadingFile, setDownloadingFile] = useState(false);
     const [uploadingFile, setUploadingFile] = useState(false);
     const [selectedFile, setSelectedFile] = useRecoilState(selectedFileState);
     const [_showDeleteFile, setShowDeleteFile] = useRecoilState(showDeleteFileState);
     const [_showUploadFile, setShowUploadFile] = useRecoilState(showUploadFileState);
     const { user } = useAuth();
     const localstorageUser = JSON.parse(localStorage.getItem(UIDHASH) || "{}") as IAuthUser;
-    
+
     const { data, error, mutate } = useSWR(`/files?user=${user?._id ? user._id : localstorageUser._id}`, async (url) => {
         try {
             const { data } = await axios.get(url);
@@ -149,7 +150,7 @@ export default function useFiles() {
 
     const downloadFile = async () => {
         try {
-
+            setDownloadingFile(true);
             const { data } = await axios.get(`/files/${selectedFile?._id}`)
             if (data.file) {
                 const base64Data = data.file.data;
@@ -175,6 +176,8 @@ export default function useFiles() {
             toast.error("Error occured while downloading file! try again later");
             console.log("error occured while downloading file");
             console.log(error);
+        } finally {
+            setDownloadingFile(false);
         }
     };
 
@@ -190,5 +193,6 @@ export default function useFiles() {
         uploadingFile,
         uploadFile,
         downloadFile,
+        downloadingFile
     };
 }
