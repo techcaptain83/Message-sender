@@ -29,6 +29,9 @@ export default function useMessages() {
         let logContacts: ILogContact[] = [];
 
 
+        let contactsToSendMessagesTo = contacts;
+
+
         for (let index = 0; index < contacts.length; index++) {
             const contact = contacts[index];
 
@@ -50,6 +53,9 @@ export default function useMessages() {
 
 
                 if (data?.message === "ok") {
+
+                    contactsToSendMessagesTo = contactsToSendMessagesTo.filter((contactToSendMessageTo) => contactToSendMessageTo.phoneNumber !== contact.phoneNumber);
+
                     sentCount++;
 
                     logContacts.push({
@@ -58,6 +64,7 @@ export default function useMessages() {
                         phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                         sent: true,
                     });
+
                     if (index === contacts.length - 1) {
                         setSendingMessages(false);
                         await createLog({
@@ -67,14 +74,20 @@ export default function useMessages() {
                             contacts: logContacts,
                         });
                     }
+
                 } else {
+
+                    contactsToSendMessagesTo = contactsToSendMessagesTo.filter((contactToSendMessageTo) => contactToSendMessageTo.phoneNumber !== contact.phoneNumber);
+
                     failedCount++;
+
                     logContacts.push({
                         firstName: contact.firstName,
                         lastName: contact.lastName,
                         phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                         sent: false,
                     });
+
                     if (index === contacts.length - 1) {
                         setSendingMessages(false);
                         await createLog({
@@ -86,14 +99,30 @@ export default function useMessages() {
                     }
                 }
 
+                if (contactsToSendMessagesTo.length < 1) {
+                    setSendingMessages(false);
+                    createLog({
+                        filename: selectedFile!.filename,
+                        sentCount,
+                        failedCount,
+                        contacts: logContacts,
+                    });
+                    break;
+                }
+
             } catch (error) {
+
+                contactsToSendMessagesTo = contactsToSendMessagesTo.filter((contactToSendMessageTo) => contactToSendMessageTo.phoneNumber !== contact.phoneNumber);
+
                 failedCount++;
+
                 logContacts.push({
                     firstName: contact.firstName,
                     lastName: contact.lastName,
                     phoneNumber: `(${contact.countryCode}) ${contact.phoneNumber}`,
                     sent: false,
                 });
+
                 if (index === contacts.length - 1) {
                     setSendingMessages(false);
                     await createLog({
@@ -102,6 +131,17 @@ export default function useMessages() {
                         failedCount,
                         contacts: logContacts,
                     });
+                }
+
+                if (contactsToSendMessagesTo.length < 1) {
+                    setSendingMessages(false);
+                    createLog({
+                        filename: selectedFile!.filename,
+                        sentCount,
+                        failedCount,
+                        contacts: logContacts,
+                    });
+                    break;
                 }
             }
         }
