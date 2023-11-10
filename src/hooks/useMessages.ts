@@ -15,7 +15,7 @@ interface IContent {
 
 export default function useMessages() {
 
-    const [_, setSendingMessages] = useRecoilState(sendingMessagesAtom);
+    const [sendingMessages, setSendingMessages] = useRecoilState(sendingMessagesAtom);
     const selectedFile = useRecoilValue(selectedFileState);
     const { createLog } = useLogs();
     const { sendMessage } = useWhatsappAPI();
@@ -99,7 +99,7 @@ export default function useMessages() {
                     }
                 }
 
-                if (contactsToSendMessagesTo.length < 1) {
+                if (contactsToSendMessagesTo.length < 1 && sendingMessages === true) {
                     setSendingMessages(false);
                     createLog({
                         filename: selectedFile!.filename,
@@ -133,7 +133,7 @@ export default function useMessages() {
                     });
                 }
 
-                if (contactsToSendMessagesTo.length < 1) {
+                if (contactsToSendMessagesTo.length < 1 && sendingMessages === true) {
                     setSendingMessages(false);
                     createLog({
                         filename: selectedFile!.filename,
