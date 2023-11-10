@@ -11,7 +11,7 @@ const ContactCard = ({ id, displayName, displayText, firstName, lastName, phoneN
     useEffect(() => {
         if (checked) {
             setSelectedUsers([...selectedUsers, {
-                id, firstName, lastName, displayName, phoneNumber, countryCode
+                id, firstName, lastName, displayName, phoneNumber, countryCode,displayText
             }])
         } else {
             setSelectedUsers(selectedUsers.filter((user) => user.id !== id));

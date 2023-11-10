@@ -49,7 +49,7 @@ export default function Controls() {
             <div className="flex flex-row gap-4 items-center">
                 <button
                     onClick={() => setShowDeleteFile(true)}
-                    className="control hover:bg-red-500 text-red-500 shrink-0">
+                className="control hover:bg-red-500 text-red-500 shrink-0">
                     <AiFillDelete />
                     <p className='font-bold'>Remove List</p>
                 </button>

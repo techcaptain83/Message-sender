@@ -4,7 +4,7 @@ import useAuth from '@/hooks/useAuth';
 import { registeringLogsState, sendingMessagesAtom, showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import PrePageLoader from '../LargeLoader';
 import AddApiCredentials from '../modals/AddApiCredentails';
 import AddMinutesManually from '../modals/AddMinutesManually';
@@ -24,6 +24,7 @@ import TicketDetails from '../modals/TicketDetails';
 import UpgradeAccount from '../modals/UpgradeAccount';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
+import toast from 'react-hot-toast';
 
 interface Props {
     children: React.ReactNode
@@ -48,12 +49,28 @@ export default function MainLayout({ children }: Props) {
     const showNoApi = useRecoilValue(showNoApiModalAtom);
     const showPurchaseMinutes = useRecoilValue(showPurchaseMinutesModalAtom);
     const showAddMinutesManually = useRecoilValue(showAddMinutesManuallyAtom);
-    const sendingMessages = useRecoilValue(sendingMessagesAtom);
+    const [sendingMessages, setSendingMessages] = useRecoilState(sendingMessagesAtom);
     const registeringLogs = useRecoilValue(registeringLogsState);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
-    }, [user, router.pathname])
+    }, [user, router.pathname]);
+
+useEffect(() => {
+    let timerId: NodeJS.Timeout;
+
+    if (sendingMessages) {
+        timerId = setTimeout(() => {
+            toast('Sending messages is taking too long and will continue in the background.');
+            setSendingMessages(false);
+        }, 40000); // 40 seconds
+    }
+
+    // Cleanup function to clear the timer when sendingMessages becomes false
+    return () => clearTimeout(timerId);
+}, [sendingMessages, setSendingMessages]);
+
+
 
     return (
         <div className='min-w-full min-h-screen' suppressHydrationWarning>

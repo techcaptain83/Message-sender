@@ -154,8 +154,6 @@ export default function useWhatsappAPI() {
     }
 
     const sendMessage = async (phoneNumber: string, content: IContent) => {
-        console.log("==================================");
-        console.log("content passed to send message fn()", content);
 
         let data: any = {
             "token": apiInstance?.token || defaultApiInstance.token,
@@ -163,16 +161,8 @@ export default function useWhatsappAPI() {
         };
 
         if (content.body) {
-            console.log("content body before replacing  [name]", content.body);
             data.body = content.body.replace(/\[name\]/g, content.displayName || "");
-
-            console.log("message body before replacing [display_text]", content.body);
-
             data.body = data.body.replace(/\[display_text\]/g, content.displayText || "");
-
-            console.log("the complete message after replacing  [name] and display text", data.body);
-
-            console.log("==================================");
         }
 
         if (content.audio) {
@@ -188,7 +178,7 @@ export default function useWhatsappAPI() {
         }
         if (content.caption) {
             data.caption = content.caption.replace(/\[name\]/g, content.displayName || "");
-            content.caption = content.caption.replace(/\[display_text\]/g, content.displayText || "");
+            data.caption = data.caption.replace(/\[display_text\]/g, content.displayText || "");
         }
 
         let requestData = JSON.stringify(data);

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import useAuth from '@/hooks/useAuth';
 import useReservations from '@/hooks/useReservations';
 import { showConnectPhoneModalAtom } from '@/store/atoms';
