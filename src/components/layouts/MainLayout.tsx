@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { showDeleteFileState, showDeleteLogState, showScanCodeState, showUpgradeToPremiumState, showUploadFileState, showUploadMediaState } from '@/atoms';
 import useAuth from '@/hooks/useAuth';
-import { registeringLogsState, sendingMessagesAtom, showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom } from '@/store/atoms';
+import { registeringLogsState, sendingMessagesAtom, showAddCredentialsModalAtom, showAddMinutesManuallyAtom, showAnswerTicketModalAtom, showConnectPhoneModalAtom, showCreateTicketModalAtom, showNewDepositModalAtom, showNoApiModalAtom, showNoReservationModalAtom, showPurchaseMinutesModalAtom, showTicketDetailsModalAtom, showVerifyEmailModalAtom } from '@/store/atoms';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
@@ -25,6 +25,7 @@ import UpgradeAccount from '../modals/UpgradeAccount';
 import UploadFile from '../modals/UploadFile';
 import UploadMedia from '../modals/uploadMedia';
 import toast from 'react-hot-toast';
+import VerifyEmail from '../modals/VerifyEmail';
 
 interface Props {
     children: React.ReactNode
@@ -51,24 +52,25 @@ export default function MainLayout({ children }: Props) {
     const showAddMinutesManually = useRecoilValue(showAddMinutesManuallyAtom);
     const [sendingMessages, setSendingMessages] = useRecoilState(sendingMessagesAtom);
     const registeringLogs = useRecoilValue(registeringLogsState);
+    const showVerifyEmail = useRecoilState(showVerifyEmailModalAtom);
 
     useEffect(() => {
         (user && user.isAdmin && router.pathname.includes("/dashboard")) && router.push("/admin");
     }, [user, router.pathname]);
 
-useEffect(() => {
-    let timerId: NodeJS.Timeout;
+    useEffect(() => {
+        let timerId: NodeJS.Timeout;
 
-    if (sendingMessages) {
-        timerId = setTimeout(() => {
-            toast('Sending messages is taking too long and will continue in the background.');
-            setSendingMessages(false);
-        }, 40000); // 40 seconds
-    }
+        if (sendingMessages) {
+            timerId = setTimeout(() => {
+                toast('Sending messages is taking too long and will continue in the background.');
+                setSendingMessages(false);
+            }, 40000); // 40 seconds
+        }
 
-    // Cleanup function to clear the timer when sendingMessages becomes false
-    return () => clearTimeout(timerId);
-}, [sendingMessages, setSendingMessages]);
+        // Cleanup function to clear the timer when sendingMessages becomes false
+        return () => clearTimeout(timerId);
+    }, [sendingMessages, setSendingMessages]);
 
 
 
@@ -102,6 +104,7 @@ useEffect(() => {
                             {showAddMinutesManually?.show && <AddMinutesManually />}
                             {sendingMessages && <SendingMessages />}
                             {registeringLogs && <RegisteringLogs />}
+                            {showVerifyEmail && <VerifyEmail />}
                         </>
                     }
                 </main>

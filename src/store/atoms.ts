@@ -175,3 +175,9 @@ export const registeringLogsState = atom<boolean>({
     key: "registeringLogsState",
     default: false
 });
+
+
+export const showVerifyEmailModalAtom = atom({
+    key: "showVerifyEmailModal",
+    default: false
+});
