@@ -5,6 +5,7 @@ import '@/styles/nprogress.css'
 import '@/styles/tailwind.css'
 import 'focus-visible'
 import { AppProps } from 'next/app'
+import Head from 'next/head'
 import Router, { useRouter } from 'next/router'
 import NProgress from 'nprogress'
 import { Toaster } from 'react-hot-toast'
@@ -28,20 +29,24 @@ export default function App({ Component, pageProps }: AppProps) {
     //   currency: "USD",
     //   components: "buttons",
     // }}>
-      <RecoilRoot>
-        <AuthProvider>
-          <MainLayout>
-            <Toaster />
-            {
-              router.pathname === "/login" || router.pathname === "/register" ?
-                <AuthLayout>
-                  <Component {...pageProps} />
-                </AuthLayout> :
+    <RecoilRoot>
+      <AuthProvider>
+        <Head>
+          <link rel="shortcut icon" href="/logo.png" />
+        </Head>
+        <MainLayout>
+
+          <Toaster />
+          {
+            router.pathname === "/login" || router.pathname === "/register" ?
+              <AuthLayout>
                 <Component {...pageProps} />
-            }
-          </MainLayout>
-        </AuthProvider>
-      </RecoilRoot>
+              </AuthLayout> :
+              <Component {...pageProps} />
+          }
+        </MainLayout>
+      </AuthProvider>
+    </RecoilRoot>
     // </PayPalScriptProvider>
   )
 }

@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import axios from '@/axios.config';
+import { showVerifyEmailModalAtom } from '@/store/atoms';
 import { IAuthUser } from '@/types';
 import { UIDHASH } from '@/utils/constants';
 import { useRouter } from 'next/router';
 import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import toast from "react-hot-toast";
+import { useRecoilState } from 'recoil';
 
 
 interface IAuth {
@@ -37,6 +39,7 @@ interface AuthProviderProps {
 //this is my custom hook that will be used to authenticate the user
 export function AuthProvider({ children }: AuthProviderProps) {
     const router = useRouter();
+    const [show, setShowVerifyEmail] = useRecoilState(showVerifyEmailModalAtom);
 
     const [loading, setLoading] = useState(false)
     const [user, setUser] = useState<IAuthUser | null>(null);
@@ -44,10 +47,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [initialLoading, setInitialLoading] = useState(true);
 
     const verifyCurrentUser = async (userId: string) => {
+
         try {
             const { data } = await axios.get(`/auth/me/${userId}`);
-            if (data.user) {
+            if (data.user as IAuthUser) {
                 updateUser(data.user);
+                if (!data.user.verified && !data.user?.isAdmin) {
+                    // setShowVerifyEmail(true);
+                }
             }
         } catch (error) {
             console.log(error);
