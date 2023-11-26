@@ -53,7 +53,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             if (data.user as IAuthUser) {
                 updateUser(data.user);
                 if (!data.user.verified && !data.user?.isAdmin) {
-                    // setShowVerifyEmail(true);
+                    setShowVerifyEmail(true);
                 }
             }
         } catch (error) {
